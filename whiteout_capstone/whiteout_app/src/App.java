@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
  
 public class App extends Application {
     @Override
@@ -16,14 +17,19 @@ public class App extends Application {
   
         Parent root;
         try{
-            root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+            root = FXMLLoader.load(getClass().getResource("./MainMenu.fxml"));
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             
-            
+            primaryStage.initStyle(StageStyle.TRANSPARENT);
+            //primaryStage.setOpacity(0.5);
+
             primaryStage.setTitle("White-Out");
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            
                 
 
         } 
