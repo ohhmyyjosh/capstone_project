@@ -28,10 +28,6 @@ public class App extends Application {
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.show();
-
-            
-                
-
         } 
         catch (IOException e){
 
