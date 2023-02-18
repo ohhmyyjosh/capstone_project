@@ -43,38 +43,38 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainMenuController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: black;" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: gray;" VBox.vgrow="ALWAYS">
       <children>
-            <Pane layoutY="2.0" prefHeight="375.0" prefWidth="640.0" style="-fx-background-color: white;">
+            <Pane layoutX="15.0" layoutY="16.0" prefHeight="366.0" prefWidth="610.0" style="-fx-background-color: white;">
                <children>
-                  <Button layoutX="173.0" layoutY="158.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Create a New Session" textFill="WHITE">
+                  <Button layoutX="157.0" layoutY="135.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Create a New Session" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
                   </Button>
-                  <Button layoutX="169.0" layoutY="229.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Join an Active Session" textFill="WHITE">
+                  <Button layoutX="153.0" layoutY="210.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Join an Active Session" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
                   </Button>
-                  <Button layoutX="224.0" layoutY="305.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="193.0" style="-fx-background-color: lightgray;" text="Exit">
+                  <Button fx:id="exitButton" layoutX="209.0" layoutY="290.0" mnemonicParsing="false" onAction="#exitAppButton" prefHeight="56.0" prefWidth="193.0" style="-fx-background-color: lightgray;" text="Exit">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
                   </Button>
-                  <Label layoutX="110.0" layoutY="40.0" prefHeight="107.0" prefWidth="368.0" style="-fx-background-color: white;" text="White-Out" textAlignment="CENTER">
+                  <Label layoutX="95.0" layoutY="28.0" prefHeight="107.0" prefWidth="368.0" style="-fx-background-color: white;" text="White-Out" textAlignment="CENTER">
                      <font>
                         <Font name="Segoe Script Bold" size="59.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="601.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="571.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/gear.png" />
+                        <Image url="@images/gear.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="68.0" fitWidth="69.0" layoutX="463.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                  <ImageView fitHeight="68.0" fitWidth="69.0" layoutX="448.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                      <image>
-                        <Image url="@../images/Marker.png" />
+                        <Image url="@images/Marker.png" />
                      </image>
                   </ImageView>
                </children>
