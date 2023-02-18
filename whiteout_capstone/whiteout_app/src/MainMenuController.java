@@ -13,8 +13,7 @@ public class MainMenuController {
     }
     
     @FXML private void createSessionButtonClick(ActionEvent event){
-        WhiteboardController wbc = new WhiteboardController();
-        wbc.createCanvas();
+        
     }
 
     @FXML private void joinSessionButtonClick(ActionEvent event){
