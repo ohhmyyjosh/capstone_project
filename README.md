@@ -1,5 +1,5 @@
 ## White-Out
-White-Out is a desktop applciation which generates a connected transparent whiteboard over your desktop. This whiteboard can be shared by many users, and offers many useful annotation tools such as drawing, and adding text notes. 
+White-Out is a desktop application which generates a connected transparent whiteboard over your desktop. This whiteboard can be shared by many users, and offers many useful annotation tools such as drawing, and adding text notes. 
 
 
 ## Development Team
