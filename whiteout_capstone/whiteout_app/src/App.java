@@ -6,30 +6,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
  
 public class App extends Application {
+    private static MainMenuController mainMenuController = new MainMenuController();
+
     @Override
     public void start(Stage primaryStage) {
-  
-  
+
         Parent root;
-        try{
-            root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
-            Scene scene = new Scene(root);
-            
-            
-            primaryStage.setTitle("White-Out");
-            primaryStage.setResizable(false);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-                
+        Scene scene = new Scene(new Pane());
+        ViewSwitcher.setScene(scene);
+        ViewSwitcher.switchTo(View.MAIN);
 
-        } 
-        catch (IOException e){
+        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+        
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        //primaryStage.setOpacity(0.5);
 
-        }
+        primaryStage.setTitle("White-Out");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
   
  
