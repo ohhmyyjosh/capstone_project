@@ -13,7 +13,7 @@ public class MainMenuController {
     }
     
     @FXML private void createSessionButtonClick(ActionEvent event){
-        
+
     }
 
     @FXML private void joinSessionButtonClick(ActionEvent event){

@@ -1,6 +1,8 @@
 public enum View {
     MAIN("./fxml/MainMenu.fxml"),
-    SETTINGS("./fxml/SettingsMenu.fxml");
+    SETTINGS("./fxml/SettingsMenu.fxml"),
+    CREATE(""),
+    JOIN("");
 
     private String fileName;
 
