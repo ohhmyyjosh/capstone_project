@@ -1,6 +1,7 @@
 public enum View {
     MAIN("./fxml/MainMenu.fxml"),
-    SETTINGS("./fxml/SettingsMenu.fxml");
+    SETTINGS("./fxml/SettingsMenu.fxml"),
+    CANVAS("./fxml/Canvas.fxml");
 
     private String fileName;
 

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="746.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ClientController">
+   <bottom>
+      <VBox prefHeight="173.0" prefWidth="854.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextArea fx:id="chatLog" editable="false" prefHeight="167.0" prefWidth="854.0" text="Logged into server&#10;" />
+            <HBox prefHeight="100.0" prefWidth="766.0">
+               <children>
+                  <TextArea fx:id="chatField" prefHeight="56.0" prefWidth="753.0" />
+                  <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendMessage" prefHeight="100.0" prefWidth="101.0" text="Send" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </bottom>
+   <right>
+      <VBox prefHeight="525.0" prefWidth="191.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Users logged in:" textAlignment="CENTER" translateX="50.0" />
+            <ListView fx:id="userList" prefHeight="528.0" prefWidth="191.0" />
+         </children>
+      </VBox>
+   </right>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <left>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane gridLinesVisible="true">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="42.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="42.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Pane fx:id="pane0_0" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="img0_0" fitHeight="40.0" fitWidth="40.0" layoutX="1.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/pencil.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <ImageView fx:id="img1_0" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/save.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_1" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <children>
+                        <ImageView fx:id="img0_1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/zoom.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_10" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                     <children>
+                        <ImageView fx:id="img1_10" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/lightgrey.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_10" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="10">
+                     <children>
+                        <ImageView fx:id="img0_10" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/darkgrey.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_9" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
+                     <children>
+                        <ImageView fx:id="img0_9" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/grey.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <children>
+                        <ImageView fx:id="img1_9" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/brown.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_8" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="8">
+                     <children>
+                        <ImageView fx:id="img0_8" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/red.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                     <children>
+                        <ImageView fx:id="img1_8" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/orange.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_7" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="7">
+                     <children>
+                        <ImageView fx:id="img0_7" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/yellow.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                     <children>
+                        <ImageView fx:id="img1_7" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/amber.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_6" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
+                     <children>
+                        <ImageView fx:id="img0_6" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/green.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <children>
+                        <ImageView fx:id="img1_6" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/rose.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_5" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                     <children>
+                        <ImageView fx:id="img0_5" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/darkgreen.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <children>
+                        <ImageView fx:id="img1_5" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/turquoise.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_4" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+                     <children>
+                        <ImageView fx:id="img0_4" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/darkmagenta.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <children>
+                        <ImageView fx:id="img1_4" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/lightcyan.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_3" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
+                     <children>
+                        <ImageView fx:id="img0_3" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/navyblue.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <children>
+                        <ImageView fx:id="img1_3" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/cyan.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_2" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                     <children>
+                        <ImageView fx:id="img0_2" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/darkviolet.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <children>
+                        <ImageView fx:id="img1_2" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/darkviolet.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane0_11" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="11">
+                     <children>
+                        <ImageView fx:id="img0_11" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/black.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_11" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                     <children>
+                        <ImageView fx:id="img1_11" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/white.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pane1_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <ImageView fx:id="img1_1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@resources/rotate.png" />
+                           </image></ImageView>
+                     </children>
+                  </Pane>
+               </children>
+               <padding>
+                  <Insets left="50.0" right="50.0" top="40.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </Pane>
+   </left>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="canvas" height="500.0" translateY="30.0" width="500.0" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
