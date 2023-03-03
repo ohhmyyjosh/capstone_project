@@ -2,11 +2,14 @@ import java.io.IOException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -41,13 +44,14 @@ public class MainMenuController {
             root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
             Scene s = new Scene(root);
             s.setFill(Color.TRANSPARENT);
-            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
+            CanvasController cc = loader.getController();
+
 
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(s);
-            window.setMaximized(true);
+            //window.setMaximized(true);
             window.show();
-
             
 
         } catch (IOException e) {

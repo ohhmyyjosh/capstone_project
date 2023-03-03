@@ -1,32 +1,67 @@
 import java.io.IOException;
+import java.net.URL;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.input.*;
 
 public class CanvasController {
+    @FXML private Canvas c;
+    @FXML private VBox box;
+    @FXML private AnchorPane ap;
 
-    @FXML private Canvas canvas = new Canvas();
+    GraphicsContext gc;
+    
+    public void initialize() {
+        
+        c.widthProperty().unbind();
+        c.heightProperty().unbind();
 
-    public GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        c.widthProperty().bind(ap.widthProperty());
+        c.heightProperty().bind(ap.heightProperty());
 
-    public Canvas getCanvas(){
-        return canvas;
+        ap.widthProperty().addListener((obs, oldVal, newVal) -> {
+            c.setWidth(newVal.doubleValue());
+        });
+        ap.heightProperty().addListener((obs, oldVal, newVal) -> {
+            c.setHeight(newVal.doubleValue());
+        });
+
+        c.setOnMousePressed(this::handleMousePressed);
+        c.setOnMouseDragged(this::handleMouseDragged);
+        c.setOnMouseReleased(this::handleMouseReleased);
+
+        c.setOpacity(0.5);
+        c.setStyle("fx-background: transparent");
+
+        gc = c.getGraphicsContext2D();
     }
 
-    public GraphicsContext getGraphicsContext(){
-        return graphicsContext;
+    private void handleMousePressed(MouseEvent event) {
+        gc.beginPath();
+        gc.moveTo(event.getX(), event.getY());
+        gc.stroke();
     }
 
-    @FXML private VBox canvasContainer;
+    private void handleMouseDragged(MouseEvent event) {
+        gc.lineTo(event.getX(), event.getY());
+        gc.stroke();
+    }
+
+    private void handleMouseReleased(MouseEvent event) {
+        gc.closePath();
+    }
 
     @FXML
     void clearCanvasClick(ActionEvent event) {
@@ -45,7 +80,7 @@ public class CanvasController {
 
     @FXML
     void mouseButtonToggle(ActionEvent event) {
-
+        
     }
 
     @FXML
