@@ -24,19 +24,6 @@ public class CanvasController {
     GraphicsContext gc;
     
     public void initialize() {
-        
-        c.widthProperty().unbind();
-        c.heightProperty().unbind();
-
-        c.widthProperty().bind(ap.widthProperty());
-        c.heightProperty().bind(ap.heightProperty());
-
-        ap.widthProperty().addListener((obs, oldVal, newVal) -> {
-            c.setWidth(newVal.doubleValue());
-        });
-        ap.heightProperty().addListener((obs, oldVal, newVal) -> {
-            c.setHeight(newVal.doubleValue());
-        });
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
