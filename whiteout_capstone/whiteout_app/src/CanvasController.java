@@ -42,19 +42,21 @@ public class CanvasController {
     }
 
     public Canvas getCanvas(){
-        return this.c;
+        Canvas canvas = new Canvas();
+        canvas = this.c;
+        return canvas;
     }
     public void setCanvas(Canvas c2){
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         WritableImage image = c2.snapshot(params, null);
-        c.getGraphicsContext2D().drawImage(image, 0, 0);
+        this.c.getGraphicsContext2D().drawImage(image, 0, 0);
     }
 
     public boolean getFlag(){
         return this.flag;
     }
-    
+
     private void handleMousePressed(MouseEvent event) {
         gc.beginPath();
         gc.moveTo(event.getX(), event.getY());

@@ -39,17 +39,18 @@ public class ServerController extends Thread {
 
     @Override
     public void run(){
+        //
         while(true){
             try{
-                Canvas c2 = (Canvas) objectInputStream.readObject();
-                cc.setCanvas(c2);
                 if(cc.getFlag() == true){
                     break;
                 }
-    
+                Canvas c2 = new Canvas();
+                c2 = (Canvas)objectInputStream.readObject();
+                cc.setCanvas(c2);
             }
             catch(Exception exception){
-                System.out.println("Read error");
+                //System.out.println("Read error");
             }
         }
         try{

@@ -47,13 +47,13 @@ public class ClientController extends Thread{
     public void run(){
         while(true){
             try{
-                objectOutputStream.writeObject(cc.getCanvas());
                 if(cc.getFlag() == true){
                     break;
                 }
+                objectOutputStream.writeObject(cc.getCanvas());
             }
             catch(Exception exception){
-                System.out.println("Failed to write");
+                //System.out.println("Failed to write");
             }
         }
         System.out.println("closing socket");
