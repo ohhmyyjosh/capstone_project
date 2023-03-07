@@ -47,6 +47,8 @@ public class MainMenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
             CanvasController cc = loader.getController();
 
+            SocketController test = new SocketController(cc);
+
 
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(s);

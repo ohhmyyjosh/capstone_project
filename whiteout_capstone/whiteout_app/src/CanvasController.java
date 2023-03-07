@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 
 public class CanvasController {
     @FXML private Canvas c;
@@ -33,6 +35,13 @@ public class CanvasController {
         c.setStyle("fx-background: transparent");
 
         gc = c.getGraphicsContext2D();
+    }
+
+    public Canvas getCanvas(){
+        return this.c;
+    }
+    public void setCanvas(WritableImage image){
+        c.getGraphicsContext2D().drawImage(image, 0, 0);
     }
 
     private void handleMousePressed(MouseEvent event) {
