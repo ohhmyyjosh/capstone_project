@@ -9,7 +9,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 
-public class SocketController {
+public class SocketController extends Thread{
     Scanner in;
     private String init = "To open a socket connection identify this machine:\n1. Client\n2. Server";
     private String configDest = "Please enter your target's IP";
@@ -17,8 +17,6 @@ public class SocketController {
     private String destIP = "localhost";
     private int port = 0;
     private int buffer = 0;
-    private Socket sock;
-    private ServerSocket servSock;
     
     public SocketController(CanvasController cc) throws IOException{
         
@@ -65,69 +63,16 @@ public class SocketController {
         }
     }
 
+    //establishes a client socket and attempts to send canvas data on a separate thread
     private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
-        System.out.println("Creating client socket...");
-        try{
-            sock = new Socket(destIP, port);
-            System.out.println("Post socket creation");
-        }
-        catch(Exception exception){
-            System.out.println("Socket creation failed.");
-        }
-
-        OutputStream outputStream = sock.getOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-        PrintWriter pr = new PrintWriter(sock.getOutputStream());
-        pr.println("successful connection");
-        pr.flush();
-
-        while(true){
-            try{
-                objectOutputStream.writeObject(cc.getCanvas());
-                if(cc.getFlag() == true){
-                    break;
-                }
-            }
-            catch(Exception exception){
-                System.out.println("Failed to write");
-            }
-        }
-        System.out.println("closing socket");
-        sock.close();
+        ClientController client = new ClientController(destIP, port, cc);
+        client.start();
     }
 
+    //establishes a server socket and attempts to recieve canvas data on a separate thread
     private void ServerController( int port, CanvasController cc) throws IOException{
-        System.out.println("Creating server socket...");
-        try{
-        servSock = new ServerSocket(port);
-        sock = servSock.accept();
-        System.out.println("Post socket Creation");
-        }
-        catch(Exception exception){
-            System.out.println("Socket creation failed");
-        }
-
-        InputStream inputStream = sock.getInputStream();
-        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
-        System.out.println("Client Connected.");
-        
-        while(true){
-            try{
-                Canvas c2 = (Canvas) objectInputStream.readObject();
-                cc.setCanvas(c2);
-                if(cc.getFlag() == true){
-                    break;
-                }
-
-            }
-            catch(Exception exception){
-                System.out.println("Read error");
-            }
-        }
-        sock.close();
-        servSock.close();
+        ServerController server = new ServerController(port, cc);
+        server.start();
     }
 
 }
