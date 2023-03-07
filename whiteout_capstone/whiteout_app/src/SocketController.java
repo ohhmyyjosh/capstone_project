@@ -10,21 +10,23 @@ import javafx.scene.paint.Color;
 
 
 public class SocketController {
-
+    Scanner in;
     private String init = "To open a socket connection identify this machine:\n1. Client\n2. Server";
-    private String configSource = "Please enter this machine's Ip";
     private String configDest = "Please enter your target's IP";
     private String configPort = "Please enter the desired port";
-    private String sourceIP = "LocalHost";
-    private String destIP = "LocalHost";
+    private String destIP = "localhost";
     private int port = 0;
     private int buffer = 0;
+    private Socket sock;
+    private ServerSocket servSock;
     
     public SocketController(CanvasController cc) throws IOException{
+        
+        // determine client or server
         System.out.println(init);
-        Scanner in = new Scanner(System.in);
-        try{
-            while(true){
+        in = new Scanner(System.in);
+        while(true){
+            try{
                 buffer = in.nextInt();
                 if(buffer == 1 || buffer == 2){
                     break;
@@ -33,14 +35,16 @@ public class SocketController {
                     System.out.println(init);
                 }
             }
-        }catch(Exception exception){
-            System.out.println(init);
+            catch(Exception exception){
+                System.out.println(init);
+            }
         }
-        
-        System.out.println(configSource);
-        sourceIP = in.next();
-        System.out.println(configDest);
-        destIP = in.next();
+
+        //input required socket parameters
+        if( buffer == 1){
+            System.out.println(configDest);
+            destIP = in.next();
+        }
         System.out.println(configPort);
         try{
             while(true){
@@ -50,70 +54,80 @@ public class SocketController {
         }catch(Exception exception){
             System.out.println(configPort);
         }
-
         in.close();
 
+        //create socket objects
         if(buffer == 1){
-            ClientController(sourceIP,destIP,port,cc);
+            ClientController(destIP,port,cc);
         }
         else{
-            ServerController(sourceIP,destIP,port,cc);
+            ServerController(port,cc);
         }
-
     }
 
-    private void ClientController(String sourceIP, String destIP, int port, CanvasController cc) throws IOException{
+    private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
         System.out.println("Creating client socket...");
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        
         try{
-            Socket sock = new Socket(destIP, port);
-            OutputStream outputStream = sock.getOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-
-            for(int i =0; i < 3000; i ++){
-                WritableImage image = cc.getCanvas().snapshot(params, null);
-
-                objectOutputStream.writeObject(image);
-
-            }
-            sock.close();
+            sock = new Socket(destIP, port);
+            System.out.println("Post socket creation");
         }
         catch(Exception exception){
             System.out.println("Socket creation failed.");
         }
 
+        OutputStream outputStream = sock.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+
+        PrintWriter pr = new PrintWriter(sock.getOutputStream());
+        pr.println("successful connection");
+        pr.flush();
+
+        while(true){
+            try{
+                objectOutputStream.writeObject(cc.getCanvas());
+                if(cc.getFlag() == true){
+                    break;
+                }
+            }
+            catch(Exception exception){
+                System.out.println("Failed to write");
+            }
+        }
+        System.out.println("closing socket");
+        sock.close();
     }
 
-    private void ServerController(String sourceIP, String destIP, int port, CanvasController cc) throws IOException{
-        System.out.println("Creating client socket...");
+    private void ServerController( int port, CanvasController cc) throws IOException{
+        System.out.println("Creating server socket...");
         try{
-        ServerSocket servSock = new ServerSocket(port);
-        Socket sock = servSock.accept();
+        servSock = new ServerSocket(port);
+        sock = servSock.accept();
+        System.out.println("Post socket Creation");
+        }
+        catch(Exception exception){
+            System.out.println("Socket creation failed");
+        }
 
         InputStream inputStream = sock.getInputStream();
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
         System.out.println("Client Connected.");
+        
+        while(true){
+            try{
+                Canvas c2 = (Canvas) objectInputStream.readObject();
+                cc.setCanvas(c2);
+                if(cc.getFlag() == true){
+                    break;
+                }
 
-        for(int i =0; i < 3000; i ++){
-            WritableImage image = (WritableImage) objectInputStream.readObject();
-
-            cc.setCanvas(image);
-
+            }
+            catch(Exception exception){
+                System.out.println("Read error");
+            }
         }
-
         sock.close();
         servSock.close();
-        }
-        catch(Exception exception){
-            System.out.println("Socket creation failed.");
-        }
     }
-    
 
-
-
-    
 }

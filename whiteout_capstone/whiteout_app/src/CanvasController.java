@@ -23,9 +23,13 @@ public class CanvasController {
     @FXML private VBox box;
     @FXML private AnchorPane ap;
 
+    private boolean flag;
+
     GraphicsContext gc;
     
     public void initialize() {
+
+        flag = false;
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -40,10 +44,17 @@ public class CanvasController {
     public Canvas getCanvas(){
         return this.c;
     }
-    public void setCanvas(WritableImage image){
+    public void setCanvas(Canvas c2){
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        WritableImage image = c2.snapshot(params, null);
         c.getGraphicsContext2D().drawImage(image, 0, 0);
     }
 
+    public boolean getFlag(){
+        return this.flag;
+    }
+    
     private void handleMousePressed(MouseEvent event) {
         gc.beginPath();
         gc.moveTo(event.getX(), event.getY());
@@ -111,6 +122,7 @@ public class CanvasController {
             window.setScene(s);
             window.centerOnScreen();
             window.show();
+            flag = true;
 
         } catch (IOException e) {
             e.printStackTrace();
