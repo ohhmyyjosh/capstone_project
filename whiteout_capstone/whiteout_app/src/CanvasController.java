@@ -24,12 +24,16 @@ public class CanvasController {
     @FXML private AnchorPane ap;
 
     private boolean flag;
+    private String eventString;
+    private boolean send;
 
     GraphicsContext gc;
     
     public void initialize() {
 
         flag = false;
+        eventString = "";
+        send = false;
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -39,6 +43,23 @@ public class CanvasController {
         c.setStyle("fx-background: transparent");
 
         gc = c.getGraphicsContext2D();
+    }
+
+    public void setSend(boolean flag){
+        this.send = flag;
+    }
+    public boolean getSend(){
+        return this.send;
+    }
+
+    public String getEventString(){
+        return this.eventString;
+    }
+    public void clearEventString(){
+        eventString = "";
+    }
+    public void setEventString(String event){
+        this.eventString = event;
     }
 
     public Canvas getCanvas(){
@@ -53,23 +74,71 @@ public class CanvasController {
         this.c.getGraphicsContext2D().drawImage(image, 0, 0);
     }
 
+    public void writeToCanvas(){
+        String subStr = "";
+        boolean setX = true;
+        int x = 0;
+        int y = 0;
+        boolean begin = true;
+        for(int i = 0; i < eventString.length(); i ++){
+            if (eventString.charAt(i) == ','){
+                if(setX){
+                    x = Integer.parseInt(subStr);
+                    subStr = "";
+                    setX = false;
+                }
+                else{
+                    y = Integer.parseInt(subStr);
+                    subStr = "";
+                    setX = true;
+                }
+            }
+            else if( eventString.charAt(i) == 'z'){
+                if (begin){
+                    gc.beginPath();
+                    gc.moveTo(x, y);
+                    gc.stroke();
+                    subStr = "";
+                }
+                else{
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                    subStr = "";
+                }
+            }
+            else{
+                subStr += Character.toString(eventString.charAt(i));
+            }
+        }
+    }
+
     public boolean getFlag(){
         return this.flag;
     }
 
     private void handleMousePressed(MouseEvent event) {
-        gc.beginPath();
-        gc.moveTo(event.getX(), event.getY());
-        gc.stroke();
+        if (send == false){
+            gc.beginPath();
+            gc.moveTo(event.getX(), event.getY());
+            gc.stroke();
+            //add to eventString
+            eventString += (event.getX()) + "," + (event.getY()) + "z";
+        }
     }
 
     private void handleMouseDragged(MouseEvent event) {
-        gc.lineTo(event.getX(), event.getY());
-        gc.stroke();
+        if (send == false){
+            gc.lineTo(event.getX(), event.getY());
+            gc.stroke();
+            //add to eventString
+            eventString += (event.getX()) + "," + (event.getY()) + "z";
+        }
     }
 
     private void handleMouseReleased(MouseEvent event) {
         gc.closePath();
+        send = true;
+        //send eventString
     }
 
     @FXML
@@ -116,6 +185,7 @@ public class CanvasController {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
+            this.flag = true;
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
 
@@ -124,7 +194,6 @@ public class CanvasController {
             window.setScene(s);
             window.centerOnScreen();
             window.show();
-            flag = true;
 
         } catch (IOException e) {
             e.printStackTrace();

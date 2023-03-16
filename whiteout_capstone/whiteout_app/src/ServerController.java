@@ -15,6 +15,9 @@ public class ServerController extends Thread {
     private InputStream inputStream;
     private ObjectInputStream objectInputStream;
 
+    private BufferedReader in = null;
+    private BufferedWriter out = null;
+
     private CanvasController cc;
 
     public ServerController(int port, CanvasController cc) throws IOException{
@@ -31,6 +34,9 @@ public class ServerController extends Thread {
             System.out.println("Socket creation failed");
         }
 
+        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+
         inputStream = sock.getInputStream();
         objectInputStream = new ObjectInputStream(inputStream);
 
@@ -43,14 +49,26 @@ public class ServerController extends Thread {
         while(true){
             try{
                 if(cc.getFlag() == true){
+                    System.out.println("closing socket");
+                    sock.close();
+                    servSock.close();
+                    System.exit(0);
                     break;
                 }
-                Canvas c2 = new Canvas();
-                c2 = (Canvas)objectInputStream.readObject();
-                cc.setCanvas(c2);
+
+                cc.setEventString( String.valueOf ( in.readLine() ) );
+                System.out.println(cc.getEventString());
+
+                cc.writeToCanvas();
+
+
+                //Canvas c2 = new Canvas();
+                //c2 = (Canvas)objectInputStream.readObject();
+                //cc.setCanvas(c2);
             }
+
             catch(Exception exception){
-                //System.out.println("Read error");
+                System.out.println("Read error");
             }
         }
         try{

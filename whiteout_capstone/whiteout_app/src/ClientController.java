@@ -19,6 +19,9 @@ public class ClientController extends Thread{
     private int port;
     private CanvasController cc;
 
+    private BufferedReader in = null;
+    private BufferedWriter out = null;
+
     public ClientController(String destIP, int port, CanvasController cc) throws IOException{
 
         this.destIP = destIP;
@@ -35,6 +38,9 @@ public class ClientController extends Thread{
             return;
         }
 
+        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+
         outputStream = sock.getOutputStream();
         objectOutputStream = new ObjectOutputStream(outputStream);
 
@@ -45,15 +51,25 @@ public class ClientController extends Thread{
 
     @Override
     public void run(){
+
         while(true){
             try{
                 if(cc.getFlag() == true){
+                    System.out.println("closing socket");
+                    sock.close();
+                    System.exit(0);
                     break;
                 }
-                objectOutputStream.writeObject(cc.getCanvas());
+                if(cc.getSend() == true){
+                    out.write(cc.getEventString(), 0, cc.getEventString().length());
+                    System.out.println(cc.getEventString());
+                    cc.setSend(false);
+                    out.flush();
+                }
+                //objectOutputStream.writeObject(cc.getCanvas());
             }
             catch(Exception exception){
-                //System.out.println("Failed to write");
+                System.out.println("Failed to write");
             }
         }
         System.out.println("closing socket");
