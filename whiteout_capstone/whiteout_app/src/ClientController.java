@@ -61,6 +61,7 @@ public class ClientController extends Thread{
                     break;
                 }
                 if(cc.getSend() == true){
+                    System.out.println("send = true");
                     out.write(cc.getEventString(), 0, cc.getEventString().length());
                     System.out.println(cc.getEventString());
                     cc.setSend(false);
@@ -69,7 +70,7 @@ public class ClientController extends Thread{
                 //objectOutputStream.writeObject(cc.getCanvas());
             }
             catch(Exception exception){
-                System.out.println("Failed to write");
+                //System.out.println("Failed to write");
             }
         }
         System.out.println("closing socket");

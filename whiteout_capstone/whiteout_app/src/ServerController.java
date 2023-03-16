@@ -57,6 +57,7 @@ public class ServerController extends Thread {
                 }
 
                 cc.setEventString( String.valueOf ( in.readLine() ) );
+                System.out.println("input recieved");
                 System.out.println(cc.getEventString());
 
                 cc.writeToCanvas();
