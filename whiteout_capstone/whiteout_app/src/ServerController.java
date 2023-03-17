@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 
 public class ServerController extends Thread {
 
+    private int port;
+
     private Socket sock;
     private ServerSocket servSock;
     private InputStream inputStream;
@@ -22,6 +24,7 @@ public class ServerController extends Thread {
 
     public ServerController(int port, CanvasController cc) throws IOException{
         this.cc = cc;
+        this.port = port;
 
         System.out.println("Creating server socket...");
         //socket creation
@@ -49,29 +52,48 @@ public class ServerController extends Thread {
         //
         while(true){
             try{
-                if(!sock.isConnected()){
+
+            //socket regeneration
+                // if(sock.isClosed()){
+                //     System.out.println("Regenerating socket..");
+                //     try{
+                //         servSock = new ServerSocket(this.port);
+                //         sock = servSock.accept();
+                //         System.out.println("Post socket Creation");
+                //         }
+                //         catch(Exception exception){
+                //             System.out.println("Socket creation failed");
+                //         }
+                
+                //         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+                //         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+                // }
+
+                System.out.println("Waiting on client input..");
+                try{
+                    cc.setEventString(String.valueOf(in.readLine()));
+                }
+                catch(IOException e){
                     System.out.println("closing socket");
                     sock.close();
                     servSock.close();
                     System.exit(0);
                     break;
                 }
-
-                System.out.println("Waiting on client input..");
-                cc.setEventString(String.valueOf(in.readLine()));
                 System.out.println("input recieved");
                 System.out.println(cc.getEventString());
 
                 cc.writeToCanvas();
 
 
+            //naive implementation
                 //Canvas c2 = new Canvas();
                 //c2 = (Canvas)objectInputStream.readObject();
                 //cc.setCanvas(c2);
             }
 
-            catch(Exception exception){
-                //System.out.println("Read error");
+            catch(Exception e){
+                System.out.println(e);
             }
         }
 
