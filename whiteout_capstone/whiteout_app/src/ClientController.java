@@ -54,11 +54,11 @@ public class ClientController extends Thread{
 
     public void sendString() throws IOException{
         System.out.println("send = true");
-        out.write(cc.getEventString(), 0, cc.getEventString().length());
+        out.write(cc.getEventString());
+        out.flush();
         System.out.println(cc.getEventString());
         cc.clearEventString();
         //this.cc.setSend(false);
-        out.flush();
     }
 
     public void closeSock() throws IOException{
