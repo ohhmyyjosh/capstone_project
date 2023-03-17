@@ -72,6 +72,13 @@ public class ServerController extends Thread {
                 System.out.println("Waiting on client input..");
                 try{
                     cc.setEventString(String.valueOf(in.readLine()));
+                    if(cc.getEventString() == "null"){
+                        System.out.println("closing socket");
+                        sock.close();
+                        servSock.close();
+                        System.exit(0);
+                        break;
+                    }
                 }
                 catch(IOException e){
                     System.out.println("closing socket");
