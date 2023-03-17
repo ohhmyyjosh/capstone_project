@@ -45,17 +45,21 @@ public class MainMenuController {
             Scene s = new Scene(root);
             s.setFill(Color.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
-            CanvasController cc = loader.getController();
 
-            SocketController test = new SocketController(cc);
+            CanvasController cc = new CanvasController();
+
+            cc.getSockCon();
+            
+            //loader.getController();
+
 
 
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setScene(s);
             //window.setMaximized(true);
             window.show();
-            
 
+            
         } catch (IOException e) {
             e.printStackTrace();
         } 

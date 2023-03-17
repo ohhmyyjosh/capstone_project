@@ -1,6 +1,8 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -41,45 +43,64 @@ public class ClientController extends Thread{
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 
-        outputStream = sock.getOutputStream();
-        objectOutputStream = new ObjectOutputStream(outputStream);
+        //outputStream = sock.getOutputStream();
+        //objectOutputStream = new ObjectOutputStream(outputStream);
 
-        pr = new PrintWriter(sock.getOutputStream());
-        pr.println("successful connection");
-        pr.flush();
+        //pr = new PrintWriter(sock.getOutputStream());
+        //pr.println("successful connection");
+        //pr.flush();
+
     }
+
+    public void sendString() throws IOException{
+        System.out.println("send = true");
+        out.write(cc.getEventString(), 0, cc.getEventString().length());
+        System.out.println(cc.getEventString());
+        cc.clearEventString();
+        //this.cc.setSend(false);
+        out.flush();
+    }
+
+    public void closeSock() throws IOException{
+        System.out.println("closing socket");
+        sock.close();
+    }
+
+
 
     @Override
     public void run(){
 
-        while(true){
-            try{
-                if(cc.getFlag() == true){
-                    System.out.println("closing socket");
-                    sock.close();
-                    System.exit(0);
-                    break;
-                }
-                if(cc.getSend() == true){
-                    System.out.println("send = true");
-                    out.write(cc.getEventString(), 0, cc.getEventString().length());
-                    System.out.println(cc.getEventString());
-                    cc.setSend(false);
-                    out.flush();
-                }
+        // while(true){
+        //     try{
+        //         sleep(5);
+                // if(cc.getFlag() == true){
+                //     System.out.println("closing socket");
+                //     sock.close();
+                //     System.exit(0);
+                //     break;
+                // }
+                //System.out.println("we got this far man.");
+                //else if(this.cc.getSend()){
+                    //System.out.println("send = true");
+                    //out.write(cc.getEventString(), 0, cc.getEventString().length());
+                    //System.out.println(cc.getEventString());
+                    //this.cc.setSend(false);
+                    //out.flush();
+                //}
                 //objectOutputStream.writeObject(cc.getCanvas());
-            }
-            catch(Exception exception){
-                //System.out.println("Failed to write");
-            }
-        }
-        System.out.println("closing socket");
-         try{
-            sock.close();
-         }
-         catch(IOException e){
-            // failed
-         }
+        //     }
+        //     catch(Exception exception){
+        //         System.out.println("Failed to write");
+        //     }
+        // }
+        // System.out.println("closing socket");
+        //  try{
+        //     sock.close();
+        //  }
+        //  catch(IOException e){
+        //     // failed
+        //  }
     }
 
 

@@ -27,13 +27,11 @@ public class CanvasController {
     private String eventString;
     private boolean send;
 
-    GraphicsContext gc;
-    
-    public void initialize() {
+    private SocketController sockCon;
 
-        flag = false;
-        eventString = "";
-        send = false;
+    GraphicsContext gc;
+
+    public void initialize() {
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -43,13 +41,22 @@ public class CanvasController {
         c.setStyle("fx-background: transparent");
 
         gc = c.getGraphicsContext2D();
+
+        send = false;
+        eventString = "";
+        try{
+        this.sockCon = new SocketController(this);
+        }
+        catch(IOException e){
+            System.out.print(e);
+        }
     }
 
-    public void setSend(boolean flag){
-        this.send = flag;
+    public void setSockCon(SocketController sockController){
+        this.sockCon = sockController;
     }
-    public boolean getSend(){
-        return this.send;
+    public SocketController getSockCon(){
+        return this.sockCon;
     }
 
     public String getEventString(){
@@ -77,18 +84,18 @@ public class CanvasController {
     public void writeToCanvas(){
         String subStr = "";
         boolean setX = true;
-        int x = 0;
-        int y = 0;
+        double x = 0;
+        double y = 0;
         boolean begin = true;
         for(int i = 0; i < eventString.length(); i ++){
             if (eventString.charAt(i) == ','){
                 if(setX){
-                    x = Integer.parseInt(subStr);
+                    x = Double.parseDouble(subStr);
                     subStr = "";
                     setX = false;
                 }
                 else{
-                    y = Integer.parseInt(subStr);
+                    y = Double.parseDouble(subStr);
                     subStr = "";
                     setX = true;
                 }
@@ -99,6 +106,7 @@ public class CanvasController {
                     gc.moveTo(x, y);
                     gc.stroke();
                     subStr = "";
+                    begin = false;
                 }
                 else{
                     gc.lineTo(x, y);
@@ -110,6 +118,9 @@ public class CanvasController {
                 subStr += Character.toString(eventString.charAt(i));
             }
         }
+
+        this.clearEventString();
+        
     }
 
     public boolean getFlag(){
@@ -123,6 +134,7 @@ public class CanvasController {
             gc.stroke();
             //add to eventString
             eventString += (event.getX()) + "," + (event.getY()) + "z";
+            System.out.println(eventString);
         }
     }
 
@@ -137,8 +149,13 @@ public class CanvasController {
 
     private void handleMouseReleased(MouseEvent event) {
         gc.closePath();
-        send = true;
         //send eventString
+        try{
+            sockCon.getClient().sendString();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
     }
 
     @FXML
@@ -185,7 +202,8 @@ public class CanvasController {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
-            this.flag = true;
+            sockCon.getClient().closeSock();
+
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
 

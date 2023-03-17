@@ -37,10 +37,11 @@ public class ServerController extends Thread {
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 
-        inputStream = sock.getInputStream();
-        objectInputStream = new ObjectInputStream(inputStream);
+       // inputStream = sock.getInputStream();
+        //objectInputStream = new ObjectInputStream(inputStream);
 
         System.out.println("Client Connected.");
+
     }
 
     @Override
@@ -48,7 +49,7 @@ public class ServerController extends Thread {
         //
         while(true){
             try{
-                if(cc.getFlag() == true){
+                if(!sock.isConnected()){
                     System.out.println("closing socket");
                     sock.close();
                     servSock.close();
@@ -56,6 +57,7 @@ public class ServerController extends Thread {
                     break;
                 }
 
+                System.out.println("Waiting on client input..");
                 cc.setEventString( String.valueOf ( in.readLine() ) );
                 System.out.println("input recieved");
                 System.out.println(cc.getEventString());
@@ -69,9 +71,10 @@ public class ServerController extends Thread {
             }
 
             catch(Exception exception){
-                System.out.println("Read error");
+                //System.out.println("Read error");
             }
         }
+        
         try{
             sock.close();
             servSock.close();

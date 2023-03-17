@@ -1,6 +1,8 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,6 +19,9 @@ public class SocketController extends Thread{
     private String destIP = "localhost";
     private int port = 0;
     private int buffer = 0;
+
+    private ClientController client;
+    private ServerController server;
     
     public SocketController(CanvasController cc) throws IOException{
         
@@ -61,17 +66,27 @@ public class SocketController extends Thread{
         else{
             ServerController(port,cc);
         }
+
+        cc.setSockCon(this);
+    }
+
+    public ClientController getClient(){
+        return this.client;
+    }
+
+    public ServerController getServer(){
+        return this.server;
     }
 
     //establishes a client socket and attempts to send canvas data on a separate thread
     private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
-        ClientController client = new ClientController(destIP, port, cc);
+        client = new ClientController(destIP, port, cc);
         client.start();
     }
 
     //establishes a server socket and attempts to recieve canvas data on a separate thread
     private void ServerController( int port, CanvasController cc) throws IOException{
-        ServerController server = new ServerController(port, cc);
+        server = new ServerController(port, cc);
         server.start();
     }
 
