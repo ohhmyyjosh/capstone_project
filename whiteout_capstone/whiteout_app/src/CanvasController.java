@@ -25,7 +25,6 @@ public class CanvasController {
 
     private boolean flag;
     private String eventString;
-    private boolean send;
 
     private SocketController sockCon;
 
@@ -42,16 +41,17 @@ public class CanvasController {
 
         gc = c.getGraphicsContext2D();
 
-        send = false;
-        eventString = "";
+        eventString = "";//stores coordinate data to be sent
         try{
-        this.sockCon = new SocketController(this);
+        this.sockCon = new SocketController(this);//everything breaks if this isn't created here
         }
         catch(IOException e){
             System.out.print(e);
         }
     }
 
+
+//SocketController modifiers
     public void setSockCon(SocketController sockController){
         this.sockCon = sockController;
     }
@@ -59,6 +59,7 @@ public class CanvasController {
         return this.sockCon;
     }
 
+//eventString modifiers
     public String getEventString(){
         return this.eventString;
     }
@@ -69,57 +70,40 @@ public class CanvasController {
         this.eventString = event;
     }
 
-    public Canvas getCanvas(){
-        Canvas canvas = new Canvas();
-        canvas = this.c;
-        return canvas;
-    }
-    public void setCanvas(Canvas c2){
-        SnapshotParameters params = new SnapshotParameters();
-        params.setFill(Color.TRANSPARENT);
-        WritableImage image = c2.snapshot(params, null);
-        this.c.getGraphicsContext2D().drawImage(image, 0, 0);
-    }
-
+    //This method writes the client's stroke to the server's canvas
     public void writeToCanvas(){
-        String subStr = "";
-        boolean setX = true;
-        double x = 0;
-        double y = 0;
-        boolean begin = true;
+        String subStr = ""; //holds sanitized value of x or y as string
+        double x = 0, y = 0;
+        boolean begin = true;//indicates a 'onMouseClick' event
+
         for(int i = 0; i < eventString.length(); i ++){
-            if (eventString.charAt(i) == ','){
-                if(setX){
-                    x = Double.parseDouble(subStr);
-                    subStr = "";
-                    setX = false;
-                }
-                else{
-                    y = Double.parseDouble(subStr);
-                    subStr = "";
-                    setX = true;
-                }
+            if (eventString.charAt(i) == ','){//reads the value of the x coordinate
+                x = Double.parseDouble(subStr);
+                subStr = "";
             }
-            else if( eventString.charAt(i) == 'z'){
-                if (begin){
+            else if( eventString.charAt(i) == 'z'){//reads the value of the y coordinate
+                y = Double.parseDouble(subStr);
+                subStr = "";
+                if (begin){//code for 'onMouseClick'
                     gc.beginPath();
                     gc.moveTo(x, y);
                     gc.stroke();
-                    subStr = "";
                     begin = false;
                 }
-                else{
+                else{//code for 'onMouseDrag'
                     gc.lineTo(x, y);
                     gc.stroke();
-                    subStr = "";
                 }
             }
-            else{
+            else if (eventString.charAt(i) == '\n'){
+                break;
+            }
+            else{//add sanitized digit to substring
                 subStr += Character.toString(eventString.charAt(i));
             }
         }
 
-        this.clearEventString();
+        this.clearEventString();//nuke the eventString for the next stroke
         
     }
 
@@ -128,29 +112,29 @@ public class CanvasController {
     }
 
     private void handleMousePressed(MouseEvent event) {
-        if (send == false){
-            gc.beginPath();
-            gc.moveTo(event.getX(), event.getY());
-            gc.stroke();
-            //add to eventString
-            eventString += (event.getX()) + "," + (event.getY()) + "z";
-            System.out.println(eventString);
-        }
+        gc.beginPath();
+        gc.moveTo(event.getX(), event.getY());
+        gc.stroke();
+        
+        //add to eventString
+        eventString += (event.getX()) + "," + (event.getY()) + "z";
+        System.out.println(eventString);
     }
 
     private void handleMouseDragged(MouseEvent event) {
-        if (send == false){
-            gc.lineTo(event.getX(), event.getY());
-            gc.stroke();
-            //add to eventString
-            eventString += (event.getX()) + "," + (event.getY()) + "z";
-        }
+        gc.lineTo(event.getX(), event.getY());
+        gc.stroke();
+        
+        //add to eventString
+        eventString += (event.getX()) + "," + (event.getY()) + "z";
     }
 
     private void handleMouseReleased(MouseEvent event) {
         gc.closePath();
+        
         //send eventString
         try{
+            eventString += "\n";
             sockCon.getClient().sendString();
         }
         catch(IOException e){
@@ -217,5 +201,18 @@ public class CanvasController {
             e.printStackTrace();
         } 
     }
+
+    //purposefully naive canvas replication    
+    // public Canvas getCanvas(){
+    //     Canvas canvas = new Canvas();
+    //     canvas = this.c;
+    //     return canvas;
+    // }
+    // public void setCanvas(Canvas c2){
+    //     SnapshotParameters params = new SnapshotParameters();
+    //     params.setFill(Color.TRANSPARENT);
+    //     WritableImage image = c2.snapshot(params, null);
+    //     this.c.getGraphicsContext2D().drawImage(image, 0, 0);
+    // }
 
 }

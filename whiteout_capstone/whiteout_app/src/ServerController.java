@@ -58,7 +58,7 @@ public class ServerController extends Thread {
                 }
 
                 System.out.println("Waiting on client input..");
-                cc.setEventString(in.readLine());
+                cc.setEventString(String.valueOf(in.readLine()));
                 System.out.println("input recieved");
                 System.out.println(cc.getEventString());
 

@@ -24,12 +24,15 @@ public class ClientController extends Thread{
     private BufferedReader in = null;
     private BufferedWriter out = null;
 
+    //private String bufferEventString;
+
     public ClientController(String destIP, int port, CanvasController cc) throws IOException{
 
         this.destIP = destIP;
         this.port = port;
         this.cc = cc;
 
+        //create socket
         System.out.println("Creating client socket...");
         try{
             sock = new Socket(destIP, port);
@@ -40,8 +43,9 @@ public class ClientController extends Thread{
             return;
         }
 
-        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+        //create data stream
+        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));//recieving
+        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));//sending
 
         //outputStream = sock.getOutputStream();
         //objectOutputStream = new ObjectOutputStream(outputStream);
@@ -52,41 +56,45 @@ public class ClientController extends Thread{
 
     }
 
+    //send stroke to server
     public void sendString() throws IOException{
-        System.out.println("send = true");
-        out.write(cc.getEventString());
+        System.out.println("Sending sting..");//print test
+
+        out.write(cc.getEventString());//send eventString
         out.flush();
+
         System.out.println(cc.getEventString());
-        cc.clearEventString();
-        //this.cc.setSend(false);
+        cc.clearEventString();//nuke eventString for next stroke
     }
 
+    //kill the client
     public void closeSock() throws IOException{
         System.out.println("closing socket");
         sock.close();
+        in.close();
+        out.close();
     }
 
 
 
-    @Override
-    public void run(){
+    //@Override
+    //public void run(){
 
         // while(true){
+        //  if(!sock.isConnected()){
+                //System.out.println("Closing socket..");
+                //sock.close();
+                //in.close();
+                //out.close();
+        //  }
         //     try{
         //         sleep(5);
-                // if(cc.getFlag() == true){
-                //     System.out.println("closing socket");
-                //     sock.close();
-                //     System.exit(0);
-                //     break;
+                // bufferEventString = in.readLine();
+                // cc.writeToCanvas(bufferEventString);
                 // }
-                //System.out.println("we got this far man.");
-                //else if(this.cc.getSend()){
-                    //System.out.println("send = true");
-                    //out.write(cc.getEventString(), 0, cc.getEventString().length());
-                    //System.out.println(cc.getEventString());
-                    //this.cc.setSend(false);
-                    //out.flush();
+                // catch(IOExcetpion e){
+                    //System.out.println(e);
+                // }
                 //}
                 //objectOutputStream.writeObject(cc.getCanvas());
         //     }
@@ -101,7 +109,6 @@ public class ClientController extends Thread{
         //  catch(IOException e){
         //     // failed
         //  }
+        //}
     }
 
-
-}
