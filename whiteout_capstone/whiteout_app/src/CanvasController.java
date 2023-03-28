@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -17,11 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.input.*;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
+import java.util.Stack;
 
 public class CanvasController {
     @FXML private Canvas c;
     @FXML private VBox box;
     @FXML private AnchorPane ap;
+    @FXML private ColorPicker colorPicker; 
 
     private boolean flag;
     private String eventString;
@@ -29,6 +32,10 @@ public class CanvasController {
     private SocketController sockCon;
 
     GraphicsContext gc;
+//This is used for the undo function.
+    private Stack<String> strokes = new Stack<>();
+
+    
 
     public void initialize() {
 
@@ -48,6 +55,7 @@ public class CanvasController {
         catch(IOException e){
             System.out.print(e);
         }
+        
     }
 
 
@@ -116,17 +124,20 @@ public class CanvasController {
         gc.moveTo(event.getX(), event.getY());
         gc.stroke();
         
-        //add to eventString
-        eventString += (event.getX()) + "," + (event.getY()) + "z";
-        System.out.println(eventString);
+        // add to eventString and strokes
+        String stroke = (event.getX()) + "," + (event.getY()) + "z";
+        eventString += stroke;
+        strokes.push(stroke);
     }
 
     private void handleMouseDragged(MouseEvent event) {
         gc.lineTo(event.getX(), event.getY());
         gc.stroke();
         
-        //add to eventString
-        eventString += (event.getX()) + "," + (event.getY()) + "z";
+        // add to eventString and strokes
+        String stroke = (event.getX()) + "," + (event.getY()) + "z";
+        eventString += stroke;
+        strokes.push(stroke);
     }
 
     private void handleMouseReleased(MouseEvent event) {
@@ -144,8 +155,10 @@ public class CanvasController {
 
     @FXML
     void clearCanvasClick(ActionEvent event) {
-
+        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+        clearEventString();
     }
+    
 
     @FXML
     void drawButtonToggle(ActionEvent event) {
@@ -178,9 +191,34 @@ public class CanvasController {
     }
 
     @FXML
-    void undoClick(ActionEvent event) {
-
+    private void colorPickerAction(ActionEvent event) {
+        Color color = colorPicker.getValue();
+        gc.setStroke(color);
+        gc.setFill(color);
     }
+//This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
+    @FXML
+    void undoClick(ActionEvent event) {
+        if (!strokes.isEmpty()) {
+            strokes.pop();
+            gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+            for (String stroke : strokes) {
+                // redraw all strokes except the last one
+                String[] tokens = stroke.split(",");
+                double x = Double.parseDouble(tokens[0]);
+                double y = Double.parseDouble(tokens[1].substring(0, tokens[1].length() - 1));
+                if (tokens[1].endsWith("z")) {
+                    gc.beginPath();
+                    gc.moveTo(x, y);
+                } else {
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
+            }
+            eventString = String.join("", strokes); // update eventString to match the new strokes
+        }
+    }
+    
 
     @FXML
     void exitCanvasClick(ActionEvent event){

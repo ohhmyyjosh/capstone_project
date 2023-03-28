@@ -32,7 +32,7 @@
                      <items>
                         <MenuItem mnemonicParsing="false" text="Color">
                            <graphic>
-                              <ColorPicker prefHeight="25.0" prefWidth="87.0" />
+                              <ColorPicker fx:id="colorPicker" onAction="#colorPickerAction" prefHeight="25.0" prefWidth="87.0" />
                            </graphic>
                         </MenuItem>
                         <MenuItem mnemonicParsing="false" text="Action 2">
