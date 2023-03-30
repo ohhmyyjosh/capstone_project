@@ -25,7 +25,7 @@ public class MainMenuController {
         try {
             root = FXMLLoader.load(getClass().getResource("./fxml/SettingsMenu.fxml"));
             Scene s = new Scene(root);
-
+            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setMaximized(false);
             window.setScene(s);
@@ -38,10 +38,9 @@ public class MainMenuController {
     }
     
     @FXML private void createSessionButtonClick(ActionEvent event){
-        
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
+            root = FXMLLoader.load(getClass().getResource("./fxml/CreateSessionMenu.fxml"));
             Scene s = new Scene(root);
             s.setFill(Color.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
@@ -54,9 +53,11 @@ public class MainMenuController {
 
 
 
+            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setMaximized(false);
             window.setScene(s);
-            //window.setMaximized(true);
+            window.centerOnScreen();
             window.show();
 
             
@@ -66,6 +67,19 @@ public class MainMenuController {
     }
 
     @FXML private void joinSessionButtonClick(ActionEvent event){
-        
+        Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("./fxml/JoinSessionMenu.fxml"));
+            Scene s = new Scene(root);
+            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setMaximized(false);
+            window.setScene(s);
+            window.centerOnScreen();
+            window.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -12,7 +14,7 @@
    <children>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="230.0" prefWidth="403.0" style="-fx-border-color: gray; -fx-border-width: 10;" VBox.vgrow="ALWAYS">
          <children>
-            <Label layoutX="251.0" layoutY="31.0" text="Settings">
+            <Label layoutX="251.0" layoutY="29.0" text="Settings">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
@@ -27,12 +29,16 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Button layoutX="100.0" layoutY="312.0" mnemonicParsing="false" onAction="#backSettingsButtonClick" prefHeight="56.0" prefWidth="138.0" style="-fx-background-color: black;" text="&lt;- Back" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
+            <Button fx:id="backButton" layoutX="25.0" layoutY="323.0" mnemonicParsing="false" onAction="#backSettingsButtonClick" style="-fx-background-color: lightgray;">
+               <graphic>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
-            <Button layoutX="445.0" layoutY="312.0" mnemonicParsing="false" onAction="#saveSettingsButtonClick" prefHeight="34.0" prefWidth="96.0" style="-fx-background-color: blue;" text="Save" textFill="WHITE">
+            <Button layoutX="231.0" layoutY="312.0" mnemonicParsing="false" onAction="#saveSettingsButtonClick" prefHeight="56.0" prefWidth="178.0" style="-fx-background-color: blue;" text="Save" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>

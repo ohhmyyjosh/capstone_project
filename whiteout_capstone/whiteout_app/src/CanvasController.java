@@ -224,7 +224,7 @@ void undoClick(ActionEvent event) {
 
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
-
+            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
             window.setMaximized(false);
             window.setScene(s);
