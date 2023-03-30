@@ -19,6 +19,7 @@ import javafx.scene.input.*;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import java.util.Stack;
+import java.awt.*;
 
 public class CanvasController {
     @FXML private Canvas c;
@@ -33,7 +34,7 @@ public class CanvasController {
 
     GraphicsContext gc;
 //This is used for the undo function.
-    private Stack<String> strokes = new Stack<>();
+private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
 
     
 
@@ -127,7 +128,7 @@ public class CanvasController {
         // add to eventString and strokes
         String stroke = (event.getX()) + "," + (event.getY()) + "z";
         eventString += stroke;
-        strokes.push(stroke);
+        
     }
 
     private void handleMouseDragged(MouseEvent event) {
@@ -137,11 +138,14 @@ public class CanvasController {
         // add to eventString and strokes
         String stroke = (event.getX()) + "," + (event.getY()) + "z";
         eventString += stroke;
-        strokes.push(stroke);
+        
     }
 
     private void handleMouseReleased(MouseEvent event) {
         gc.closePath();
+    
+        // push the current snapshot of the canvas to the stack
+        canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
         
         //send eventString
         try{
@@ -176,9 +180,9 @@ public class CanvasController {
     }
 
     @FXML
-    void redoClick(ActionEvent event) {
-
-    }
+void redoClick(ActionEvent event) {
+    
+}
 
     @FXML
     void saveCanvasClick(ActionEvent event) {
@@ -187,7 +191,7 @@ public class CanvasController {
 
     @FXML
     void textButtonToggle(ActionEvent event) {
-
+       
     }
 
     @FXML
@@ -197,28 +201,20 @@ public class CanvasController {
         gc.setFill(color);
     }
 //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
-    @FXML
-    void undoClick(ActionEvent event) {
-        if (!strokes.isEmpty()) {
-            strokes.pop();
-            gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-            for (String stroke : strokes) {
-                // redraw all strokes except the last one
-                String[] tokens = stroke.split(",");
-                double x = Double.parseDouble(tokens[0]);
-                double y = Double.parseDouble(tokens[1].substring(0, tokens[1].length() - 1));
-                if (tokens[1].endsWith("z")) {
-                    gc.beginPath();
-                    gc.moveTo(x, y);
-                } else {
-                    gc.lineTo(x, y);
-                    gc.stroke();
-                }
-            }
-            eventString = String.join("", strokes); // update eventString to match the new strokes
+@FXML
+void undoClick(ActionEvent event) {
+    if (!canvasSnapshotStack.isEmpty()) {
+        // pop the previous snapshot from the stack
+        canvasSnapshotStack.pop();
+        // clear the canvas
+        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+        // restore the previous snapshot to the canvas
+        if (!canvasSnapshotStack.isEmpty()) {
+            gc.drawImage(canvasSnapshotStack.peek(), 0, 0);
         }
     }
-    
+}
+
 
     @FXML
     void exitCanvasClick(ActionEvent event){
