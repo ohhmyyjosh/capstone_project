@@ -8,9 +8,10 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-public class ServerController extends Thread {
+public class ConnectedClient extends Thread {
 
     private int port;
+    private int idValue;
 
     private Socket sock;
     private ServerSocket servSock;
@@ -22,26 +23,18 @@ public class ServerController extends Thread {
 
     private CanvasController cc;
 
-    public ServerController(int port, CanvasController cc) throws IOException{
+    public ConnectedClient (CanvasController cc){
         this.cc = cc;
+    }
+
+    public void buildClient (int port, ServerSocket servSock, Socket sock, 
+    BufferedReader in, BufferedWriter out, int idValue) throws IOException{
         this.port = port;
-
-        System.out.println("Creating server socket...");
-        //socket creation
-        try{
-        servSock = new ServerSocket(port);
-        sock = servSock.accept();
-        System.out.println("Post socket Creation");
-        }
-        catch(Exception exception){
-            System.out.println("Socket creation failed");
-        }
-
-        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-
-       // inputStream = sock.getInputStream();
-        //objectInputStream = new ObjectInputStream(inputStream);
+        this.servSock = servSock;
+        this.sock = sock;
+        this.in = in;
+        this.out = out;
+        this.idValue = idValue;
 
         System.out.println("Client Connected.");
 
@@ -76,7 +69,8 @@ public class ServerController extends Thread {
                         System.out.println("closing socket");
                         sock.close();
                         servSock.close();
-                        System.exit(0);
+                        
+                        //System.exit(0);
                         break;
                     }
                 }
@@ -84,7 +78,8 @@ public class ServerController extends Thread {
                     System.out.println("closing socket");
                     sock.close();
                     servSock.close();
-                    System.exit(0);
+
+                    //System.exit(0);
                     break;
                 }
                 System.out.println("input recieved");

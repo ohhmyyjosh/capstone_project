@@ -17,11 +17,13 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
 //import javafx.scene.SnapshotParameters;
-//import javafx.scene.image.WritableImage;
+import javafx.scene.image.WritableImage;
 import java.util.Stack;
 import java.util.Deque;
 import java.util.ArrayDeque;
 import java.awt.*;
+import java.net.*;
+import java.io.*;
 
 public class CanvasController {
     @FXML private Canvas c;
@@ -34,7 +36,7 @@ public class CanvasController {
     private int redoLimit;
     private String eventString;
 
-    private SocketController sockCon;
+    private ConnectedClient client;
 
     GraphicsContext gc;
 //This is used for the undo function.
@@ -58,22 +60,17 @@ private Stack<String> redoStack = new Stack<>();
         eventString = "";//stores coordinate data to be sent
         actionCount = 0;//the number of actions currently stored for undo
         redoLimit = 5;//the maximum number of actions that will be remembered
-        try{
-        this.sockCon = new SocketController(this);//everything breaks if this isn't created here
-        }
-        catch(IOException e){
-            System.out.print(e);
-        }
+
+        //necessary to build the client this way. Internally originating pointer carries over nodes
+        this.client = new ConnectedClient(this);
         
     }
 
-
-//SocketController modifiers
-    public void setSockCon(SocketController sockController){
-        this.sockCon = sockController;
+    public ConnectedClient getClient(){
+        return client;
     }
-    public SocketController getSockCon(){
-        return this.sockCon;
+    public void set(ConnectedClient client){
+        this.client = client;
     }
 
 //eventString modifiers
@@ -160,7 +157,7 @@ private Stack<String> redoStack = new Stack<>();
             eventString += "\n";
             actionBackup(eventString);
             redoStack.clear();
-            sockCon.getClient().sendString();
+            client.sendString();
         }
         catch(IOException e){
             System.out.println(e);
@@ -278,7 +275,7 @@ void undoClick(ActionEvent event) {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
-            sockCon.getClient().closeSock();
+            client.closeSock();
 
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);

@@ -46,8 +46,6 @@ public class MainMenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
 
             CanvasController cc = new CanvasController();
-
-            cc.getSockCon();
             
             //loader.getController();
 
