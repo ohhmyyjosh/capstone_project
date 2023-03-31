@@ -16,9 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.image.WritableImage;
+//import javafx.scene.SnapshotParameters;
+//import javafx.scene.image.WritableImage;
 import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
 import java.awt.*;
 
 public class CanvasController {
@@ -28,13 +30,17 @@ public class CanvasController {
     @FXML private ColorPicker colorPicker; 
 
     private boolean flag;
+    private int actionCount;
+    private int redoLimit;
     private String eventString;
 
     private SocketController sockCon;
 
     GraphicsContext gc;
 //This is used for the undo function.
-private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
+//private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
+private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
+private Stack<String> redoStack = new Stack<>();
 
     
 
@@ -50,6 +56,8 @@ private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
         gc = c.getGraphicsContext2D();
 
         eventString = "";//stores coordinate data to be sent
+        actionCount = 0;//the number of actions currently stored for undo
+        redoLimit = 5;//the maximum number of actions that will be remembered
         try{
         this.sockCon = new SocketController(this);//everything breaks if this isn't created here
         }
@@ -145,11 +153,13 @@ private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
         gc.closePath();
     
         // push the current snapshot of the canvas to the stack
-        canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
+        //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
         
         //send eventString
         try{
             eventString += "\n";
+            actionBackup(eventString);
+            redoStack.clear();
             sockCon.getClient().sendString();
         }
         catch(IOException e){
@@ -161,6 +171,7 @@ private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
     void clearCanvasClick(ActionEvent event) {
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         clearEventString();
+        actionBackup("\n");
     }
     
 
@@ -181,7 +192,20 @@ private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
 
     @FXML
 void redoClick(ActionEvent event) {
-    
+    if (!redoStack.isEmpty()) {
+        // clear the canvas
+        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+        // restore the previous snapshot to the canvas{
+        String[] arrOfStrings = redoStack.peek().split("\n", -3);
+        for(int i = 0; i < arrOfStrings.length; i++){
+            eventString = arrOfStrings[i];
+            eventString += "\n";
+            System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
+            writeToCanvas();
+         }
+        actionBackup(redoStack.peek());
+        redoStack.pop();
+    }
 }
 
     @FXML
@@ -200,17 +224,51 @@ void redoClick(ActionEvent event) {
         gc.setStroke(color);
         gc.setFill(color);
     }
-//This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
+
+void actionBackup(String event){
+    actionCount++;
+    if ( event == "\n'"){
+        if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+            canvasSnapshotdeque.removeFirst();
+            actionCount--;
+        }
+        canvasSnapshotdeque.push("\n");
+    }
+    else if(!canvasSnapshotdeque.isEmpty()){
+        if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+            canvasSnapshotdeque.removeFirst();
+            actionCount--;
+        }
+        //create a new node with the newly added stroke
+        canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
+    }
+    else{
+        canvasSnapshotdeque.push(event);
+    }
+    
+}
+
+
+    //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
 @FXML
 void undoClick(ActionEvent event) {
-    if (!canvasSnapshotStack.isEmpty()) {
+    if (!canvasSnapshotdeque.isEmpty()) {
         // pop the previous snapshot from the stack
-        canvasSnapshotStack.pop();
+        redoStack.push(canvasSnapshotdeque.peek());
+        canvasSnapshotdeque.pop();
         // clear the canvas
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         // restore the previous snapshot to the canvas
-        if (!canvasSnapshotStack.isEmpty()) {
-            gc.drawImage(canvasSnapshotStack.peek(), 0, 0);
+        actionCount --;
+        if (!canvasSnapshotdeque.isEmpty()) {
+            //gc.drawImage(canvasSnapshotStack.peek(), 0, 0);
+            String[] arrOfStrings = canvasSnapshotdeque.peek().split("\n", -3);
+            for(int i = 0; i < arrOfStrings.length; i++){
+                eventString = arrOfStrings[i];
+                eventString += "\n";
+                System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
+                writeToCanvas();
+            }
         }
     }
 }

@@ -58,7 +58,7 @@ public class ClientController extends Thread{
 
     //send stroke to server
     public void sendString() throws IOException{
-        System.out.println("Sending sting..");//print test
+        System.out.println("Sending string..");//print test
 
         out.write(cc.getEventString());//send eventString
         out.flush();
