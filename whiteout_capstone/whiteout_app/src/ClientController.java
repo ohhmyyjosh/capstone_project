@@ -56,6 +56,16 @@ public class ClientController extends Thread{
 
     }
 
+    public CanvasController getCanvas(){
+        return this.cc;
+    }
+    public Socket getSock(){
+        return this.sock;
+    }
+    public BufferedReader getReader(){
+        return this.in;
+    }
+
     //send stroke to server
     public void sendString() throws IOException{
         System.out.println("Sending string..");//print test
@@ -74,41 +84,5 @@ public class ClientController extends Thread{
         in.close();
         out.close();
     }
-
-
-
-    //@Override
-    //public void run(){
-
-        // while(true){
-        //  if(!sock.isConnected()){
-                //System.out.println("Closing socket..");
-                //sock.close();
-                //in.close();
-                //out.close();
-        //  }
-        //     try{
-        //         sleep(5);
-                // bufferEventString = in.readLine();
-                // cc.writeToCanvas(bufferEventString);
-                // }
-                // catch(IOExcetpion e){
-                    //System.out.println(e);
-                // }
-                //}
-                //objectOutputStream.writeObject(cc.getCanvas());
-        //     }
-        //     catch(Exception exception){
-        //         System.out.println("Failed to write");
-        //     }
-        // }
-        // System.out.println("closing socket");
-        //  try{
-        //     sock.close();
-        //  }
-        //  catch(IOException e){
-        //     // failed
-        //  }
-        //}
-    }
+}
 
