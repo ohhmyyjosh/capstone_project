@@ -37,6 +37,7 @@ public class CanvasController {
     private String eventString;
 
     private ConnectedClient client;
+    private RoomController room;
 
     GraphicsContext gc;
 //This is used for the undo function.
@@ -64,6 +65,10 @@ private Stack<String> redoStack = new Stack<>();
         //necessary to build the client this way. Internally originating pointer carries over nodes
         this.client = new ConnectedClient(this);
         
+    }
+
+    public void establishRoom(RoomController room){
+        this.room = room;
     }
 
     public ConnectedClient getClient(){
@@ -117,6 +122,12 @@ private Stack<String> redoStack = new Stack<>();
             }
         }
 
+        try{
+            room.update(eventString, client.getIdValue());
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
         this.clearEventString();//nuke the eventString for the next stroke
         
     }
@@ -153,15 +164,15 @@ private Stack<String> redoStack = new Stack<>();
         //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
         
         //send eventString
-        try{
+        // try{
             eventString += "\n";
             actionBackup(eventString);
             redoStack.clear();
-            client.sendString();
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
+            //client.sendString();
+        // }
+        // catch(IOException e){
+        //     System.out.println(e);
+        // }
     }
 
     @FXML

@@ -58,8 +58,9 @@ public class RoomController extends Thread{
             out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 
             cc = new CanvasController();
+            cc.establishRoom(this);
             connection = cc.getClient();
-            connection.buildClient(port, servSock, sock, in, out, idValue);
+            connection.buildClient(port, servSock, sock, in, out, idValue, this);
             room.add(connection);
             room.elementAt(idValue).start();
             idValue++;
@@ -73,6 +74,22 @@ public class RoomController extends Thread{
 
     public Vector<ConnectedClient> getRoom(){
         return this.room;
+    }
+
+    public void removeClient(int idValue){
+        room.setElementAt(null, idValue-1);
+        room.remove(idValue-1);
+        for(int i = idValue-1; i < room.size(); i++){
+            room.elementAt(idValue-1).adjustId();
+        }
+    }
+
+    public void update(String eventString, int idValue) throws IOException{ 
+        for(int i = 0; i < room.size(); i ++){
+            if ( i != (idValue-1)){
+                room.elementAt(i).sendString(eventString);
+            }
+        }
     }
 
 }
