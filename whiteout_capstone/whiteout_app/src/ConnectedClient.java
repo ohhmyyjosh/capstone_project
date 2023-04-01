@@ -52,7 +52,12 @@ public class ConnectedClient extends Thread {
 
     //send stroke to server
     public void sendString(String eventString) throws IOException{
-        //System.out.println("Sending string..");//print test
+        System.out.println("Sending string..");//print test
+
+        if (!eventString.endsWith("\n")){
+            System.out.println("Correcting Event String for delivery");
+            eventString += "\n";
+        }
     
         out.write(eventString);//send eventString
         out.flush();
