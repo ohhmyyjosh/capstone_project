@@ -45,7 +45,8 @@ public class MainMenuController {
             s.setFill(Color.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
 
-            CanvasController cc = new CanvasController();
+            RoomController room = new RoomController();
+            //CanvasController cc = new CanvasController();
             
             //loader.getController();
 

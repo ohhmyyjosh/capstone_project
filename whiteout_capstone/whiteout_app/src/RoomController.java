@@ -31,16 +31,16 @@ public class RoomController extends Thread{
     private CanvasController cc;
 
     private ConnectedClient connection;
-    private Vector<ConnectedClient> room;
+    private static Vector<ConnectedClient> room;
     private int roomSize;
     
-    public RoomController(CanvasController cc) throws IOException{
-    this.cc = cc;
-    this.port = 5000;
+    public RoomController() throws IOException{
+    this.port = 5001;
 
     this.roomSize = 3;
     this.idValue = 1;
 
+    servSock = new ServerSocket(port);
     this.start();
 
     }
@@ -52,18 +52,25 @@ public class RoomController extends Thread{
             //socket creation
             
             try{
-            servSock = new ServerSocket(port);
             sock = servSock.accept();
             in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+            System.out.println("New buffers established..");
 
             cc = new CanvasController();
             cc.establishRoom(this);
+            System.out.println("New canvas established..");
+
             connection = cc.getClient();
+            System.out.println("Canvas to Client link established..");
+
             connection.buildClient(port, servSock, sock, in, out, idValue, this);
+            System.out.println("Client fully built..");
+
             room.add(connection);
             room.elementAt(idValue).start();
             idValue++;
+            System.out.println("Client thread started successfully...");
             }
             
             catch(Exception exception){
