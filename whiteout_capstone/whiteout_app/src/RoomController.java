@@ -12,6 +12,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.application.Platform;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.event.ActionEvent;
 
 
 public class RoomController extends Thread{
@@ -31,7 +38,7 @@ public class RoomController extends Thread{
     private CanvasController cc;
 
     private ConnectedClient connection;
-    private static Vector<ConnectedClient> room;
+    private Vector<ConnectedClient> room;
     private int roomSize;
     
     public RoomController() throws IOException{
@@ -41,8 +48,8 @@ public class RoomController extends Thread{
     this.idValue = 1;
 
     servSock = new ServerSocket(port);
+    this.room = new Vector<ConnectedClient>();
     this.start();
-
     }
 
     @Override
@@ -58,26 +65,26 @@ public class RoomController extends Thread{
             System.out.println("New buffers established..");
 
             cc = new CanvasController();
-            cc.establishRoom(this);
             System.out.println("New canvas established..");
+            cc.establishRoom(this);
+            //System.out.println("New canvas established..");
 
             connection = cc.getClient();
             System.out.println("Canvas to Client link established..");
-
             connection.buildClient(port, servSock, sock, in, out, idValue, this);
             System.out.println("Client fully built..");
 
             room.add(connection);
-            room.elementAt(idValue).start();
+            room.elementAt(idValue-1).start();
             idValue++;
             System.out.println("Client thread started successfully...");
             }
             
             catch(Exception exception){
+                System.out.println(exception);
             }
         }
     }
-
 
     public Vector<ConnectedClient> getRoom(){
         return this.room;

@@ -1,35 +1,13 @@
 import java.io.IOException;
-import java.net.URL;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.scene.Node;
-import javafx.scene.input.*;
+//import javafx.event.ActionEvent;
+
 //import javafx.scene.SnapshotParameters;
-import javafx.scene.image.WritableImage;
 import java.util.Stack;
 import java.util.Deque;
 import java.util.ArrayDeque;
-import java.awt.*;
-import java.net.*;
-import java.io.*;
 
 public class CanvasController {
-    @FXML private Canvas c;
-    @FXML private VBox box;
-    @FXML private AnchorPane ap;
-    @FXML private ColorPicker colorPicker; 
 
     private boolean flag;
     private int actionCount;
@@ -39,7 +17,7 @@ public class CanvasController {
     private ConnectedClient client;
     private RoomController room;
 
-    GraphicsContext gc;
+    //GraphicsContext gc;
 //This is used for the undo function.
 //private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
 private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
@@ -47,16 +25,7 @@ private Stack<String> redoStack = new Stack<>();
 
     
 
-    public void initialize() {
-
-        c.setOnMousePressed(this::handleMousePressed);
-        c.setOnMouseDragged(this::handleMouseDragged);
-        c.setOnMouseReleased(this::handleMouseReleased);
-
-        c.setOpacity(0.5);
-        c.setStyle("fx-background: transparent");
-
-        gc = c.getGraphicsContext2D();
+    public CanvasController() {
 
         eventString = "";//stores coordinate data to be sent
         actionCount = 0;//the number of actions currently stored for undo
@@ -104,14 +73,14 @@ private Stack<String> redoStack = new Stack<>();
                 y = Double.parseDouble(subStr);
                 subStr = "";
                 if (begin){//code for 'onMouseClick'
-                    gc.beginPath();
-                    gc.moveTo(x, y);
-                    gc.stroke();
+                    // gc.beginPath();
+                    // gc.moveTo(x, y);
+                    // gc.stroke();
                     begin = false;
                 }
                 else{//code for 'onMouseDrag'
-                    gc.lineTo(x, y);
-                    gc.stroke();
+                    // gc.lineTo(x, y);
+                    // gc.stroke();
                 }
             }
             else if (eventString.charAt(i) == '\n'){
@@ -136,73 +105,54 @@ private Stack<String> redoStack = new Stack<>();
         return this.flag;
     }
 
-    private void handleMousePressed(MouseEvent event) {
-        gc.beginPath();
-        gc.moveTo(event.getX(), event.getY());
-        gc.stroke();
+    // private void handleMousePressed(MouseEvent event) {
+    //     gc.beginPath();
+    //     gc.moveTo(event.getX(), event.getY());
+    //     gc.stroke();
         
-        // add to eventString and strokes
-        String stroke = (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
+    //     // add to eventString and strokes
+    //     String stroke = (event.getX()) + "," + (event.getY()) + "z";
+    //     eventString += stroke;
         
-    }
+    // }
 
-    private void handleMouseDragged(MouseEvent event) {
-        gc.lineTo(event.getX(), event.getY());
-        gc.stroke();
+    // private void handleMouseDragged(MouseEvent event) {
+    //     gc.lineTo(event.getX(), event.getY());
+    //     gc.stroke();
         
-        // add to eventString and strokes
-        String stroke = (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
+    //     // add to eventString and strokes
+    //     String stroke = (event.getX()) + "," + (event.getY()) + "z";
+    //     eventString += stroke;
         
-    }
+    // }
 
-    private void handleMouseReleased(MouseEvent event) {
-        gc.closePath();
+    // private void handleMouseReleased(MouseEvent event) {
+    //     gc.closePath();
     
-        // push the current snapshot of the canvas to the stack
-        //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
+    //     // push the current snapshot of the canvas to the stack
+    //     //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
         
-        //send eventString
-        // try{
-            eventString += "\n";
-            actionBackup(eventString);
-            redoStack.clear();
-            //client.sendString();
-        // }
-        // catch(IOException e){
-        //     System.out.println(e);
-        // }
-    }
+    //     //send eventString
+    //     // try{
+    //         eventString += "\n";
+    //         actionBackup(eventString);
+    //         redoStack.clear();
+    //         //client.sendString();
+    //     // }
+    //     // catch(IOException e){
+    //     //     System.out.println(e);
+    //     // }
+    // }
 
-    @FXML
-    void clearCanvasClick(ActionEvent event) {
-        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+    void clearCanvas() {
         clearEventString();
         actionBackup("\n");
     }
     
-
-    @FXML
-    void drawButtonToggle(ActionEvent event) {
-        
-    }
-
-    @FXML
-    void eraserButtonToggle(ActionEvent event) {
-
-    }
-
-    @FXML
-    void mouseButtonToggle(ActionEvent event) {
-        
-    }
-
-    @FXML
-void redoClick(ActionEvent event) {
+void redoClick() {
     if (!redoStack.isEmpty()) {
         // clear the canvas
-        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+       clearEventString();
         // restore the previous snapshot to the canvas{
         String[] arrOfStrings = redoStack.peek().split("\n", -3);
         for(int i = 0; i < arrOfStrings.length; i++){
@@ -210,28 +160,18 @@ void redoClick(ActionEvent event) {
             eventString += "\n";
             System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
             writeToCanvas();
-         }
+        }
         actionBackup(redoStack.peek());
         redoStack.pop();
-    }
-}
-
-    @FXML
-    void saveCanvasClick(ActionEvent event) {
-
+        }
     }
 
-    @FXML
-    void textButtonToggle(ActionEvent event) {
-       
-    }
-
-    @FXML
-    private void colorPickerAction(ActionEvent event) {
-        Color color = colorPicker.getValue();
-        gc.setStroke(color);
-        gc.setFill(color);
-    }
+    // @FXML
+    // private void colorPickerAction(ActionEvent event) {
+    //     Color color = colorPicker.getValue();
+    //     gc.setStroke(color);
+    //     gc.setFill(color);
+    // }
 
 void actionBackup(String event){
     actionCount++;
@@ -258,14 +198,13 @@ void actionBackup(String event){
 
 
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
-@FXML
-void undoClick(ActionEvent event) {
+void undoClick() {
     if (!canvasSnapshotdeque.isEmpty()) {
         // pop the previous snapshot from the stack
         redoStack.push(canvasSnapshotdeque.peek());
         canvasSnapshotdeque.pop();
         // clear the canvas
-        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+        //gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         // restore the previous snapshot to the canvas
         actionCount --;
         if (!canvasSnapshotdeque.isEmpty()) {
@@ -281,26 +220,24 @@ void undoClick(ActionEvent event) {
     }
 }
 
+    // void exitCanvasClick(ActionEvent event){
+    //     Parent root;
+    //     try {
+    //         client.closeSock();
 
-    @FXML
-    void exitCanvasClick(ActionEvent event){
-        Parent root;
-        try {
-            client.closeSock();
+    //         root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
+    //         Scene s = new Scene(root);
+    //         s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+    //         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+    //         window.setMaximized(false);
+    //         window.setScene(s);
+    //         window.centerOnScreen();
+    //         window.show();
 
-            root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
-            Scene s = new Scene(root);
-            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
-            window.setScene(s);
-            window.centerOnScreen();
-            window.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } 
-    }
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     } 
+    // }
 
     //purposefully naive canvas replication    
     // public Canvas getCanvas(){
