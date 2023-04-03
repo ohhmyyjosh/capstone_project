@@ -18,7 +18,6 @@ public class SocketController extends Thread{
     private int buffer = 0;
 
     private ClientController client;
-    private ServerController server;
     private InputHandler input;
     
     public SocketController(CanvasController cc) throws IOException{
@@ -30,22 +29,12 @@ public class SocketController extends Thread{
         return this.client;
     }
 
-    public ServerController getServer(){
-        return this.server;
-    }
-
     //establishes a client socket and attempts to send canvas data on a separate thread
     private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
         client = new ClientController(destIP, port, cc);
         client.start();
         input = new InputHandler(client);
         input.start();
-    }
-
-    //establishes a server socket and attempts to recieve canvas data on a separate thread
-    private void ServerController( int port, CanvasController cc) throws IOException{
-        server = new ServerController(port, cc);
-        server.start();
     }
 
 }
