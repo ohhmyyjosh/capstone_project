@@ -45,8 +45,8 @@ public class InputHandler extends Thread{
                     cc.writeToCanvas();
                 }
                 else if (buffer.charAt(0) == 'c'){
-                    cc.setEventString(buffer.substring(1));
                     cc.clearCanvas();
+                    cc.setEventString(buffer.substring(1));
                     String[] arrOfStrings = cc.getEventString().split("\n", -3);
                     for(int i = 0; i < arrOfStrings.length; i++){
                         cc.setEventString(arrOfStrings[i]);
