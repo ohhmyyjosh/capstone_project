@@ -48,10 +48,10 @@ public class InputHandler extends Thread{
                     System.out.println(buffer);
                     cc.clearCanvas();
                     cc.setEventString(buffer.substring(1));
-                    String[] arrOfStrings = cc.getEventString().split("\n", -3);
+                    String[] arrOfStrings = cc.getEventString().split("~", -3);
                     for(int i = 0; i < arrOfStrings.length; i++){
                         cc.setEventString(arrOfStrings[i]);
-                        cc.setEventString(cc.getEventString() + "\n");
+                        cc.setEventString(cc.getEventString() + "~");
                         System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
                         cc.writeToCanvas();
                     }

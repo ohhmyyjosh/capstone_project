@@ -141,7 +141,7 @@ private Stack<String> redoStack = new Stack<>();
                     gc.stroke();
                 }
             }
-            else if (eventString.charAt(i) == '\n'){
+            else if (eventString.charAt(i) == '~'){
                 break;
             }
             else{//add sanitized digit to substring
@@ -187,7 +187,7 @@ private Stack<String> redoStack = new Stack<>();
         
         //send eventString
         try{
-            eventString += "\n";
+            eventString += "~";
             actionBackup(eventString);
             redoStack.clear();
             sockCon.getClient().sendString();
@@ -200,7 +200,7 @@ private Stack<String> redoStack = new Stack<>();
     public void clearCanvas(){
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         clearEventString();
-        actionBackup("\n");
+        actionBackup("~");
     }
 
     @FXML
@@ -283,12 +283,12 @@ private Stack<String> redoStack = new Stack<>();
 
     void actionBackup(String event){
         actionCount++;
-        if ( event == "\n'"){
+        if ( event == "~"){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
                 canvasSnapshotdeque.removeFirst();
                 actionCount--;
             }
-            canvasSnapshotdeque.push("\n");
+            canvasSnapshotdeque.push("~");
         }
         else if(!canvasSnapshotdeque.isEmpty()){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
