@@ -33,6 +33,9 @@ public class CanvasController {
     private int actionCount;
     private int redoLimit;
     private String eventString;
+    private String colorStr;
+    private static Color transferColor;
+    private Color color;
 
     private SocketController sockCon;
 
@@ -92,7 +95,21 @@ private Stack<String> redoStack = new Stack<>();
         String subStr = ""; //holds sanitized value of x or y as string
         double x = 0, y = 0;
         boolean begin = true;//indicates a 'onMouseClick' event
+        int index = 0;
+        //read color
+        while(index < eventString.length()){
+            if (eventString.charAt(index) == '*'){
+                index++;
+                transferColor = transferColor.valueOf(subStr);
+                gc.setStroke(transferColor);
+                gc.setFill(transferColor);
+                break;
+            }
+            subStr += eventString.charAt(index);
+            index++;
+        }
 
+        //draw
         for(int i = 0; i < eventString.length(); i ++){
             if (eventString.charAt(i) == ','){//reads the value of the x coordinate
                 x = Double.parseDouble(subStr);
@@ -132,9 +149,10 @@ private Stack<String> redoStack = new Stack<>();
         gc.beginPath();
         gc.moveTo(event.getX(), event.getY());
         gc.stroke();
+        colorStr = color.toString();
         
         // add to eventString and strokes
-        String stroke = (event.getX()) + "," + (event.getY()) + "z";
+        String stroke = colorStr + "*" + (event.getX()) + "," + (event.getY()) + "z";
         eventString += stroke;
         
     }
@@ -220,9 +238,10 @@ void redoClick(ActionEvent event) {
 
     @FXML
     private void colorPickerAction(ActionEvent event) {
-        Color color = colorPicker.getValue();
+        color = colorPicker.getValue();
         gc.setStroke(color);
         gc.setFill(color);
+        this.colorStr = color.toString();
     }
 
 void actionBackup(String event){
