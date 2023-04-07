@@ -34,7 +34,7 @@ public class CanvasController {
     private int redoLimit;
     private String eventString;
     private String colorStr;
-    private static Color transferColor;
+    private Color transferColor;
     private Color color;
 
     private SocketController sockCon;
@@ -57,6 +57,8 @@ private Stack<String> redoStack = new Stack<>();
         c.setStyle("fx-background: transparent");
 
         gc = c.getGraphicsContext2D();
+
+        color = color.valueOf("#000000");
 
         eventString = "";//stores coordinate data to be sent
         actionCount = 0;//the number of actions currently stored for undo
