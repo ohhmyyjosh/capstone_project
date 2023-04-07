@@ -24,6 +24,8 @@ public class ConnectedClient extends Thread {
     private CanvasController cc;
     private RoomController room;
 
+    private String buffer;
+
     public ConnectedClient (CanvasController cc){
         this.cc = cc;
     }
@@ -48,6 +50,9 @@ public class ConnectedClient extends Thread {
     }
     public int getIdValue(){
         return idValue;
+    }
+    public CanvasController getCC(){
+        return this.cc;
     }
 
     //send stroke to server
@@ -97,8 +102,20 @@ public class ConnectedClient extends Thread {
 
                 System.out.println("Waiting on client input..");
                 try{
-                    cc.setEventString(String.valueOf(in.readLine()));
-                    if(cc.getEventString() == "null"){//happens if the socket is terminated
+                    buffer = String.valueOf(in.readLine());
+                    if (buffer.charAt(0) == 'w'){//write string
+                        cc.setEventString(buffer.substring(1));
+                    }
+                    else if (buffer.charAt(0) == 'u'){//undo
+                        cc.undoClick();
+                    }
+                    else if (buffer.charAt(0) == 'r'){//redo
+                        cc.redoClick();
+                    }
+                    else if (buffer.charAt(0) == 'c'){//clear canvas
+                        cc.clearCanvas();
+                    }
+                    else if(cc.getEventString() == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");
                         sock.close();
                         this.cc = null;
@@ -127,7 +144,6 @@ public class ConnectedClient extends Thread {
                 //c2 = (Canvas)objectInputStream.readObject();
                 //cc.setCanvas(c2);
             }
-
             catch(Exception e){
                 System.out.println(e);
             }

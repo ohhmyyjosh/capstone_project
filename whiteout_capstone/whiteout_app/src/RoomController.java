@@ -40,16 +40,20 @@ public class RoomController extends Thread{
     private ConnectedClient connection;
     private Vector<ConnectedClient> room;
     private int roomSize;
+
+    private String roomString;
     
     public RoomController() throws IOException{
-    this.port = 5001;
+        this.port = 5001;
 
-    this.roomSize = 3;
-    this.idValue = 1;
+        this.roomSize = 3;
+        this.idValue = 1;
 
-    servSock = new ServerSocket(port);
-    this.room = new Vector<ConnectedClient>();
-    this.start();
+        this.roomString = "";
+
+        servSock = new ServerSocket(port);
+        this.room = new Vector<ConnectedClient>();
+        this.start();
     }
 
     @Override
@@ -101,9 +105,23 @@ public class RoomController extends Thread{
     public void update(String eventString, int idValue) throws IOException{ 
         for(int i = 0; i < room.size(); i ++){
             if ( i != (idValue-1)){
-                room.elementAt(i).sendString(eventString);
+                room.elementAt(i).sendString("w" + eventString);
             }
         }
+    }
+    public void update(String eventString, int idValue, Boolean clearFlag) throws IOException{ 
+        for (int i = 0; i < room.size(); i ++){
+            if ( i != (idValue-1)){
+                roomString += room.elementAt(i).getCC().getCurrentString();
+            }
+            else{
+                roomString += eventString;
+            }
+        }
+        for(int i = 0; i < room.size(); i ++){
+            room.elementAt(i).sendString("c" + roomString);
+        }
+        this.roomString = "";
     }
 
 }
