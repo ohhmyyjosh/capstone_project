@@ -32,7 +32,6 @@ public class SocketController extends Thread{
     //establishes a client socket and attempts to send canvas data on a separate thread
     private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
         client = new ClientController(destIP, port, cc);
-        client.start();
         input = new InputHandler(client);
         input.start();
     }

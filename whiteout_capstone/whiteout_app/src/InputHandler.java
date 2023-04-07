@@ -28,15 +28,15 @@ public class InputHandler extends Thread{
                     if(buffer == "null"){
                         System.out.println("closing socket");
                         sock.close();
-                        System.exit(0);
-                        break;
+                        cc.exitCanvasClick(null);
+                        return;
                     }
                 }
                 catch(IOException e){
                     System.out.println("closing socket");
                     sock.close();
-                    System.exit(0);
-                    break;
+                    cc.exitCanvasClick(null);
+                    return;
                 }
                 System.out.println("input recieved " + buffer.charAt(0));
                 //System.out.println(cc.getEventString());
@@ -59,14 +59,9 @@ public class InputHandler extends Thread{
             }
             catch(Exception e){
                 System.out.println(e);
+                cc.exitCanvasClick(null);
+                return;
             }
         }
-        try{
-            sock.close();
-        }
-        catch(IOException e){
-            //failed
-        }
     }
-    
 }
