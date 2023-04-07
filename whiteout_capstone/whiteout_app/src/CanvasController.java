@@ -189,11 +189,20 @@ private Stack<String> redoStack = new Stack<>();
         }
     }
 
-    @FXML
-    void clearCanvasClick(ActionEvent event) {
+    public void clearCanvas(){
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         clearEventString();
         actionBackup("\n");
+    }
+
+    @FXML
+    void clearCanvasClick(ActionEvent event) {
+        try{
+            this.sockCon.getClient().sendCommand("c");
+        }
+        catch(IOException e){
+            System.out.println (e);
+        }
     }
     
 
@@ -213,21 +222,13 @@ private Stack<String> redoStack = new Stack<>();
     }
 
     @FXML
-void redoClick(ActionEvent event) {
-    if (!redoStack.isEmpty()) {
-        // clear the canvas
-        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-        // restore the previous snapshot to the canvas{
-        String[] arrOfStrings = redoStack.peek().split("\n", -3);
-        for(int i = 0; i < arrOfStrings.length; i++){
-            eventString = arrOfStrings[i];
-            eventString += "\n";
-            System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
-            writeToCanvas();
-         }
-        actionBackup(redoStack.peek());
-        redoStack.pop();
-    }
+    void redoClick(ActionEvent event) {
+        try{
+            this.sockCon.getClient().sendCommand("r");
+        }
+        catch(IOException e){
+            System.out.println (e);
+        }
 }
 
     @FXML
@@ -248,51 +249,37 @@ void redoClick(ActionEvent event) {
         this.colorStr = color.toString();
     }
 
-void actionBackup(String event){
-    actionCount++;
-    if ( event == "\n'"){
-        if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-            canvasSnapshotdeque.removeFirst();
-            actionCount--;
+    void actionBackup(String event){
+        actionCount++;
+        if ( event == "\n'"){
+            if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+                canvasSnapshotdeque.removeFirst();
+                actionCount--;
+            }
+            canvasSnapshotdeque.push("\n");
         }
-        canvasSnapshotdeque.push("\n");
-    }
-    else if(!canvasSnapshotdeque.isEmpty()){
-        if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-            canvasSnapshotdeque.removeFirst();
-            actionCount--;
+        else if(!canvasSnapshotdeque.isEmpty()){
+            if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+                canvasSnapshotdeque.removeFirst();
+                actionCount--;
+            }
+            //create a new node with the newly added stroke
+            canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
         }
-        //create a new node with the newly added stroke
-        canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
+        else{
+            canvasSnapshotdeque.push(event);
+        }
     }
-    else{
-        canvasSnapshotdeque.push(event);
-    }
-    
-}
 
 
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
 @FXML
 void undoClick(ActionEvent event) {
-    if (!canvasSnapshotdeque.isEmpty()) {
-        // pop the previous snapshot from the stack
-        redoStack.push(canvasSnapshotdeque.peek());
-        canvasSnapshotdeque.pop();
-        // clear the canvas
-        gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-        // restore the previous snapshot to the canvas
-        actionCount --;
-        if (!canvasSnapshotdeque.isEmpty()) {
-            //gc.drawImage(canvasSnapshotStack.peek(), 0, 0);
-            String[] arrOfStrings = canvasSnapshotdeque.peek().split("\n", -3);
-            for(int i = 0; i < arrOfStrings.length; i++){
-                eventString = arrOfStrings[i];
-                eventString += "\n";
-                System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
-                writeToCanvas();
-            }
-        }
+    try{
+        this.sockCon.getClient().sendCommand("u");
+    }
+    catch(IOException e){
+        System.out.println (e);
     }
 }
 

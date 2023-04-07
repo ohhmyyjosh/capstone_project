@@ -76,6 +76,11 @@ public class ClientController extends Thread{
         System.out.println(cc.getEventString());
         cc.clearEventString();//nuke eventString for next stroke
     }
+    public void sendCommand(String command) throws IOException{
+        System.out.println("Sending command " + command + "..");
+        out.write(command);
+        out.flush();
+    }
 
     //kill the client
     public void closeSock() throws IOException{

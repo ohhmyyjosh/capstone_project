@@ -3,6 +3,7 @@ import java.io.*;
 
 public class InputHandler extends Thread{
 
+    private String buffer;
     private ClientController client;
     CanvasController cc;
     Socket sock;
@@ -10,6 +11,7 @@ public class InputHandler extends Thread{
     BufferedReader in;
 
     public InputHandler(ClientController client){
+        this.buffer = "";
         this.cc = client.getCanvas();
         this.sock = client.getSock();
         this.in = client.getReader();
@@ -22,8 +24,8 @@ public class InputHandler extends Thread{
             try{
                 System.out.println("Waiting on server input..");
                 try{
-                    cc.setEventString(String.valueOf(in.readLine()));
-                    if(cc.getEventString() == "null"){
+                    buffer = (String.valueOf(in.readLine()));
+                    if(buffer == "null"){
                         System.out.println("closing socket");
                         sock.close();
                         System.exit(0);
@@ -38,8 +40,21 @@ public class InputHandler extends Thread{
                 }
                 System.out.println("input recieved");
                 //System.out.println(cc.getEventString());
-
-                cc.writeToCanvas();
+                if (buffer.charAt(0) == 'w'){
+                    cc.setEventString(buffer.substring(1));
+                    cc.writeToCanvas();
+                }
+                else if (buffer.charAt(0) == 'c'){
+                    cc.setEventString(buffer.substring(1));
+                    cc.clearCanvas();
+                    String[] arrOfStrings = cc.getEventString().split("\n", -3);
+                    for(int i = 0; i < arrOfStrings.length; i++){
+                        cc.setEventString(arrOfStrings[i]);
+                        cc.setEventString(cc.getEventString() + "\n");
+                        System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
+                        cc.writeToCanvas();
+                    }
+                }
             }
             catch(Exception e){
                 System.out.println(e);
