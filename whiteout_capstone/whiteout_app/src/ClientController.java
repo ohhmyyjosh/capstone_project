@@ -70,7 +70,7 @@ public class ClientController extends Thread{
     public void sendString() throws IOException{
         System.out.println("Sending string..");//print test
 
-        out.write("w" + cc.getEventString());//send eventString
+        out.write("w" + cc.getEventString()+ "\n");//send eventString
         out.flush();
 
         System.out.println(cc.getEventString());
