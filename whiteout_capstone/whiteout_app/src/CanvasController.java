@@ -17,11 +17,19 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
 //import javafx.scene.SnapshotParameters;
-//import javafx.scene.image.WritableImage;
+import javafx.scene.image.WritableImage;
 import java.util.Stack;
 import java.util.Deque;
 import java.util.ArrayDeque;
 import java.awt.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.scene.input.*;
+import javax.imageio.ImageIO;
+import java.nio.file.Files;
+import java.io.File;
+import javafx.embed.swing.SwingFXUtils;
+
 
 public class CanvasController {
     @FXML private Canvas c;
@@ -232,7 +240,31 @@ void redoClick(ActionEvent event) {
 
     @FXML
     void saveCanvasClick(ActionEvent event) {
-
+        WritableImage writableImage = new WritableImage((int) c.getWidth(), (int) c.getHeight());
+        c.snapshot(null, writableImage);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Canvas");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+        fileChooser.getExtensionFilters().add(extFilter);
+        extFilter = new FileChooser.ExtensionFilter("JPEG files (*.jpg)", "*.jpg");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try {
+                String fileName = file.getName();
+                String extension = "";
+                int i = fileName.lastIndexOf('.');
+                if (i > 0) {
+                    extension = fileName.substring(i + 1);
+                }
+                if (!extension.equalsIgnoreCase("png") && !extension.equalsIgnoreCase("jpg")) {
+                    fileName = fileName + ".png"; // default to PNG
+                }
+                ImageIO.write(SwingFXUtils.fromFXImage(writableImage, null), extension, new File(file.getParent(), fileName));
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     @FXML
