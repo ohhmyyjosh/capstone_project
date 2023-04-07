@@ -105,6 +105,8 @@ public class ConnectedClient extends Thread {
                     buffer = String.valueOf(in.readLine());
                     if (buffer.charAt(0) == 'w'){//write string
                         cc.setEventString(buffer.substring(1));
+                        cc.writeToCanvas();
+                        cc.actionBackup(cc.getEventString());
                     }
                     else if (buffer.charAt(0) == 'u'){//undo
                         cc.undoClick();
@@ -118,6 +120,8 @@ public class ConnectedClient extends Thread {
                     else if(cc.getEventString() == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");
                         sock.close();
+                        in.close();
+                        out.close();
                         this.cc = null;
                         room.removeClient((idValue));
                         //System.exit(0);
@@ -126,6 +130,8 @@ public class ConnectedClient extends Thread {
                 }
                 catch(IOException e){//in case some eggregious error happens
                     System.out.println("closing socket");
+                    in.close();
+                    out.close();
                     sock.close();
                     this.cc = null;
                     room.removeClient((idValue));
@@ -134,10 +140,6 @@ public class ConnectedClient extends Thread {
                 }
                 System.out.println("input recieved");
                // System.out.println(cc.getEventString());
-
-                cc.writeToCanvas();
-                cc.actionBackup(cc.getEventString());
-
 
             //naive implementation
                 //Canvas c2 = new Canvas();

@@ -63,6 +63,7 @@ public class CanvasController {
     //This method writes the client's stroke to the server's canvas
     public void writeToCanvas(){
         try{
+            actionBackup(eventString);
             room.update(eventString, client.getIdValue());
         }
         catch(IOException e){
@@ -86,8 +87,8 @@ public class CanvasController {
 
     public void clearCanvas() {
         clearEventString();
-        actionBackup("\n");
-        setEventString("\n");
+        actionBackup("~");
+        setEventString("~");
         writeToCanvas(flag);
     }
     
@@ -96,13 +97,14 @@ public class CanvasController {
         // clear the canvas
        clearEventString();
         // restore the previous snapshot to the canvas{
-        String[] arrOfStrings = redoStack.peek().split("\n", -3);
+        String[] arrOfStrings = redoStack.peek().split("~", -3);
         for(int i = 0; i < arrOfStrings.length; i++){
             buffer = arrOfStrings[i];
-            buffer += "\n";
+            buffer += "~";
             System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
             eventString += buffer;
         }
+        System.out.println("Canvas level test: redo event " + eventString);
         writeToCanvas(flag);
         actionBackup(redoStack.peek());
         redoStack.pop();
@@ -111,12 +113,12 @@ public class CanvasController {
 
     public void actionBackup(String event){
         actionCount++;
-        if ( event == "\n'"){
+        if ( event == "~"){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
                 canvasSnapshotdeque.removeFirst();
                 actionCount--;
             }
-            canvasSnapshotdeque.push("\n");
+            canvasSnapshotdeque.push("~");
         }
         else if(!canvasSnapshotdeque.isEmpty()){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
@@ -128,6 +130,7 @@ public class CanvasController {
         }
         else{
             canvasSnapshotdeque.push(event);
+            System.out.println("Empty deque detected. Adding first snapshot" + event);
         }
     
     }
