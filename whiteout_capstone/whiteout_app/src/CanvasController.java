@@ -144,15 +144,15 @@ public class CanvasController {
             canvasSnapshotdeque.pop();
             // clear the canvas
             //gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-            setEventString("\n");
+            setEventString("~");
             // restore the previous snapshot to the canvas
             actionCount --;
             if (!canvasSnapshotdeque.isEmpty()) {
                 clearEventString();
                 //gc.drawImage(canvasSnapshotStack.peek(), 0, 0);
-                String[] arrOfStrings = canvasSnapshotdeque.peek().split("\n", -3);
+                String[] arrOfStrings = canvasSnapshotdeque.peek().split("~", -3);
                 for(int i = 0; i < arrOfStrings.length; i++){
-                    buffer = arrOfStrings[i] + "\n";
+                    buffer = arrOfStrings[i] + "~";
                     System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
                     eventString += buffer;
                 }
