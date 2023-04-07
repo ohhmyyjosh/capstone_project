@@ -103,6 +103,7 @@ private Stack<String> redoStack = new Stack<>();
                 transferColor = transferColor.valueOf(subStr);
                 gc.setStroke(transferColor);
                 gc.setFill(transferColor);
+                subStr ="";
                 break;
             }
             subStr += eventString.charAt(index);
