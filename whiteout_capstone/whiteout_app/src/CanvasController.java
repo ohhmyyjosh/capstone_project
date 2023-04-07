@@ -101,9 +101,10 @@ private Stack<String> redoStack = new Stack<>();
             if (eventString.charAt(index) == '*'){
                 index++;
                 transferColor = transferColor.valueOf(subStr);
+                System.out.println("Color transfered");
                 gc.setStroke(transferColor);
                 gc.setFill(transferColor);
-                subStr ="";
+                subStr = "";
                 break;
             }
             subStr += eventString.charAt(index);
@@ -111,7 +112,7 @@ private Stack<String> redoStack = new Stack<>();
         }
 
         //draw
-        for(int i = 0; i < eventString.length(); i ++){
+        for(int i = index; i < eventString.length(); i ++){
             if (eventString.charAt(i) == ','){//reads the value of the x coordinate
                 x = Double.parseDouble(subStr);
                 subStr = "";
