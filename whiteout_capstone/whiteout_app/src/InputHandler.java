@@ -38,7 +38,7 @@ public class InputHandler extends Thread{
                     System.exit(0);
                     break;
                 }
-                System.out.println("input recieved");
+                System.out.println("input recieved " + buffer.charAt(0));
                 //System.out.println(cc.getEventString());
                 if (buffer.charAt(0) == 'w'){
                     cc.setEventString(buffer.substring(1));
