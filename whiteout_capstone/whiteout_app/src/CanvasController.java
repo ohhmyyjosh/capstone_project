@@ -206,7 +206,7 @@ private Stack<String> redoStack = new Stack<>();
     @FXML
     void clearCanvasClick(ActionEvent event) {
         try{
-            this.sockCon.getClient().sendCommand("c");
+            this.sockCon.getClient().sendCommand("c\n");
         }
         catch(IOException e){
             System.out.println (e);
@@ -232,7 +232,7 @@ private Stack<String> redoStack = new Stack<>();
     @FXML
     void redoClick(ActionEvent event) {
         try{
-            this.sockCon.getClient().sendCommand("r");
+            this.sockCon.getClient().sendCommand("r\n");
         }
         catch(IOException e){
             System.out.println (e);
@@ -308,7 +308,7 @@ private Stack<String> redoStack = new Stack<>();
 @FXML
 void undoClick(ActionEvent event) {
     try{
-        this.sockCon.getClient().sendCommand("u");
+        this.sockCon.getClient().sendCommand("u\n");
     }
     catch(IOException e){
         System.out.println (e);

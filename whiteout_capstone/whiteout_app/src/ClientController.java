@@ -80,6 +80,7 @@ public class ClientController extends Thread{
         System.out.println("Sending command " + command + "..");
         out.write(command);
         out.flush();
+        cc.clearEventString();//nuke eventString for next stroke
     }
 
     //kill the client
