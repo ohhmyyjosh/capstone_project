@@ -82,6 +82,7 @@ public class RoomController extends Thread{
             room.elementAt(idValue-1).start();
             idValue++;
             System.out.println("Client thread started successfully...");
+            System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
             }
             
             catch(Exception exception){
@@ -97,8 +98,15 @@ public class RoomController extends Thread{
     public void removeClient(int idValue){
         room.setElementAt(null, idValue-1);
         room.remove(idValue-1);
-        for(int i = idValue-1; i < room.size(); i++){
-            room.elementAt(idValue-1).adjustId();
+        if (!room.isEmpty()){
+            for(int i = idValue-1; i < room.size(); i++){
+                room.elementAt(idValue-1).adjustId();
+            }
+            System.out.println("Client disconnected: " + room.size() + " of " + roomSize + " remaining.");
+            this.idValue --;
+        }
+        else{
+            System.exit(0);//placeholder, will close room when multiple rooms are implemented.
         }
     }
 

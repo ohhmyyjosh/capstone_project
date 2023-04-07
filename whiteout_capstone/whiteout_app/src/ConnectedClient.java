@@ -84,22 +84,6 @@ public class ConnectedClient extends Thread {
         while(true){
             try{
 
-            //socket regeneration
-                // if(sock.isClosed()){
-                //     System.out.println("Regenerating socket..");
-                //     try{
-                //         servSock = new ServerSocket(this.port);
-                //         sock = servSock.accept();
-                //         System.out.println("Post socket Creation");
-                //         }
-                //         catch(Exception exception){
-                //             System.out.println("Socket creation failed");
-                //         }
-                
-                //         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                //         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-                // }
-
                 System.out.println("Waiting on client input..");
                 try{
                     buffer = String.valueOf(in.readLine());
@@ -117,11 +101,17 @@ public class ConnectedClient extends Thread {
                     else if (buffer.charAt(0) == 'c'){//clear canvas
                         cc.clearCanvas();
                     }
-                    else if(cc.getEventString() == "null"){//happens if the socket is terminated
+                    else if(buffer == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");
                         sock.close();
-                        in.close();
-                        out.close();
+                        this.cc = null;
+                        room.removeClient((idValue));
+                        //System.exit(0);
+                        break;
+                    }
+                    else{
+                        System.out.println("closing socket");
+                        sock.close();
                         this.cc = null;
                         room.removeClient((idValue));
                         //System.exit(0);
@@ -130,8 +120,6 @@ public class ConnectedClient extends Thread {
                 }
                 catch(IOException e){//in case some eggregious error happens
                     System.out.println("closing socket");
-                    in.close();
-                    out.close();
                     sock.close();
                     this.cc = null;
                     room.removeClient((idValue));
@@ -139,12 +127,7 @@ public class ConnectedClient extends Thread {
                     break;
                 }
                 System.out.println("input recieved");
-               // System.out.println(cc.getEventString());
-
-            //naive implementation
-                //Canvas c2 = new Canvas();
-                //c2 = (Canvas)objectInputStream.readObject();
-                //cc.setCanvas(c2);
+                buffer = "";
             }
             catch(Exception e){
                 System.out.println(e);
