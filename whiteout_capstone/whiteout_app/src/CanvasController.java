@@ -60,36 +60,6 @@ private Stack<String> redoStack = new Stack<>();
 
     //This method writes the client's stroke to the server's canvas
     public void writeToCanvas(){
-        String subStr = ""; //holds sanitized value of x or y as string
-        double x = 0, y = 0;
-        boolean begin = true;//indicates a 'onMouseClick' event
-
-        for(int i = 0; i < eventString.length(); i ++){
-            if (eventString.charAt(i) == ','){//reads the value of the x coordinate
-                x = Double.parseDouble(subStr);
-                subStr = "";
-            }
-            else if( eventString.charAt(i) == 'z'){//reads the value of the y coordinate
-                y = Double.parseDouble(subStr);
-                subStr = "";
-                if (begin){//code for 'onMouseClick'
-                    // gc.beginPath();
-                    // gc.moveTo(x, y);
-                    // gc.stroke();
-                    begin = false;
-                }
-                else{//code for 'onMouseDrag'
-                    // gc.lineTo(x, y);
-                    // gc.stroke();
-                }
-            }
-            else if (eventString.charAt(i) == '\n'){
-                break;
-            }
-            else{//add sanitized digit to substring
-                subStr += Character.toString(eventString.charAt(i));
-            }
-        }
 
         try{
             room.update(eventString, client.getIdValue());

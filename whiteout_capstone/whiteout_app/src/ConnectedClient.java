@@ -69,7 +69,6 @@ public class ConnectedClient extends Thread {
     public void closeSock() throws IOException{
         System.out.println("closing socket");
         sock.close();
-        servSock.close();
         this.cc = null;
         room.removeClient((idValue));
     }
@@ -102,7 +101,6 @@ public class ConnectedClient extends Thread {
                     if(cc.getEventString() == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");
                         sock.close();
-                        servSock.close();
                         this.cc = null;
                         room.removeClient((idValue));
                         //System.exit(0);
@@ -112,7 +110,6 @@ public class ConnectedClient extends Thread {
                 catch(IOException e){//in case some eggregious error happens
                     System.out.println("closing socket");
                     sock.close();
-                    servSock.close();
                     this.cc = null;
                     room.removeClient((idValue));
                     //System.exit(0);
@@ -138,7 +135,6 @@ public class ConnectedClient extends Thread {
 
         try{
             sock.close();
-            servSock.close();
         }
         catch(IOException e){
             //failed
