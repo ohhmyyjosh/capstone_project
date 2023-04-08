@@ -10,12 +10,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Node;
 import javafx.scene.input.*;
 //import javafx.scene.SnapshotParameters;
@@ -34,7 +37,8 @@ import javafx.embed.swing.SwingFXUtils;
 
 
 public class CanvasController {
-    @FXML private Canvas c;
+    // @FXML private Canvas c;
+    ResizableCanvas c;
     @FXML private VBox box;
     @FXML private AnchorPane ap;
     @FXML private ToolBar tb;
@@ -48,6 +52,9 @@ public class CanvasController {
     private Color transferColor;
     private Color color;
 
+    private double xOffset;
+    private double yOffset;
+
     private SocketController sockCon;
 
     GraphicsContext gc;
@@ -59,18 +66,55 @@ private Stack<String> redoStack = new Stack<>();
     
 
     public void initialize() {
+        
+        c = new ResizableCanvas();
+        ap.getChildren().add(c);
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
         c.setOnMouseReleased(this::handleMouseReleased);
+
+        tb.setOnMousePressed(event -> {
+            xOffset = event.getSceneX() - tb.getTranslateX();
+            yOffset = event.getSceneY() - tb.getTranslateY();
+        });
+    
+        tb.setOnMouseDragged(event -> {
+            tb.setTranslateX(event.getSceneX() - xOffset);
+            tb.setTranslateY(event.getSceneY() - yOffset);
+        });
+    
+        tb.setOnMouseReleased(event -> {
+            // Save toolbar position, if needed
+        });
+
+        tb.setMouseTransparent(false);
+        tb.toFront();
+
+        c.addEventFilter(MouseEvent.ANY, event -> {
+            if (tb.getBoundsInParent().intersects(event.getSceneX(), event.getSceneY(), 1, 1)) {
+                event.consume();
+            }
+        });
+
+        tb.setMaxHeight(Control.USE_PREF_SIZE);
+        tb.setMaxWidth(Control.USE_PREF_SIZE);
 
         //box.setStyle("-fx-background-color: rgba(0,0,0,0.0);");
         box.setBackground(Background.EMPTY);
         ap.setStyle("-fx-background-color: rgba(0,0,0,0.1);");
         tb.setOpacity(1);
         c.setOpacity(1);
-        gc = c.getGraphicsContext2D();
 
+        ap.setMaxHeight(-1);
+        ap.setMaxWidth(-1);
+
+        box.setVgrow(ap, Priority.ALWAYS);
+
+        c.heightProperty().bind(ap.heightProperty());
+        c.widthProperty().bind(ap.widthProperty());
+
+        gc = c.getGraphicsContext2D();
 
         color = color.valueOf("#000000");
 
@@ -331,12 +375,22 @@ void undoClick(ActionEvent event) {
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
+            // Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            // window.setMaximized(false);
+            // window.setScene(s);
+            // window.centerOnScreen();
+            // window.show();
+            
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            Stage window = new Stage();
             window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
             window.centerOnScreen();
             window.show();
-
         } catch (IOException e) {
             e.printStackTrace();
         } 

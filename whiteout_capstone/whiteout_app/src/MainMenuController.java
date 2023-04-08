@@ -26,9 +26,14 @@ public class MainMenuController {
             root = FXMLLoader.load(getClass().getResource("./fxml/SettingsMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            Stage window = new Stage();
             window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
             window.centerOnScreen();
             window.show();
 
@@ -54,9 +59,14 @@ public class MainMenuController {
 
 
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            Stage window = new Stage();
             window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
             window.centerOnScreen();
             window.show();
 
@@ -72,9 +82,14 @@ public class MainMenuController {
             root = FXMLLoader.load(getClass().getResource("./fxml/JoinSessionMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            Stage window = new Stage();
             window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
             window.centerOnScreen();
             window.show();
 
