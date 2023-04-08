@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Node;
 
 public class CreateSessionMenuController {
@@ -64,10 +65,15 @@ public class CreateSessionMenuController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
             CanvasController cc = loader.getController();
 
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
 
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            // Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage window = new Stage();
             window.setScene(s);
-            //window.setMaximized(true);
+            window.setMaximized(false);
+            window.initStyle(StageStyle.TRANSPARENT);
             window.show();
             
 

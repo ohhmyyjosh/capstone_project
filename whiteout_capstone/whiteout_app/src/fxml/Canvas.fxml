@@ -15,9 +15,10 @@
 
 <VBox fx:id="box" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CanvasController">
    <children>
-      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="404.0" prefWidth="640.0">
+      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="640.0">
          <children>
-            <ToolBar prefHeight="40.0" prefWidth="640.0">
+            <Canvas fx:id="c" height="360.0" layoutY="40.0" width="640.0" />
+            <ToolBar fx:id="tb" prefHeight="40.0" prefWidth="640.0">
                <items>
                   <ToggleButton mnemonicParsing="false" onAction="#mouseButtonToggle" text="Mouse">
                      <graphic>
@@ -114,7 +115,6 @@
                   </Button>
                </items>
             </ToolBar>
-            <Canvas fx:id="c" height="361.0" layoutY="39.0" width="640.0" />
          </children>
       </AnchorPane>
    </children>

@@ -23,9 +23,7 @@ public class App extends Application {
 
         scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         
-        //primaryStage.initStyle(StageStyle.TRANSPARENT);
-        //primaryStage.setOpacity(0.5);
-
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("White-Out");
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);

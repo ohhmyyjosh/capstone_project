@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -35,6 +37,7 @@ public class CanvasController {
     @FXML private Canvas c;
     @FXML private VBox box;
     @FXML private AnchorPane ap;
+    @FXML private ToolBar tb;
     @FXML private ColorPicker colorPicker; 
 
     private boolean flag;
@@ -61,10 +64,13 @@ private Stack<String> redoStack = new Stack<>();
         c.setOnMouseDragged(this::handleMouseDragged);
         c.setOnMouseReleased(this::handleMouseReleased);
 
-        c.setOpacity(0.5);
-        c.setStyle("fx-background: transparent");
-
+        //box.setStyle("-fx-background-color: rgba(0,0,0,0.0);");
+        box.setBackground(Background.EMPTY);
+        ap.setStyle("-fx-background-color: rgba(0,0,0,0.1);");
+        tb.setOpacity(1);
+        c.setOpacity(1);
         gc = c.getGraphicsContext2D();
+
 
         color = color.valueOf("#000000");
 
