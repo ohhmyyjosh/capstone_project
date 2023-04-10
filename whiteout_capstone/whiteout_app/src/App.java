@@ -17,19 +17,19 @@ public class App extends Application {
     public void start(Stage primaryStage) {
 
         Parent root;
-        Scene scene = new Scene(new Pane());
-        ViewSwitcher.setScene(scene);
-        ViewSwitcher.switchTo(View.MAIN);
-
-        scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+        try {
+            root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
         
-        //primaryStage.initStyle(StageStyle.TRANSPARENT);
-        //primaryStage.setOpacity(0.5);
-
-        primaryStage.setTitle("White-Out");
-        primaryStage.setResizable(false);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            primaryStage.initStyle(StageStyle.TRANSPARENT);
+            primaryStage.setTitle("White-Out");
+            primaryStage.setResizable(false);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
   

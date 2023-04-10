@@ -20,9 +20,14 @@ public class SettingsMenuController {
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
 
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-            window.setMaximized(false);
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            Stage window = new Stage();
             window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
             window.centerOnScreen();
             window.show();
 
