@@ -208,6 +208,8 @@ private Stack<String> redoStack = new Stack<>();
     }
 
     private void handleMousePressed(MouseEvent event) {
+        gc.setStroke(color);
+        gc.setFill(color);
         gc.beginPath();
         gc.moveTo(event.getX(), event.getY());
         gc.stroke();
