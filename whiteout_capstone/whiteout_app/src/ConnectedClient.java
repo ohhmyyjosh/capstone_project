@@ -90,7 +90,6 @@ public class ConnectedClient extends Thread {
                     if (buffer.charAt(0) == 'w'){//write string
                         cc.setEventString(buffer.substring(1));
                         cc.writeToCanvas();
-                        cc.actionBackup(cc.getEventString());
                     }
                     else if (buffer.charAt(0) == 'u'){//undo
                         cc.undoClick();

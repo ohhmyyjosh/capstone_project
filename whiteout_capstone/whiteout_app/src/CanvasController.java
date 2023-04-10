@@ -142,9 +142,10 @@ public class CanvasController {
             // pop the previous snapshot from the stack
             redoStack.push(canvasSnapshotdeque.peek());
             canvasSnapshotdeque.pop();
-            // clear the canvas
-            //gc.clearRect(0, 0, c.getWidth(), c.getHeight());
+
+            //set the event string to represent a blank canvas
             setEventString("~");
+            
             // restore the previous snapshot to the canvas
             actionCount --;
             if (!canvasSnapshotdeque.isEmpty()) {
