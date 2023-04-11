@@ -132,8 +132,10 @@ public class CanvasController {
             System.out.print(e);
         }
         if (this.command != null){
+            String[] commands = command.split("\n", 2);
             System.out.println("Command set successfully");
-            System.out.println("Command is " + command);
+            System.out.println("Command is " + commands[0]);
+            System.out.println("Command 2 is " + commands[1]);
         }
     }
 

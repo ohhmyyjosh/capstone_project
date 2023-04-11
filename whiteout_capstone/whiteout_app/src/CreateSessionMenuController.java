@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+
 import javafx.event.EventHandler;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -11,7 +14,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -29,7 +34,7 @@ public class CreateSessionMenuController {
 
     @FXML private CheckBox eraseAllPermissionsButton;
 
-    @FXML private Spinner<?> maxGuestsInputField;
+    @FXML private Spinner<Integer> maxGuestsInputField;
 
     @FXML private RadioButton privateSessionButton;
 
@@ -45,6 +50,21 @@ public class CreateSessionMenuController {
     private boolean drawAllowed;
     private boolean eraseAllAllowed;
     private boolean publicRoom;
+
+    public void initialize(){
+        maxGuestsInputField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
+        Pattern pattern = Pattern.compile("[a-zA-Z]*");
+        UnaryOperator<TextFormatter.Change> filter = c -> {
+            if (pattern.matcher(c.getControlNewText()).matches()) {
+                return c ;
+            } else {
+                return null ;
+            }
+        };
+        TextFormatter<String> formatter = new TextFormatter<>(filter);
+
+        sessionNameInputField.setTextFormatter(formatter);
+    }
 
     
     @FXML void backButtonClick(ActionEvent event) {
@@ -75,9 +95,31 @@ public class CreateSessionMenuController {
         command += "h";
 
         this.name = sessionNameInputField.getText();
-        command += name;
+        if (this.name == null){
+            command += "Host" + "\n";
+        }
+        else{
+            command += name + "\n"; 
+        }
 
-        //maxGuestsInputField = new Spinner()
+        this.clientLimit = maxGuestsInputField.getValue();
+        command += Integer.toString(this.clientLimit);
+
+        this.drawAllowed = drawPermissionsButton.isSelected();
+        this.eraseAllAllowed = eraseAllPermissionsButton.isSelected();
+        if(drawAllowed){
+            command += "t";
+        }
+        else{
+            command += "f";
+        }
+        if(eraseAllAllowed){
+            command += "t";
+        }
+        else{
+            command += "f";
+        }
+
         //this.clientLimit = maxGuestsInputField.get
         
         // get username - possibly replace max guests bar with a username input field or replace session name with host name ?
