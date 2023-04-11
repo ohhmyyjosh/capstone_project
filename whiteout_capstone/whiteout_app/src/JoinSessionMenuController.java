@@ -51,6 +51,10 @@ public class JoinSessionMenuController {
     @FXML
     void joinSessionButtonClick(ActionEvent event) {
         Parent root;
+
+        command = "";
+
+        command += "j" + sessionCodeInputField.getText();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
             CanvasController cc = new CanvasController(command);
