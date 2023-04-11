@@ -13,6 +13,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,6 +38,13 @@ public class CreateSessionMenuController {
     @FXML private TextField sessionNameInputField; 
 
     @FXML private ToggleGroup sessionPrivacyToggleGroup;
+    
+    private String command;
+    private String name;
+    private int clientLimit;
+    private boolean drawAllowed;
+    private boolean eraseAllAllowed;
+    private boolean publicRoom;
 
     
     @FXML void backButtonClick(ActionEvent event) {
@@ -63,6 +71,8 @@ public class CreateSessionMenuController {
 
     
     @FXML void createSessionButtonClick(ActionEvent event) {
+
+        this.
         
         // get username - possibly replace max guests bar with a username input field or replace session name with host name ?
         // get session data - verify that all required fields have been filled out
@@ -92,11 +102,14 @@ public class CreateSessionMenuController {
     private void createCanvas(ActionEvent event){
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
+            String command = "h";
+            //root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
+            CanvasController cc = new CanvasController(command);
+            loader.setController(cc);
+            root = loader.load();
             Scene s = new Scene(root);
             s.setFill(Color.TRANSPARENT);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
-            CanvasController cc = loader.getController();
 
             final Node source = (Node) event.getSource();
             final Stage currentStage = (Stage) source.getScene().getWindow();

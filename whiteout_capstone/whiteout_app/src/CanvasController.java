@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -36,6 +37,7 @@ import java.io.File;
 import javafx.embed.swing.SwingFXUtils;
 
 
+
 public class CanvasController {
     // @FXML private Canvas c;
     ResizableCanvas c;
@@ -56,15 +58,17 @@ public class CanvasController {
     private double yOffset;
 
     private SocketController sockCon;
+    private String command;
 
     GraphicsContext gc;
 //This is used for the undo function.
 //private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
-private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
-private Stack<String> redoStack = new Stack<>();
+    private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
+    private Stack<String> redoStack = new Stack<>();
 
-    
-
+    public CanvasController(String command){
+        this.command = command;
+    }
     public void initialize() {
         
         c = new ResizableCanvas();
@@ -127,9 +131,14 @@ private Stack<String> redoStack = new Stack<>();
         catch(IOException e){
             System.out.print(e);
         }
-        
+        if (this.command != null){
+            System.out.println("Command set successfully");
+        }
     }
 
+    public void setString(String command){
+        this.command = command;
+    }
 
 //SocketController modifiers
     public void setSockCon(SocketController sockController){
