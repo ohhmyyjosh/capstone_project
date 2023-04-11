@@ -133,6 +133,7 @@ public class CanvasController {
         }
         if (this.command != null){
             System.out.println("Command set successfully");
+            System.out.println("Command is " + command);
         }
     }
 

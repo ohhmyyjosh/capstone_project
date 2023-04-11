@@ -71,8 +71,14 @@ public class CreateSessionMenuController {
 
     
     @FXML void createSessionButtonClick(ActionEvent event) {
+        this.command = "";
+        command += "h";
 
-        this.
+        this.name = sessionNameInputField.getText();
+        command += name;
+
+        //maxGuestsInputField = new Spinner()
+        //this.clientLimit = maxGuestsInputField.get
         
         // get username - possibly replace max guests bar with a username input field or replace session name with host name ?
         // get session data - verify that all required fields have been filled out
@@ -102,7 +108,6 @@ public class CreateSessionMenuController {
     private void createCanvas(ActionEvent event){
         Parent root;
         try {
-            String command = "h";
             //root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
             CanvasController cc = new CanvasController(command);
