@@ -96,10 +96,10 @@ public class CreateSessionMenuController {
 
         this.name = sessionNameInputField.getText();
         if (this.name == null){
-            command += "Host" + "\n";
+            command += "Host";
         }
         else{
-            command += name + "\n"; 
+            command += name; 
         }
 
         this.clientLimit = maxGuestsInputField.getValue();

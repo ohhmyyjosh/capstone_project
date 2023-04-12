@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -64,8 +65,8 @@ public class CanvasController {
     GraphicsContext gc;
 //This is used for the undo function.
 //private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
-    private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
-    private Stack<String> redoStack = new Stack<>();
+    //private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
+    //private Stack<String> redoStack = new Stack<>();
 
     public CanvasController(String command){
         this.command = command;
@@ -132,15 +133,8 @@ public class CanvasController {
         catch(IOException e){
             System.out.print(e);
         }
-        if (this.command != null){
-            String[] commands = command.split("\n", 2);
-            System.out.println("Command set successfully");
-            System.out.println("Command is " + commands[0]);
-            System.out.println("Command 2 is " + commands[1]);
-            newstr = commands[0]+commands[1];
-        }
         try{
-            this.sockCon.getClient().sendCommand(newstr+ "\n");
+            this.sockCon.getClient().sendCommand(command+ "\n");
         }
         catch(IOException e){
             System.out.println(e);
@@ -260,8 +254,8 @@ public class CanvasController {
         //send eventString
         try{
             eventString += "~";
-            actionBackup(eventString);
-            redoStack.clear();
+            //actionBackup(eventString);
+            //redoStack.clear();
             sockCon.getClient().sendString();
         }
         catch(IOException e){
@@ -272,7 +266,7 @@ public class CanvasController {
     public void clearCanvas(){
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         clearEventString();
-        actionBackup("~");
+        //actionBackup("~");
     }
 
     @FXML
@@ -353,27 +347,27 @@ public class CanvasController {
         this.colorStr = color.toString();
     }
 
-    void actionBackup(String event){
-        actionCount++;
-        if ( event == "~"){
-            if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-                canvasSnapshotdeque.removeFirst();
-                actionCount--;
-            }
-            canvasSnapshotdeque.push("~");
-        }
-        else if(!canvasSnapshotdeque.isEmpty()){
-            if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-                canvasSnapshotdeque.removeFirst();
-                actionCount--;
-            }
-            //create a new node with the newly added stroke
-            canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
-        }
-        else{
-            canvasSnapshotdeque.push(event);
-        }
-    }
+    // void actionBackup(String event){
+    //     actionCount++;
+    //     if ( event == "~"){
+    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+    //             canvasSnapshotdeque.removeFirst();
+    //             actionCount--;
+    //         }
+    //         canvasSnapshotdeque.push("~");
+    //     }
+    //     else if(!canvasSnapshotdeque.isEmpty()){
+    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
+    //             canvasSnapshotdeque.removeFirst();
+    //             actionCount--;
+    //         }
+    //         //create a new node with the newly added stroke
+    //         canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
+    //     }
+    //     else{
+    //         canvasSnapshotdeque.push(event);
+    //     }
+    // }
 
 
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
@@ -392,8 +386,8 @@ void undoClick(ActionEvent event) {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
-            sockCon.getClient().closeSock();
 
+            sockCon.getClient().closeSock();
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
