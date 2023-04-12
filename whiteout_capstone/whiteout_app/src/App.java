@@ -22,29 +22,6 @@ public class App extends Application {
         catch(IOException e){
             System.out.println(e);
         }
-
-        try{
-            RoomController room = new RoomController();
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
-
-        // Parent root;
-        // Scene scene = new Scene(new Pane());
-        // ViewSwitcher.setScene(scene);
-        // ViewSwitcher.switchTo(View.MAIN);
-
-        // scene.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
-        
-        // //primaryStage.initStyle(StageStyle.TRANSPARENT);
-        // //primaryStage.setOpacity(0.5);
-
-        // primaryStage.setTitle("White-Out");
-        // primaryStage.setResizable(false);
-        // primaryStage.setScene(scene);
-        // primaryStage.show();
-
     }
   
  

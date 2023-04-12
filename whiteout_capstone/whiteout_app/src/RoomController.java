@@ -21,9 +21,10 @@ import javafx.scene.Scene;
 import javafx.event.ActionEvent;
 
 
-public class RoomController extends Thread{
+public class RoomController{
 
     private String key;
+    private ServerController server;
 
     private int buffer = 0;
     private int idValue;
@@ -54,9 +55,9 @@ public class RoomController extends Thread{
         this.roomString = "";
 
         this.room = new Vector<ConnectedClient>();
-        this.start();
     }
-    public RoomController(Socket sock, BufferedReader in, BufferedWriter out, String hostInit){
+    public RoomController(Socket sock, BufferedReader in, BufferedWriter out, 
+    String hostInit, ServerController server){
         try{
             this.port = 5001;
             this.roomSize = 3;
@@ -66,28 +67,11 @@ public class RoomController extends Thread{
             this.in = in;
             this.out = out;
             this.key = "";
+            this.server = server;
 
             this.room = new Vector<ConnectedClient>();
-            cc = new CanvasController();
-            System.out.println("New canvas established..");
-            cc.establishRoom(this);
-            //System.out.println("New canvas established..");
-
-            connection = cc.getClient();
-            System.out.println("Canvas to Client link established..");
-            connection.buildClient(port, servSock, sock, in, out, idValue, this, hostInit);
-            System.out.println("Client fully built..");
-
-            room.add(connection);
-            room.elementAt(idValue-1).start();
-            idValue++;
-            System.out.println("Client thread started successfully...");
-            System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
+            addClient(sock, in, out, hostInit);
             connection.sendString("m"+ key);
-
-            
-
-            this.start();
         }
         catch(IOException e){
             System.out.println (e);
@@ -107,7 +91,7 @@ public class RoomController extends Thread{
 
             connection = cc.getClient();
             System.out.println("Canvas to Client link established..");
-            connection.buildClient(port, servSock, sock, in, out, idValue, this, guestInit);
+            connection.buildClient(port, sock, in, out, idValue, this, guestInit);
             System.out.println("Client fully built..");
 
             room.add(connection);
@@ -123,43 +107,11 @@ public class RoomController extends Thread{
         return true;
     }
 
-    @Override
-    public void run(){
-        // while(true){
-        //     System.out.println("Waiting for connection...");
-        //     //socket creation
-            
-        //     try{
-        //     // sock = servSock.accept();
-        //     // in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        //     // out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-        //     System.out.println("New buffers established..");
-
-        //     cc = new CanvasController();
-        //     System.out.println("New canvas established..");
-        //     cc.establishRoom(this);
-        //     //System.out.println("New canvas established..");
-
-        //     connection = cc.getClient();
-        //     System.out.println("Canvas to Client link established..");
-        //     connection.buildClient(port, servSock, sock, in, out, idValue, this);
-        //     System.out.println("Client fully built..");
-
-        //     room.add(connection);
-        //     room.elementAt(idValue-1).start();
-        //     idValue++;
-        //     System.out.println("Client thread started successfully...");
-        //     System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
-        //     }
-            
-        //     catch(Exception exception){
-        //         System.out.println(exception);
-        //     }
-        // }
-    }
-
     public Vector<ConnectedClient> getRoom(){
         return this.room;
+    }
+    public void destroyRoom(){
+        this.server.removeRoom(key);
     }
 
     public void removeClient(int idValue){
@@ -173,7 +125,14 @@ public class RoomController extends Thread{
             this.idValue --;
         }
         else{
-            System.exit(0);//placeholder, will close room when multiple rooms are implemented.
+            try{
+                this.room.clear();
+                this.sock.close();
+                destroyRoom();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
         }
     }
 

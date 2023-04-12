@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerController extends Thread{
 
@@ -25,20 +26,26 @@ public class ServerController extends Thread{
     public ServerController() throws IOException{
         Map<String, RoomController> map = new HashMap<String, RoomController>();
         rooms = map;
-        rooms = new HashMap();
+        rooms = new ConcurrentHashMap();
         this.port = 5001;
         servSock = new ServerSocket(port);
         this.start();
     }
 
+    public void removeRoom(String key){
+        this.rooms.remove(key);
+        System.out.println("Room closed successfully");
+    }
+
     public String buildRoom(Socket sock, BufferedReader in, BufferedWriter out, String hostInit){
-        room = new RoomController(sock, in, out, hostInit);
+        room = new RoomController(sock, in, out, hostInit, this);
         while(true){
             key = "";
             Random r = new Random(System.currentTimeMillis());
             key += Integer.toString(r.nextInt(99999));
             
             if(rooms.put(key, room) != null){
+                System.out.println("Key found: " + key);
                 room.setKey(key);
                 break;
             }

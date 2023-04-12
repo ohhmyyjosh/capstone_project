@@ -30,12 +30,11 @@ public class ConnectedClient extends Thread {
         this.cc = cc;
     }
 
-    public void buildClient (int port, ServerSocket servSock, Socket sock, 
+    public void buildClient (int port, Socket sock, 
     BufferedReader in, BufferedWriter out, int idValue, 
     RoomController room, String hostInit) throws IOException{
         System.out.println("Client Building..");
         this.port = port;
-        this.servSock = servSock;
         this.sock = sock;
         this.in = in;
         this.out = out;

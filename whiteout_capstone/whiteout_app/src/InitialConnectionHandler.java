@@ -29,35 +29,33 @@ public class InitialConnectionHandler extends Thread{
     public InitialConnectionHandler(Socket sock, ServerController server){
         this.sock = sock;
         this.server = server;
+        this.start();
     }
 
     @Override
     public void run(){
-        while(true){
-            try{
-                in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-                out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
-                System.out.println("New buffers established..");
+        try{
+            in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+            System.out.println("New buffers established..");
 
-                buffer = String.valueOf(in.readLine());
-                if (buffer.charAt(1) == 'h'){//write string
-                    out.write(server.buildRoom(sock, in, out, buffer) + "\n");
+            buffer = String.valueOf(in.readLine());
+            System.out.println(buffer);
+            if (buffer.charAt(0) == 'h'){//write string
+                System.out.println("Host found.");
+                out.write("m" + server.buildRoom(sock, in, out, buffer) + "\n");
+                out.flush();
+            }
+            else if(buffer.charAt(0) == 'j'){
+                if (!server.joinRoom(sock, in, out, buffer.substring(1))){
+                    out.write("mFailed to join session. Code is incorrect or room is full.\n");
                     out.flush();
                 }
-                else if(buffer.charAt(1) == 'j'){
-                    if (!server.joinRoom(sock, in, out, buffer.substring(2))){
-                        out.write("mFailed to join session. Code is incorrect or room is full.\n");
-                        out.flush();
-                    }
-                }
-                cc = new CanvasController();
-                System.out.println("New canvas established..");
             }
-            catch(IOException e){
-                System.out.println(e);
-            }    
+            return;
         }
+        catch(IOException e){
+            System.out.println(e);
+        }    
     }
-
-    
 }
