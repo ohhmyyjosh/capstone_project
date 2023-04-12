@@ -56,6 +56,9 @@ public class InputHandler extends Thread{
                         cc.writeToCanvas();
                     }
                 }
+                else if (buffer.charAt(0) == 'm'){
+                    System.out.println("Room code is: " + buffer.substring(1));
+                }
             }
             catch(Exception e){
                 System.out.println(e);

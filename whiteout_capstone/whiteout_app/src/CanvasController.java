@@ -59,6 +59,7 @@ public class CanvasController {
 
     private SocketController sockCon;
     private String command;
+    private String newstr;
 
     GraphicsContext gc;
 //This is used for the undo function.
@@ -136,6 +137,13 @@ public class CanvasController {
             System.out.println("Command set successfully");
             System.out.println("Command is " + commands[0]);
             System.out.println("Command 2 is " + commands[1]);
+            newstr = commands[0]+commands[1];
+        }
+        try{
+            this.sockCon.getClient().sendCommand(newstr+ "\n");
+        }
+        catch(IOException e){
+            System.out.println(e);
         }
     }
 
