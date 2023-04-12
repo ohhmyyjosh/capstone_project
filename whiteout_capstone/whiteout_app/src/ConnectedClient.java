@@ -31,7 +31,8 @@ public class ConnectedClient extends Thread {
     }
 
     public void buildClient (int port, ServerSocket servSock, Socket sock, 
-    BufferedReader in, BufferedWriter out, int idValue, RoomController room) throws IOException{
+    BufferedReader in, BufferedWriter out, int idValue, 
+    RoomController room, String hostInit) throws IOException{
         System.out.println("Client Building..");
         this.port = port;
         this.servSock = servSock;
@@ -44,6 +45,9 @@ public class ConnectedClient extends Thread {
         System.out.println("Client Connected.");
 
     }
+    // private String parseInit(String init){
+    //     somestuff
+    // }
 
     public void adjustId(){
         this.idValue --;

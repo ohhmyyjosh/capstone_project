@@ -17,6 +17,13 @@ public class App extends Application {
     public void start(Stage primaryStage) {
         
         try{
+            ServerController server = new ServerController();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        try{
             RoomController room = new RoomController();
         }
         catch(IOException e){
