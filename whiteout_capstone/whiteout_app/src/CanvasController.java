@@ -60,6 +60,8 @@ public class CanvasController {
     private String colorStr;
     private Color transferColor;
     private Color color;
+    private double size;
+    private double transferSize;
 
     private double xOffset;
     private double yOffset;
@@ -129,7 +131,7 @@ public class CanvasController {
         brushSizeChoiceBox.setItems(brushSizes);
         brushSizeChoiceBox.setValue(1.0); // Default brush size
         brushSizeChoiceBox.setOnAction(event -> {
-            double size = (double) brushSizeChoiceBox.getValue();
+            this.size = (double) brushSizeChoiceBox.getValue();
             gc.setLineWidth(size);
         });
 
@@ -200,6 +202,19 @@ public class CanvasController {
             subStr += eventString.charAt(index);
             index++;
         }
+        //read brush size
+        while(index < eventString.length()){
+            if (eventString.charAt(index) == '/'){
+                index++;
+                transferSize = Double.valueOf(subStr);
+                System.out.println("Brush transfered");
+                gc.setLineWidth(size);
+                subStr = "";
+                break;
+            }
+            subStr += eventString.charAt(index);
+            index++;
+        }
 
         //draw
         for(int i = index; i < eventString.length(); i ++){
@@ -238,7 +253,7 @@ public class CanvasController {
     }
 
     private void handleMousePressed(MouseEvent event) {
-        double size = (double) brushSizeChoiceBox.getValue();
+        this.size = (double) brushSizeChoiceBox.getValue();
         gc.setLineWidth(size);
         gc.setStroke(color);
         gc.setFill(color);
@@ -248,7 +263,7 @@ public class CanvasController {
         colorStr = color.toString();
         
         // add to eventString and strokes
-        String stroke = colorStr + "*" + (event.getX()) + "," + (event.getY()) + "z";
+        String stroke = colorStr + "*" + Double.toString(size) + "/" + (event.getX()) + "," + (event.getY()) + "z";
         eventString += stroke;
         
     }
@@ -440,7 +455,7 @@ void undoClick(ActionEvent event) {
     //     SnapshotParameters params = new SnapshotParameters();
     //     params.setFill(Color.TRANSPARENT);
     //     WritableImage image = c2.snapshot(params, null);
-    //     this.c.getGraphicsContext2D().drawImage(image, 0, 0);
+    //     this.c.getGraphic Context2D().drawImage(image, 0, 0);
     // }
 
 }
