@@ -27,6 +27,7 @@ import javafx.scene.Node;
 public class JoinSessionMenuController {
 
     private String command = "";
+    private String name = "";
 
     @FXML
     private Button backButton;
@@ -36,6 +37,23 @@ public class JoinSessionMenuController {
 
     @FXML
     private TextField sessionCodeInputField;
+    @FXML
+    private TextField sessionCodeInputField1;
+
+    public void initialize(){
+        Pattern pattern = Pattern.compile("[a-zA-Z]*");
+        UnaryOperator<TextFormatter.Change> filter = c -> {
+            if (pattern.matcher(c.getControlNewText()).matches()) {
+                return c ;
+            } else {
+                return null ;
+            }
+        };
+        this.name = "";
+        TextFormatter<String> formatter = new TextFormatter<>(filter);
+
+        sessionCodeInputField1.setTextFormatter(formatter);
+    }
 
     @FXML
     void backButtonClick(ActionEvent event) {
@@ -65,6 +83,13 @@ public class JoinSessionMenuController {
         command = "";
 
         command += "j" + sessionCodeInputField.getText() + "~";
+        name = sessionCodeInputField1.getText();
+        if (sessionCodeInputField1.getText() == null || sessionCodeInputField1.getText().trim().isEmpty()){
+            command += "Guest";
+        }
+        else{
+            command += name; 
+        }
         createCanvas(event);
     }
 

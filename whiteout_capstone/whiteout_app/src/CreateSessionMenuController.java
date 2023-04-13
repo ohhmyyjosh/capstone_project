@@ -61,6 +61,7 @@ public class CreateSessionMenuController {
                 return null ;
             }
         };
+        this.name = "";
         TextFormatter<String> formatter = new TextFormatter<>(filter);
 
         sessionNameInputField.setTextFormatter(formatter);
@@ -95,7 +96,8 @@ public class CreateSessionMenuController {
         command += "h";
 
         this.name = sessionNameInputField.getText();
-        if (this.name == null){
+        System.out.println("Name is: " + String.valueOf(name));
+        if (sessionNameInputField.getText() == null || sessionNameInputField.getText().trim().isEmpty()){
             command += "Host";
         }
         else{
