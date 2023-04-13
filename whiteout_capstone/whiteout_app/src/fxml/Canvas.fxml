@@ -32,9 +32,9 @@
                         <ColorPicker fx:id="colorPicker" onAction="#colorPickerAction" prefHeight="25.0" prefWidth="87.0" />
                      </graphic>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Action 2">
+                  <MenuItem mnemonicParsing="false" text="Brush Size">
                      <graphic>
-                        <ChoiceBox prefWidth="150.0" />
+                        <ChoiceBox fx:id="brushSizeChoiceBox" prefWidth="150.0" />
                      </graphic>
                   </MenuItem>
                </items>

@@ -11,7 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
@@ -35,6 +37,9 @@ import javafx.scene.input.*;
 import javax.imageio.ImageIO;
 import java.nio.file.Files;
 import java.io.File;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 
 
@@ -46,6 +51,7 @@ public class CanvasController {
     @FXML private AnchorPane ap;
     @FXML private ToolBar tb;
     @FXML private ColorPicker colorPicker; 
+    @FXML private ChoiceBox<Double> brushSizeChoiceBox;
 
     private boolean flag;
     private int actionCount;
@@ -106,6 +112,7 @@ public class CanvasController {
         tb.setMaxHeight(Control.USE_PREF_SIZE);
         tb.setMaxWidth(Control.USE_PREF_SIZE);
 
+
         //box.setStyle("-fx-background-color: rgba(0,0,0,0.0);");
         box.setBackground(Background.EMPTY);
         ap.setStyle("-fx-background-color: rgba(0,0,0,0.1);");
@@ -116,6 +123,15 @@ public class CanvasController {
         ap.setMaxWidth(-1);
 
         box.setVgrow(ap, Priority.ALWAYS);
+
+    
+        ObservableList<Double> brushSizes = FXCollections.observableArrayList(1.0, 2.0, 3.0, 4.0, 5.0);
+        brushSizeChoiceBox.setItems(brushSizes);
+        brushSizeChoiceBox.setValue(1.0); // Default brush size
+        brushSizeChoiceBox.setOnAction(event -> {
+            double size = (double) brushSizeChoiceBox.getValue();
+            gc.setLineWidth(size);
+        });
 
         c.heightProperty().bind(ap.heightProperty());
         c.widthProperty().bind(ap.widthProperty());
@@ -222,6 +238,8 @@ public class CanvasController {
     }
 
     private void handleMousePressed(MouseEvent event) {
+        double size = (double) brushSizeChoiceBox.getValue();
+        gc.setLineWidth(size);
         gc.setStroke(color);
         gc.setFill(color);
         gc.beginPath();
