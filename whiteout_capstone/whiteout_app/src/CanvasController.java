@@ -208,7 +208,7 @@ public class CanvasController {
                 index++;
                 transferSize = Double.valueOf(subStr);
                 System.out.println("Brush transfered");
-                gc.setLineWidth(size);
+                gc.setLineWidth(transferSize);
                 subStr = "";
                 break;
             }
