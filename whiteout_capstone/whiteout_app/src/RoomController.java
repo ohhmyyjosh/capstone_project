@@ -263,12 +263,16 @@ public class RoomController{
         clientList();
     }
     public void clientList(){
+        String buffer = "";
+        for (int i = 0; i < room.size(); i ++){
+            buffer += "z" + room.elementAt(i).getNickName()
+            + "~" + room.elementAt(i).getDraw()+ room.elementAt(i).getErase();
+        }
+
         for (int i = 0; i < room.size(); i ++){
             try{
                 room.elementAt(i).sendString(
-                "z" + room.elementAt(i).getNickName()
-                + "~" + room.elementAt(i).getDraw()+ room.elementAt(i).getErase()
-                );
+                "z" + buffer);
             }catch(IOException e){
                 e.printStackTrace();
             }
