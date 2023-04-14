@@ -37,7 +37,7 @@
                   <Image url="@../images/Marker.png" />
                </image>
             </ImageView>
-            <Button fx:id="settingsButton" layoutX="585.0" layoutY="355.0" mnemonicParsing="false" onAction="#settingsButtonClick" style="-fx-background-color: lightgray;">
+            <Button fx:id="settingsButton" layoutX="585.0" layoutY="355.0" mnemonicParsing="false" onAction="#settingsButtonClick" style="-fx-background-color: lightgray;" visible="false">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                      <image>

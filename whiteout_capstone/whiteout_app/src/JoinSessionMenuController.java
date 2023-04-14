@@ -97,7 +97,7 @@ public class JoinSessionMenuController {
         Parent root;
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Canvas.fxml"));
-            CanvasController cc = new CanvasController(command);
+            CanvasController cc = new CanvasController(command, false);
             loader.setController(cc);
             root = loader.load();
             Scene s = new Scene(root);

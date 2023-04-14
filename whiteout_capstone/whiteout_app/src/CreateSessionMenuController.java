@@ -123,11 +123,6 @@ public class CreateSessionMenuController {
         }
 
         //this.clientLimit = maxGuestsInputField.get
-        
-        // get username - possibly replace max guests bar with a username input field or replace session name with host name ?
-        // get session data - verify that all required fields have been filled out
-        // send username and session data to server
-        // on the server, process this data and create a session
 
         // createSessionButton.disableProperty().bind(Bindings.createBooleanBinding(() -> checkTextfields(sessionNameInputField.getText()),sessionNameInputField.textProperty()));
 
@@ -154,7 +149,8 @@ public class CreateSessionMenuController {
         try {
             //root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
-            CanvasController cc = new CanvasController(command);
+            CanvasController cc = new CanvasController(command, true);
+            
             loader.setController(cc);
             root = loader.load();
             Scene s = new Scene(root);
