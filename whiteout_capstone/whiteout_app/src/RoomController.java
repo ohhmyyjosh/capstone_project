@@ -133,7 +133,7 @@ public class RoomController{
     }
     private void parseHostString(String hostInit){
         String buffer = "";
-        int index = 0;
+        int index = 1;
         //parse name
         for (int i = index; i < hostInit.length(); i++){
             if (Character.isDigit(hostInit.charAt(i))){
@@ -175,7 +175,7 @@ public class RoomController{
 
     private void parseGuestString(String guestInit){
         String buffer = "";
-        int index = 0;
+        int index = 1;
         //parse name
         for (int i = index; i < guestInit.length(); i++){
             if (guestInit.charAt(i) == '~'){
@@ -260,6 +260,21 @@ public class RoomController{
             room.elementAt(i).sendString(("c" + roomString));
         }
         this.roomString = "";
+        clientList();
+    }
+    public void clientList(){
+        for (int i = 0; i < room.size(); i ++){
+            try{
+                room.elementAt(i).sendString(
+                "z" + room.elementAt(i).getNickName()
+                + "~" + room.elementAt(i).getDraw()+ room.elementAt(i).getErase()
+                );
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        this.roomString = "";
+
     }
 
 }
