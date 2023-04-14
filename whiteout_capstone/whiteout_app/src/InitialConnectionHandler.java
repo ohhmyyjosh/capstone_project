@@ -12,6 +12,7 @@ public class InitialConnectionHandler extends Thread{
     private String buffer = "";
     private String sendBuffer = "";
     private int idValue;
+    private String key;
     
     private int port;
     private Socket sock;
@@ -44,9 +45,17 @@ public class InitialConnectionHandler extends Thread{
             System.out.println(buffer);
             if (buffer.charAt(0) == 'h'){//write string
                 System.out.println("Host found.");
-                sendBuffer = "m" + server.buildRoom(sock, in, out, buffer) + "\n";
+                this.key = server.buildRoom(sock, in, out, buffer);
+                sendBuffer = "m" + key + "\n";
                 out.write(sendBuffer);
                 out.flush();
+                try{
+                    Thread.sleep(100);
+                    server.getRoom(key).refresh();
+                }
+                catch(InterruptedException e){
+                    e.printStackTrace();;
+                }
             }
             else if(buffer.charAt(0) == 'j'){
                 if (!server.joinRoom(sock, in, out, buffer.substring(1))){
@@ -68,5 +77,6 @@ public class InitialConnectionHandler extends Thread{
         catch(IOException e){
             System.out.println(e);
         }    
+        return;
     }
 }

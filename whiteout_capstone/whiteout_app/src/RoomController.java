@@ -48,6 +48,8 @@ public class RoomController{
 
     private Boolean allowDraw;
     private Boolean allowErase;
+
+    private Boolean deathFlag;
     
     public RoomController() throws IOException{
         this.port = 5001;
@@ -70,6 +72,8 @@ public class RoomController{
         this.out = out;
         this.key = "";
         this.server = server;
+
+        this.deathFlag = false;
 
         this.room = new Vector<ConnectedClient>();
         addHost(sock, in, out, hostInit);
@@ -171,26 +175,58 @@ public class RoomController{
         else{
             this.allowErase = false;
         }
+        connection.setDraw(true);
+        connection.setErase(true);
     }
 
     private void parseGuestString(String guestInit){
         String buffer = "";
-        int index = 1;
+        int index = 6;
         //parse name
         for (int i = index; i < guestInit.length(); i++){
-            if (guestInit.charAt(i) == '~'){
-                connection.setNickName(buffer);
-                buffer = "";
-                index = i;
-                break;
-            } 
-            else{
                 buffer += guestInit.charAt(i);
             }
+            connection.setNickName(buffer);
             connection.setDraw(allowDraw);
             connection.setErase(allowErase);
+    }
+    
+    public void setDeathFlag(Boolean deathFlag){
+        this.deathFlag = deathFlag;
+    }
+    public Boolean getDeathFlag(){
+        return this.deathFlag;
+    }
+    public void destroyRoom(int idValue){
+        try{
+            for(int i = idValue-1; i < room.size(); i++){
+                room.elementAt(idValue-1).adjustId();
+            }
+            while(!room.isEmpty()){
+                try{
+                    room.elementAt(0).closeSock(deathFlag);
+                    room.setElementAt(null, 0);
+                    room.remove(0);
+                }
+                catch(IOException e){
+                    e.printStackTrace();;
+                }
+            }
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            e.printStackTrace();
+            this.room.clear();
+        }
+        try{
+            this.room.clear();
+            this.sock.close();
+            destroyRoom();
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
+
     public Vector<ConnectedClient> getRoom(){
         return this.room;
     }
@@ -201,6 +237,9 @@ public class RoomController{
     public void removeClient(int idValue){
         room.setElementAt(null, idValue-1);
         room.remove(idValue-1);
+        if (idValue ==1){
+            exitHandling(idValue);
+        }
         if (!room.isEmpty()){
             for(int i = idValue-1; i < room.size(); i++){
                 room.elementAt(idValue-1).adjustId();
@@ -215,15 +254,49 @@ public class RoomController{
             }
         }
         else{
-            try{
-                this.room.clear();
-                this.sock.close();
-                destroyRoom();
-            }
-            catch(IOException e){
-                e.printStackTrace();
-            }
+            // try{
+            //     this.room.clear();
+            //     this.sock.close();
+            //     destroyRoom();
+            // }
+            // catch(IOException e){
+            //     e.printStackTrace();
+            // }
         }
+    }
+
+    public void exitHandling(int id){
+        deathFlag = true;
+        System.out.println("Deleting Host");
+        destroyRoom(id);
+    }
+
+    public void clearAll(){
+        for (int i = 0; i < room.size(); i ++){
+            room.elementAt(i).getCC().clearCanvas();
+            System.out.println("Clearing..");
+        }
+    }
+    public void updatePermissions(String buffer){
+        if (buffer.charAt(0) == 'd'){
+            System.out.println(buffer);
+            int roomNo = Integer.valueOf(buffer.substring(1));
+            System.out.println(room.elementAt(roomNo).getDrawString());
+            System.out.println("Drawing change detected");
+            room.elementAt(roomNo).setDraw(!room.elementAt(roomNo).getDraw());
+            System.out.println(room.elementAt(roomNo).getDrawString());
+            System.out.println("Drawing toggled");
+        }
+        else if (buffer.charAt(0) == 'e'){
+            System.out.println(buffer);
+            int roomNo = Integer.valueOf(buffer.substring(1));
+            System.out.println(room.elementAt(roomNo).getEraseString());
+            System.out.println("erasing change detected");
+            room.elementAt(roomNo).setErase(!room.elementAt(roomNo).getErase());
+            System.out.println(room.elementAt(roomNo).getEraseString());
+            System.out.println("erasing toggled");
+        }
+        clientList();
     }
 
     public void update(String eventString, int idValue) throws IOException{ 
@@ -248,6 +321,7 @@ public class RoomController{
         this.roomString = "";
     }
     public void refresh() throws IOException{
+        System.out.println("Refreshing now!");
         for (int i = 0; i < room.size(); i ++){
             if ( room.elementAt(i).getCC().getCurrentString() != null){
                 roomString += room.elementAt(i).getCC().getCurrentString();
@@ -260,24 +334,41 @@ public class RoomController{
             room.elementAt(i).sendString(("c" + roomString));
         }
         this.roomString = "";
+        try{
+            Thread.sleep(100);
+        }
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
         clientList();
     }
     public void clientList(){
-        String buffer = "";
-        for (int i = 0; i < room.size(); i ++){
-            buffer += "z" + room.elementAt(i).getNickName()
-            + "~" + room.elementAt(i).getDraw()+ room.elementAt(i).getErase();
-        }
 
-        for (int i = 0; i < room.size(); i ++){
+        String buffer = "";
+        System.out.println("Compiling client list");
+        int index;
+        for (index = 0; index < room.size(); index ++){
+            if(room.elementAt(index).getNickName() != null){
+                buffer += "`" + room.elementAt(index).getNickName()
+                + "~" + room.elementAt(index).getDrawString() + 
+                room.elementAt(index).getEraseString();
+            }
+            
+        }
+        for (int i = index; i < room.size(); i ++){
+            buffer += "`Empty~xx";
+        }
+        System.out.println(String.valueOf(buffer));
+        System.out.println("Refreshing client list");
+
+        for(int i = 0; i < room.size(); i ++){
             try{
-                room.elementAt(i).sendString(
-                "z" + buffer);
-            }catch(IOException e){
+                room.elementAt(i).sendString("z" + buffer);
+            }
+            catch(IOException e){
                 e.printStackTrace();
             }
         }
-        this.roomString = "";
 
     }
 
