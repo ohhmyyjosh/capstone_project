@@ -94,7 +94,7 @@ public class RoomController{
 
             room.add(connection);
             room.elementAt(idValue-1).start();
-            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getName());
+            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getNickName());
             idValue++;
             System.out.println("Client thread started successfully...");
             System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
@@ -120,7 +120,7 @@ public class RoomController{
 
             room.add(connection);
             room.elementAt(idValue-1).start();
-            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getName());
+            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getNickName());
             idValue++;
             System.out.println("Client thread started successfully...");
             System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
@@ -137,7 +137,7 @@ public class RoomController{
         //parse name
         for (int i = index; i < hostInit.length(); i++){
             if (Character.isDigit(hostInit.charAt(i))){
-                connection.setName(buffer);
+                connection.setNickName(buffer);
                 buffer = "";
                 index = i;
                 break;
@@ -179,7 +179,7 @@ public class RoomController{
         //parse name
         for (int i = index; i < guestInit.length(); i++){
             if (guestInit.charAt(i) == '~'){
-                connection.setName(buffer);
+                connection.setNickName(buffer);
                 buffer = "";
                 index = i;
                 break;

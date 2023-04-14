@@ -28,6 +28,7 @@ public class ConnectedClient extends Thread {
     
     private Boolean allowDraw;
     private Boolean allowErase;
+    private String name;
 
     public ConnectedClient (CanvasController cc){
         this.cc = cc;
@@ -47,7 +48,12 @@ public class ConnectedClient extends Thread {
         System.out.println("Client Connected.");
 
     }
-
+    public void setNickName(String name){
+        this.name = name;
+    }
+    public String getNickName(){
+        return this.name;
+    }
     public void setDraw(Boolean perm){
         this.allowDraw = perm;
     }
