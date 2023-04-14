@@ -3,7 +3,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
@@ -11,11 +13,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="box" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="box" prefHeight="401.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ToolBar fx:id="tb" prefHeight="40.0" prefWidth="640.0">
+      <ToolBar fx:id="tb" prefHeight="40.0">
          <items>
+            <ImageView fx:id="dragToolbarButton" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/drag.png" />
+               </image>
+            </ImageView>
             <ToggleButton mnemonicParsing="false" onAction="#mouseButtonToggle" text="Mouse">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -100,7 +108,16 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" onAction="#exitCanvasClick" text="Exit">
+            <Button fx:id="userListButton" mnemonicParsing="false" onAction="#toggleUserList" text="User List">
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/usersicon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="exitCanvasButton" mnemonicParsing="false" onAction="#exitCanvasClick" text="Exit">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -111,6 +128,30 @@
             </Button>
          </items>
       </ToolBar>
-      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="640.0" />
+      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="359.0" prefWidth="156.0">
+         <children>
+            <ScrollPane fx:id="scrollPane" layoutX="474.0" prefHeight="359.0" prefWidth="281.0">
+               <content>
+                  <VBox fx:id="scrollVBox" prefHeight="358.0" prefWidth="266.0">
+                     <children>
+                        <ToolBar fx:id="userListToolBar" prefHeight="40.0" prefWidth="200.0">
+                           <items>
+                              <ImageView fitHeight="27.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/drag.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="roomCodeLabel" text="Room Code: ">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </items>
+                        </ToolBar>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children></AnchorPane>
    </children>
 </VBox>

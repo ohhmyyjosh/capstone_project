@@ -1,4 +1,6 @@
 import java.net.*;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import java.io.*;
 
@@ -11,6 +13,7 @@ public class InputHandler extends Thread{
     ServerSocket servSock;
     BufferedReader in;
     ActionEvent event;
+    private Boolean ready;
 
     public InputHandler(ClientController client){
         System.out.println("Input Handler made!");
@@ -18,7 +21,7 @@ public class InputHandler extends Thread{
         this.cc = client.getCanvas();
         this.sock = client.getSock();
         this.in = client.getReader();
-        this.event = event;
+        this.ready = false;
     }
 
     @Override
@@ -32,14 +35,14 @@ public class InputHandler extends Thread{
                     if(buffer == "null"){
                         System.out.println("closing socket");
                         sock.close();
-                        cc.exitCanvasClick(event);
+                        cc.exitCanvasClick(new ActionEvent());
                         return;
                     }
                 }
                 catch(IOException e){
                     System.out.println("closing socket");
                     sock.close();
-                    cc.exitCanvasClick(event);
+                    cc.exitCanvasClick(new ActionEvent());
                     return;
                 }
                 System.out.println("input recieved " + buffer.charAt(0));
@@ -62,11 +65,14 @@ public class InputHandler extends Thread{
                 }
                 else if (buffer.charAt(0) == 'm'){
                     System.out.println("Room code is: " + buffer.substring(1));
+                    this.cc.setRoomCode(buffer.substring(1));
+                    System.out.print(this.cc.getRoomCode());
+                    Platform.runLater(() -> cc.roomCodeAlert());
                 }
             }
             catch(Exception e){
                 System.out.println(e);
-                cc.exitCanvasClick(event);
+                cc.exitCanvasClick(new ActionEvent());
                 return;
             }
         }

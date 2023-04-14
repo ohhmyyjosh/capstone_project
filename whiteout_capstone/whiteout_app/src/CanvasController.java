@@ -11,11 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Priority;
@@ -25,22 +27,23 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Node;
 import javafx.scene.input.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
 //import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
-import java.util.Stack;
-import java.util.Deque;
-import java.util.ArrayDeque;
 import java.awt.*;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.scene.input.*;
+
 import javax.imageio.ImageIO;
-import java.nio.file.Files;
+
 import java.io.File;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Cursor;
+
 
 
 
@@ -52,6 +55,12 @@ public class CanvasController {
     @FXML private ToolBar tb;
     @FXML private ColorPicker colorPicker; 
     @FXML private ChoiceBox<Double> brushSizeChoiceBox;
+    @FXML private ScrollPane scrollPane;
+    @FXML private VBox scrollVBox;
+    @FXML ToolBar userListToolBar;
+    @FXML ImageView dragUserListButton;
+    @FXML ImageView dragToolBarButton;
+    @FXML Label roomCodeLabel;
 
     private boolean flag;
     private int actionCount;
@@ -69,6 +78,7 @@ public class CanvasController {
     private SocketController sockCon;
     private String command;
     private String newstr;
+    private String roomCode;
 
     GraphicsContext gc;
 //This is used for the undo function.
@@ -89,6 +99,7 @@ public class CanvasController {
         c.setOnMouseReleased(this::handleMouseReleased);
 
         tb.setOnMousePressed(event -> {
+            tb.setCursor(Cursor.CLOSED_HAND);
             xOffset = event.getSceneX() - tb.getTranslateX();
             yOffset = event.getSceneY() - tb.getTranslateY();
         });
@@ -99,11 +110,29 @@ public class CanvasController {
         });
     
         tb.setOnMouseReleased(event -> {
-            // Save toolbar position, if needed
+            tb.setCursor(Cursor.DEFAULT);
         });
 
         tb.setMouseTransparent(false);
         tb.toFront();
+
+        userListToolBar.setOnMousePressed(event -> {
+            userListToolBar.setCursor(Cursor.CLOSED_HAND);
+            xOffset = event.getSceneX() - scrollPane.getTranslateX();
+            yOffset = event.getSceneY() - scrollPane.getTranslateY();
+        });
+    
+        userListToolBar.setOnMouseDragged(event -> {
+            scrollPane.setTranslateX(event.getSceneX() - xOffset);
+            scrollPane.setTranslateY(event.getSceneY() - yOffset);
+        });
+    
+        userListToolBar.setOnMouseReleased(event -> {
+            userListToolBar.setCursor(Cursor.DEFAULT);
+        });
+        
+        scrollPane.setMouseTransparent(false);
+        scrollPane.toFront();
 
         c.addEventFilter(MouseEvent.ANY, event -> {
             if (tb.getBoundsInParent().intersects(event.getSceneX(), event.getSceneY(), 1, 1)) {
@@ -125,6 +154,10 @@ public class CanvasController {
         ap.setMaxWidth(-1);
 
         box.setVgrow(ap, Priority.ALWAYS);
+        box.setVgrow(scrollPane, Priority.ALWAYS);
+
+
+        //scrollVBox.getChildren().addAll(userListToolBar);
 
     
         ObservableList<Double> brushSizes = FXCollections.observableArrayList(1.0, 2.0, 3.0, 4.0, 5.0);
@@ -146,7 +179,7 @@ public class CanvasController {
         actionCount = 0;//the number of actions currently stored for undo
         redoLimit = 5;//the maximum number of actions that will be remembered
         try{
-        this.sockCon = new SocketController(this);//everything breaks if this isn't created here
+            this.sockCon = new SocketController(this);//everything breaks if this isn't created here
         }
         catch(IOException e){
             System.out.print(e);
@@ -157,6 +190,12 @@ public class CanvasController {
         catch(IOException e){
             System.out.println(e);
         }
+        // while(true){
+        //     if(this.sockCon.getInputHandler().getReady()){
+        //         roomCodeAlert();
+        //         break;
+        //     }
+        // }
     }
 
     public void setString(String command){
@@ -250,6 +289,21 @@ public class CanvasController {
 
     public boolean getFlag(){
         return this.flag;
+    }
+
+    public void setRoomCode(String rc) {
+        roomCode = rc;
+    }
+    public String getRoomCode() {
+        return roomCode;
+    }
+
+    public void roomCodeAlert(){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Room Code");
+        alert.setHeaderText("The room code is:");
+        alert.setContentText(this.roomCode);
+        alert.showAndWait();
     }
 
     private void handleMousePressed(MouseEvent event) {
@@ -404,16 +458,20 @@ public class CanvasController {
 
 
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
-@FXML
-void undoClick(ActionEvent event) {
-    try{
-        this.sockCon.getClient().sendCommand("u\n");
+    @FXML
+    void undoClick(ActionEvent event) {
+        try{
+            this.sockCon.getClient().sendCommand("u\n");
+        }
+        catch(IOException e){
+            System.out.println (e);
+        }
     }
-    catch(IOException e){
-        System.out.println (e);
-    }
-}
 
+    @FXML
+    private void toggleUserList() {
+        scrollPane.setVisible(!scrollPane.isVisible());
+    }
 
     @FXML
     void exitCanvasClick(ActionEvent event){
