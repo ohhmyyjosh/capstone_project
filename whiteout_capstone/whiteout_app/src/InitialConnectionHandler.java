@@ -10,6 +10,7 @@ import java.net.Socket;
 
 public class InitialConnectionHandler extends Thread{
     private String buffer = "";
+    private String sendBuffer = "";
     private int idValue;
     
     private int port;
@@ -43,13 +44,23 @@ public class InitialConnectionHandler extends Thread{
             System.out.println(buffer);
             if (buffer.charAt(0) == 'h'){//write string
                 System.out.println("Host found.");
-                out.write("m" + server.buildRoom(sock, in, out, buffer) + "\n");
+                sendBuffer = "m" + server.buildRoom(sock, in, out, buffer) + "\n";
+                out.write(sendBuffer);
                 out.flush();
             }
             else if(buffer.charAt(0) == 'j'){
                 if (!server.joinRoom(sock, in, out, buffer.substring(1))){
                     out.write("mFailed to join session. Code is incorrect or room is full.\n");
                     out.flush();
+                }
+                else{
+                    try{
+                        Thread.sleep(100);
+                        server.getRoom(server.parseString(buffer.substring(1))).refresh();
+                    }
+                    catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
             }
             return;

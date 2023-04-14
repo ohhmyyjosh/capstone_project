@@ -45,6 +45,9 @@ public class RoomController{
     private int roomSize;
 
     private String roomString;
+
+    private Boolean allowDraw;
+    private Boolean allowErase;
     
     public RoomController() throws IOException{
         this.port = 5001;
@@ -58,31 +61,25 @@ public class RoomController{
     }
     public RoomController(Socket sock, BufferedReader in, BufferedWriter out, 
     String hostInit, ServerController server){
-        try{
-            this.port = 5001;
-            this.roomSize = 3;
-            this.idValue = 1;
-            this.roomString = "";
-            this.sock = sock;
-            this.in = in;
-            this.out = out;
-            this.key = "";
-            this.server = server;
+        this.port = 5001;
+        this.roomSize = 3;
+        this.idValue = 1;
+        this.roomString = "";
+        this.sock = sock;
+        this.in = in;
+        this.out = out;
+        this.key = "";
+        this.server = server;
 
-            this.room = new Vector<ConnectedClient>();
-            addClient(sock, in, out, hostInit);
-            connection.sendString("m"+ key);
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.room = new Vector<ConnectedClient>();
+        addHost(sock, in, out, hostInit);
     }
 
     public void setKey(String key){
         this.key = key;
     }
 
-    public Boolean addClient(Socket sock, BufferedReader in, BufferedWriter out, String guestInit){
+    public Boolean addHost(Socket sock, BufferedReader in, BufferedWriter out, String hostInit){
         try{
             cc = new CanvasController();
             System.out.println("New canvas established..");
@@ -91,11 +88,13 @@ public class RoomController{
 
             connection = cc.getClient();
             System.out.println("Canvas to Client link established..");
-            connection.buildClient(port, sock, in, out, idValue, this, guestInit);
+            connection.buildClient(port, sock, in, out, idValue, this);
+            parseHostString(hostInit);
             System.out.println("Client fully built..");
 
             room.add(connection);
             room.elementAt(idValue-1).start();
+            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getName());
             idValue++;
             System.out.println("Client thread started successfully...");
             System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
@@ -106,7 +105,92 @@ public class RoomController{
             }
         return true;
     }
+    public Boolean addClient(Socket sock, BufferedReader in, BufferedWriter out, String guestInit){
+        try{
+            cc = new CanvasController();
+            System.out.println("New canvas established..");
+            cc.establishRoom(this);
+            //System.out.println("New canvas established..");
 
+            connection = cc.getClient();
+            System.out.println("Canvas to Client link established..");
+            connection.buildClient(port, sock, in, out, idValue, this);
+            System.out.println("Client fully built..");
+            parseGuestString(guestInit);
+
+            room.add(connection);
+            room.elementAt(idValue-1).start();
+            room.elementAt(idValue-1).sendString("x" + room.elementAt(idValue-1).getName());
+            idValue++;
+            System.out.println("Client thread started successfully...");
+            System.out.println("Client connected: " + (roomSize - room.size()) + " slots remaining.");
+            }
+            
+            catch(Exception exception){
+                System.out.println(exception);
+            }
+        return true;
+    }
+    private void parseHostString(String hostInit){
+        String buffer = "";
+        int index = 0;
+        //parse name
+        for (int i = index; i < hostInit.length(); i++){
+            if (Character.isDigit(hostInit.charAt(i))){
+                connection.setName(buffer);
+                buffer = "";
+                index = i;
+                break;
+            } 
+            else{
+                buffer += hostInit.charAt(i);
+            }
+        }
+        //parse room size limit
+        for (int i = index; i < hostInit.length(); i ++){
+            if (!Character.isDigit(hostInit.charAt(i))){
+                this.roomSize = Integer.valueOf(buffer);
+                buffer = "";
+                index = i;
+                break;
+            }
+            else{
+                buffer += hostInit.charAt(i);
+            }
+        }
+        if(hostInit.charAt(index) == 't'){
+            this.allowDraw = true;
+        }
+        else{
+            this.allowDraw = false;
+        }
+        index++;
+        if (hostInit.charAt(index) == 't'){
+            this.allowErase = true;
+        }
+        else{
+            this.allowErase = false;
+        }
+    }
+
+    private void parseGuestString(String guestInit){
+        String buffer = "";
+        int index = 0;
+        //parse name
+        for (int i = index; i < guestInit.length(); i++){
+            if (guestInit.charAt(i) == '~'){
+                connection.setName(buffer);
+                buffer = "";
+                index = i;
+                break;
+            } 
+            else{
+                buffer += guestInit.charAt(i);
+            }
+            connection.setDraw(allowDraw);
+            connection.setErase(allowErase);
+        }
+    }
     public Vector<ConnectedClient> getRoom(){
         return this.room;
     }
@@ -123,6 +207,12 @@ public class RoomController{
             }
             System.out.println("Client disconnected: " + room.size() + " of " + roomSize + " remaining.");
             this.idValue --;
+            try{
+                refresh();
+            }
+            catch(IOException e){
+                e.printStackTrace();
+            }
         }
         else{
             try{
@@ -154,6 +244,20 @@ public class RoomController{
         }
         for(int i = 0; i < room.size(); i ++){
             room.elementAt(i).sendString("c" + roomString);
+        }
+        this.roomString = "";
+    }
+    public void refresh() throws IOException{
+        for (int i = 0; i < room.size(); i ++){
+            if ( room.elementAt(i).getCC().getCurrentString() != null){
+                roomString += room.elementAt(i).getCC().getCurrentString();
+            }
+            else{
+                roomString += "~";
+            }
+        }
+        for (int i = 0; i < room.size(); i ++){
+            room.elementAt(i).sendString(("c" + roomString));
         }
         this.roomString = "";
     }

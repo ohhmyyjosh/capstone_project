@@ -24,7 +24,10 @@ public class ConnectedClient extends Thread {
     private CanvasController cc;
     private RoomController room;
 
-    private String buffer;
+    private String buffer; 
+    
+    private Boolean allowDraw;
+    private Boolean allowErase;
 
     public ConnectedClient (CanvasController cc){
         this.cc = cc;
@@ -32,7 +35,7 @@ public class ConnectedClient extends Thread {
 
     public void buildClient (int port, Socket sock, 
     BufferedReader in, BufferedWriter out, int idValue, 
-    RoomController room, String hostInit) throws IOException{
+    RoomController room) throws IOException{
         System.out.println("Client Building..");
         this.port = port;
         this.sock = sock;
@@ -44,9 +47,19 @@ public class ConnectedClient extends Thread {
         System.out.println("Client Connected.");
 
     }
-    // private String parseInit(String init){
-    //     somestuff
-    // }
+
+    public void setDraw(Boolean perm){
+        this.allowDraw = perm;
+    }
+    public Boolean getDraw(){
+        return this.allowDraw;
+    }
+    public void setErase(Boolean perm){
+        this.allowErase = perm;
+    }
+    public Boolean getErase(){
+        return this.allowErase;
+    }
 
     public void adjustId(){
         this.idValue --;

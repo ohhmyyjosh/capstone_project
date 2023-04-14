@@ -61,7 +61,11 @@ public class ServerController extends Thread{
         }
         return false;
     }
-    private String parseString(String rawInput){//returns the room code 
+    public RoomController getRoom(String key){
+        return (RoomController)rooms.get(key);
+    }
+
+    public String parseString(String rawInput){//returns the room code 
         buffer = "";
         for ( int i = 0; i < rawInput.length(); i ++){
             if (rawInput.charAt(i) != '~'){
