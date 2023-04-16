@@ -34,7 +34,13 @@ public class App extends Application {
     }
   
  
- public static void main(String[] args) {
+    public static void main(String[] args) {
+        String trustFileName = "C:\\Program Files\\Java\\jre1.8.0_341\\lib\\security" + "/" + "cacerts";
+        System.setProperty("javax.net.ssl.trustStore", trustFileName);
+        System.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+
+        System.setProperty("javax.net.debug", "all");
+
         launch(args);
     }
 } 

@@ -1,4 +1,5 @@
 import java.net.*;
+import javax.net.ssl.*;
 import java.awt.Desktop.Action;
 import java.io.*;
 import java.util.Scanner;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 public class SocketController extends Thread{
 
     private String destIP = "54.227.107.50";
+    //private String destIP = "10.46.5.115";
     private int port = 5001;
     private int buffer = 0;
 

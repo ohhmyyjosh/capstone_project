@@ -3,6 +3,9 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.Scanner;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -13,7 +16,7 @@ import javafx.scene.paint.Color;
 
 public class ClientController extends Thread{
 
-    private Socket sock;
+    private SSLSocket sock;
     private OutputStream outputStream;
     private ObjectOutputStream objectOutputStream;
     private PrintWriter pr;
@@ -25,9 +28,14 @@ public class ClientController extends Thread{
     private BufferedReader in = null;
     private BufferedWriter out = null;
 
+    private String trustFileName;
+    private String storePath;
+
     //private String bufferEventString;
 
     public ClientController(String destIP, int port, CanvasController cc) throws IOException{
+
+        trustFileName = 
 
         this.destIP = destIP;
         this.port = port;
@@ -36,24 +44,19 @@ public class ClientController extends Thread{
         //create socket
         System.out.println("Creating client socket...");
         try{
-            sock = new Socket(destIP, port);
+            SSLSocketFactory sslsf = (SSLSocketFactory)SSLSocketFactory.getDefault();
+            sock = (SSLSocket)sslsf.createSocket(destIP, port);
             System.out.println("Post socket creation");
         }
         catch(Exception exception){
             System.out.println("Socket creation failed.");
+            exception.printStackTrace();
             return;
         }
 
         //create data stream
         in = new BufferedReader(new InputStreamReader(sock.getInputStream()));//recieving
         out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));//sending
-
-        //outputStream = sock.getOutputStream();
-        //objectOutputStream = new ObjectOutputStream(outputStream);
-
-        //pr = new PrintWriter(sock.getOutputStream());
-        //pr.println("successful connection");
-        //pr.flush();
 
     }
 
