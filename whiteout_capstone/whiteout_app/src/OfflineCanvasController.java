@@ -193,7 +193,7 @@ public class OfflineCanvasController {
             if (eventString.charAt(index) == '*'){
                 index++;
                 transferColor = transferColor.valueOf(subStr);
-                System.out.println("Color transfered");
+                //System.out.println("Color transfered");
                 gc.setStroke(transferColor);
                 gc.setFill(transferColor);
                 subStr = "";
@@ -207,7 +207,7 @@ public class OfflineCanvasController {
             if (eventString.charAt(index) == '/'){
                 index++;
                 transferSize = Double.valueOf(subStr);
-                System.out.println("Brush transfered");
+                //System.out.println("Brush transfered");
                 gc.setLineWidth(transferSize);
                 subStr = "";
                 break;
@@ -299,9 +299,12 @@ void actionBackup(String event){
         //create a new node with the newly added stroke
         canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
     }
+    else if(event == ""){
+    }
     else{
         canvasSnapshotdeque.push(event);
     }
+    clearEventString();
     
 }
 
@@ -369,7 +372,9 @@ void actionBackup(String event){
             for(int i = 0; i < arrOfStrings.length; i++){
                 eventString = arrOfStrings[i];
                 eventString += "~";
-                System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
+
+                //test statement to determine the number of operations being performed
+                //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
                 writeToCanvas();
             }
             actionBackup(redoStack.peek());
@@ -426,7 +431,9 @@ void actionBackup(String event){
                 for(int i = 0; i < arrOfStrings.length; i++){
                     eventString = arrOfStrings[i];
                     eventString += "~";
-                    System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
+                    
+                    //Test statement to determine the number of operations being performed
+                    //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
                     writeToCanvas();
                 }
             }
