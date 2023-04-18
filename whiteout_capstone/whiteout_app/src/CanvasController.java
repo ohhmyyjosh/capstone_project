@@ -328,7 +328,7 @@ public class CanvasController {
         userIndex = userIndex - 1;
         System.out.println("update method: " + userIndex);
         if (usernameLabelsList.get(userIndex) != null) {
-            usernameLabelsList.get(userIndex).setText(username + userIndex);
+            usernameLabelsList.get(userIndex).setText(username);
         }
 
         // set index 0 controls invisible for everyone
