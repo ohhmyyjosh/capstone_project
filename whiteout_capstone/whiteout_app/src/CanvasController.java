@@ -63,77 +63,26 @@ public class CanvasController {
     @FXML ToggleButton mouseToggleButton;
     @FXML ToggleButton eraserToggleButton;
 
-    @FXML AnchorPane userAnchorPane;
-    @FXML ScrollPane usernameScrollPane;
-    @FXML Label usernameLabel;
-    @FXML CheckBox userDrawCheckbox;
-    @FXML CheckBox userEraseCheckbox;
-    @FXML Button kickUserButton;
+    @FXML
+    private AnchorPane userAnchorPane, userAnchorPane1, userAnchorPane2, userAnchorPane3, userAnchorPane4, userAnchorPane5, userAnchorPane6, userAnchorPane7, userAnchorPane8, userAnchorPane9;
 
-    @FXML AnchorPane userAnchorPane1;
-    @FXML ScrollPane usernameScrollPane1;
-    @FXML Label usernameLabel1;
-    @FXML CheckBox userDrawCheckbox1;
-    @FXML CheckBox userEraseCheckbox1;
-    @FXML Button kickUserButton1;
+    @FXML
+    private ScrollPane usernameScrollPane, usernameScrollPane1, usernameScrollPane2, usernameScrollPane3, usernameScrollPane4, usernameScrollPane5, usernameScrollPane6, usernameScrollPane7, usernameScrollPane8, usernameScrollPane9;
 
-    @FXML AnchorPane userAnchorPane2;
-    @FXML ScrollPane usernameScrollPane2;
-    @FXML Label usernameLabel2;
-    @FXML CheckBox userDrawCheckbox2;
-    @FXML CheckBox userEraseCheckbox2;
-    @FXML Button kickUserButton2;
+    @FXML
+    private Label usernameLabel, usernameLabel1, usernameLabel2, usernameLabel3, usernameLabel4, usernameLabel5, usernameLabel6, usernameLabel7, usernameLabel8, usernameLabel9;
 
-    @FXML AnchorPane userAnchorPane3;
-    @FXML ScrollPane usernameScrollPane3;
-    @FXML Label usernameLabel3;
-    @FXML CheckBox userDrawCheckbox3;
-    @FXML CheckBox userEraseCheckbox3;
-    @FXML Button kickUserButton3;
+    @FXML
+    private CheckBox userDrawCheckbox, userDrawCheckbox1, userDrawCheckbox2, userDrawCheckbox3, userDrawCheckbox4, userDrawCheckbox5, userDrawCheckbox6, userDrawCheckbox7, userDrawCheckbox8, userDrawCheckbox9;
 
-    @FXML AnchorPane userAnchorPane4;
-    @FXML ScrollPane usernameScrollPane4;
-    @FXML Label usernameLabel4;
-    @FXML CheckBox userDrawCheckbox4;
-    @FXML CheckBox userEraseCheckbox4;
-    @FXML Button kickUserButton4;
+    @FXML
+    private CheckBox userEraseCheckbox, userEraseCheckbox1, userEraseCheckbox2, userEraseCheckbox3, userEraseCheckbox4, userEraseCheckbox5, userEraseCheckbox6, userEraseCheckbox7, userEraseCheckbox8, userEraseCheckbox9;
 
-    @FXML AnchorPane userAnchorPane5;
-    @FXML ScrollPane usernameScrollPane5;
-    @FXML Label usernameLabel5;
-    @FXML CheckBox userDrawCheckbox5;
-    @FXML CheckBox userEraseCheckbox5;
-    @FXML Button kickUserButton5;
+    @FXML
+    private Button kickUserButton, kickUserButton1, kickUserButton2, kickUserButton3, kickUserButton4, kickUserButton5, kickUserButton6, kickUserButton7, kickUserButton8, kickUserButton9;
 
-    @FXML AnchorPane userAnchorPane6;
-    @FXML ScrollPane usernameScrollPane6;
-    @FXML Label usernameLabel6;
-    @FXML CheckBox userDrawCheckbox6;
-    @FXML CheckBox userEraseCheckbox6;
-    @FXML Button kickUserButton6;
-
-    @FXML AnchorPane userAnchorPane7;
-    @FXML ScrollPane usernameScrollPane7;
-    @FXML Label usernameLabel7;
-    @FXML CheckBox userDrawCheckbox7;
-    @FXML CheckBox userEraseCheckbox7;
-    @FXML Button kickUserButton7;
-
-    @FXML AnchorPane userAnchorPane8;
-    @FXML ScrollPane usernameScrollPane8;
-    @FXML Label usernameLabel8;
-    @FXML CheckBox userDrawCheckbox8;
-    @FXML CheckBox userEraseCheckbox8;
-    @FXML Button kickUserButton8;
-
-    @FXML AnchorPane userAnchorPane9;
-    @FXML ScrollPane usernameScrollPane9;
-    @FXML Label usernameLabel9;
-    @FXML CheckBox userDrawCheckbox9;
-    @FXML CheckBox userEraseCheckbox9;
-    @FXML Button kickUserButton9;
-
-    @FXML Separator separator,separator1,separator2,separator3,separator4,separator5,separator6,separator7,separator8,separator9,separator10;
+    @FXML
+    private Separator separator, separator1, separator2, separator3, separator4, separator5, separator6, separator7, separator8, separator9, separator10;
 
     List<Label> usernameLabelsList;
     List<CheckBox> userDrawCheckboxesList;
