@@ -59,7 +59,7 @@ public class InitialConnectionHandler extends Thread{
             }
             else if(buffer.charAt(0) == 'j'){
                 if (!server.joinRoom(sock, in, out, buffer.substring(1))){
-                    out.write("mFailed to join session. Code is incorrect or room is full.\n");
+                    out.write("iFailed to join session. Code is incorrect or room is full.\n");
                     out.flush();
                 }
                 else{

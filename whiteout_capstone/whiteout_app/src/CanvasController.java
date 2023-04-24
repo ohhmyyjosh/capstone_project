@@ -88,8 +88,8 @@ public class CanvasController {
 
     public void clearCanvas() {
         clearEventString();
-        actionBackup("~");
         setEventString("~");
+        actionBackup("~");
         writeToCanvas(flag);
     }
     
@@ -133,6 +133,8 @@ public class CanvasController {
             canvasSnapshotdeque.push(event);
             System.out.println("Empty deque detected. Adding first snapshot" + event);
         }
+
+        clearEventString();
     
     }
 
