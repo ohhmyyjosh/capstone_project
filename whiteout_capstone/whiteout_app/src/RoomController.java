@@ -355,7 +355,7 @@ public class RoomController{
             }
             
         }
-        for (int i = index; i < room.size(); i ++){
+        for (int i = index; i < roomSize; i ++){
             buffer += "`Empty~xx";
         }
         System.out.println(String.valueOf(buffer));
