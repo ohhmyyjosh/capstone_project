@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="box" prefHeight="401.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="box" prefHeight="401.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar fx:id="tb" prefHeight="40.0">
          <items>
@@ -55,15 +55,6 @@
                   </ImageView>
                </graphic>
             </SplitMenuButton>
-            <ToggleButton mnemonicParsing="false" onAction="#textButtonToggle" text="Text">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Text.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
             <ToggleButton fx:id="eraserToggleButton" mnemonicParsing="false" onAction="#eraserButtonToggle" text="Eraser">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -143,7 +134,7 @@
       </ToolBar>
       <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="359.0" prefWidth="156.0">
          <children>
-            <ScrollPane fx:id="scrollPane" layoutX="413.0" prefHeight="359.0" prefWidth="342.0">
+            <ScrollPane fx:id="scrollPane" layoutX="375.0" prefHeight="359.0" prefWidth="342.0">
                <content>
                   <VBox fx:id="scrollVBox" prefHeight="358.0" prefWidth="323.0">
                      <children>

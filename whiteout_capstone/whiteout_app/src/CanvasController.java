@@ -285,62 +285,65 @@ public class CanvasController {
         userEraseCheckboxesList.get(0).setVisible(false);
         userKickButtons.get(0).setVisible(false);
 
-        if (userDrawCheckboxesList.get(userIndex) != null) {
-            if(drawPerms.charAt(0) == 't'){
-                userDrawCheckboxesList.get(userIndex).setSelected(true);
-                if (this.host){
-                    userDrawCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
+        if(drawPerms.charAt(0) == 't'){
+            userDrawCheckboxesList.get(userIndex).setSelected(true);
+            if (this.host){
+                userDrawCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
             }
-            else if(drawPerms.charAt(0) == 'f'){
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
-                if (this.host){
-                    userDrawCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-            }
-            else {
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
+            else{
                 userDrawCheckboxesList.get(userIndex).setVisible(false);
-                userEraseCheckboxesList.get(userIndex).setVisible(false);
                 userKickButtons.get(userIndex).setVisible(false);
-
             }
         }
-
-        if (userEraseCheckboxesList.get(userIndex) != null){
-            if(erasePerms.charAt(0) == 't'){
-                userEraseCheckboxesList.get(userIndex).setSelected(true);
-                if (this.host) {
-                    userEraseCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-
+        else if(drawPerms.charAt(0) == 'f'){
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            if (this.host){
+                userDrawCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
             }
-            else if(erasePerms.charAt(0) == 'f'){
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                if (this.host) {
-                    userEraseCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-            }
-            else {
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
+            else{
                 userDrawCheckboxesList.get(userIndex).setVisible(false);
+                userKickButtons.get(userIndex).setVisible(false);
+            }
+        }
+        else {
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setVisible(false);
+            userEraseCheckboxesList.get(userIndex).setVisible(false);
+            userKickButtons.get(userIndex).setVisible(false);
+
+        }
+
+        if(erasePerms.charAt(0) == 't'){
+            userEraseCheckboxesList.get(userIndex).setSelected(true);
+            if (this.host){
+                userEraseCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+            }
+            else{
                 userEraseCheckboxesList.get(userIndex).setVisible(false);
                 userKickButtons.get(userIndex).setVisible(false);
             }
+        }
+        else if(erasePerms.charAt(0) == 'f'){
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            if (this.host){
+                userEraseCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+            }
+            else{
+                userEraseCheckboxesList.get(userIndex).setVisible(false);
+                userKickButtons.get(userIndex).setVisible(false);
+            }
+        }
+        else {
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setVisible(false);
+            userEraseCheckboxesList.get(userIndex).setVisible(false);
+            userKickButtons.get(userIndex).setVisible(false);
         }
     }
 
