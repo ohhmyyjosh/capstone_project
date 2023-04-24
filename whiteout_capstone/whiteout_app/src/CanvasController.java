@@ -285,6 +285,9 @@ public class CanvasController {
         userDrawCheckboxesList.get(0).setVisible(false);
         userEraseCheckboxesList.get(0).setVisible(false);
         userKickButtons.get(0).setVisible(false);
+        if(this.host){
+            drawPermission = true;
+        }
 
         if(drawPerms.charAt(0) == 't'){
             userDrawCheckboxesList.get(userIndex).setSelected(true);
