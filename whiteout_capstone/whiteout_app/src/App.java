@@ -26,6 +26,14 @@ public class App extends Application {
   
  
  public static void main(String[] args) {
+    Boolean debug = false;
+    String trustfilename = "C:\\Program Files\\Java\\\\jdk-19\\bin" + "/" + "selfsigned.jks";
+
+    System.setProperty("javax.net.ssl.keyStore", trustfilename);
+    System.setProperty("javax.net.ssl.keyStorePassword", "whiteout");
+    if(debug){
+        System.setProperty("javax.ent.debug", "all");
+    }
         launch(args);
     }
 }

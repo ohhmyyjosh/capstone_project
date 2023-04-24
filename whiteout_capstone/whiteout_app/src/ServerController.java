@@ -11,11 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.net.ssl.*;
 
 public class ServerController extends Thread{
 
-    private Socket sock;
-    private ServerSocket servSock;
+    private SSLServerSocketFactory sslsf;
+    private SSLSocket sock;
+    private SSLServerSocket servSock;
+
+    //private Socket sock;
+    //private ServerSocket servSock;
     private int port;
     private RoomController room;
     private String key;
@@ -28,7 +33,10 @@ public class ServerController extends Thread{
         rooms = map;
         rooms = new ConcurrentHashMap();
         this.port = 5001;
-        servSock = new ServerSocket(port);
+        //servSock = new ServerSocket(port);
+        sslsf = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
+        servSock = (SSLServerSocket)sslsf.createServerSocket(port);
+
         this.start();
     }
 
@@ -83,7 +91,8 @@ public class ServerController extends Thread{
         while(true){
             try{
                 System.out.println("Waiting for connection...");
-                sock = servSock.accept();
+                //sock = servSock.accept();
+                sock = (SSLSocket)servSock.accept();
                 InitialConnectionHandler initCon = new InitialConnectionHandler(sock, this);
             }
             catch(IOException e){

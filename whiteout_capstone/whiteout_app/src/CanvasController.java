@@ -88,8 +88,8 @@ public class CanvasController {
 
     public void clearCanvas() {
         clearEventString();
-        setEventString("~");
         actionBackup("~");
+        setEventString("~");
         writeToCanvas(flag);
     }
     

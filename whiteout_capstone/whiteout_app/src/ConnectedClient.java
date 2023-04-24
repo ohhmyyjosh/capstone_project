@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import javax.net.ssl.*;
 import java.util.Scanner;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -148,6 +149,9 @@ public class ConnectedClient extends Thread {
         while(true){
             try{
                 System.out.println("Waiting on client input..");
+                SSLSocket temporaryReference = (SSLSocket)sock;
+                SSLSession sslSession = temporaryReference.getSession();
+                System.out.println("Protocol version " + sslSession.getProtocol());
                 try{
                     buffer = String.valueOf(in.readLine());
                     if (buffer.charAt(0) == 'w'){//write string
