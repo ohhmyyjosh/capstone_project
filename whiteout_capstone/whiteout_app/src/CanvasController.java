@@ -135,6 +135,7 @@ public class CanvasController {
         c = new ResizableCanvas();
         ap.getChildren().add(c);
 
+        color = color.valueOf("#ffffff");
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -211,7 +212,7 @@ public class CanvasController {
 
         gc = c.getGraphicsContext2D();
 
-        color = color.valueOf("#ffffff");
+        
 
         eventString = "";//stores coordinate data to be sent
         actionCount = 0;//the number of actions currently stored for undo
@@ -287,9 +288,10 @@ public class CanvasController {
 
         if(drawPerms.charAt(0) == 't'){
             userDrawCheckboxesList.get(userIndex).setSelected(true);
+            drawPermission = true;
             if (this.host){
                 userDrawCheckboxesList.get(userIndex).setVisible(true);
-                userKickButtons.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true); 
             }
             else{
                 userDrawCheckboxesList.get(userIndex).setVisible(false);
@@ -298,6 +300,7 @@ public class CanvasController {
         }
         else if(drawPerms.charAt(0) == 'f'){
             userDrawCheckboxesList.get(userIndex).setSelected(false);
+            drawPermission = false;
             if (this.host){
                 userDrawCheckboxesList.get(userIndex).setVisible(true);
                 userKickButtons.get(userIndex).setVisible(true);
@@ -318,6 +321,7 @@ public class CanvasController {
 
         if(erasePerms.charAt(0) == 't'){
             userEraseCheckboxesList.get(userIndex).setSelected(true);
+            erasePermission = true;
             if (this.host){
                 userEraseCheckboxesList.get(userIndex).setVisible(true);
                 userKickButtons.get(userIndex).setVisible(true);
@@ -329,6 +333,7 @@ public class CanvasController {
         }
         else if(erasePerms.charAt(0) == 'f'){
             userEraseCheckboxesList.get(userIndex).setSelected(false);
+            erasePermission = false;
             if (this.host){
                 userEraseCheckboxesList.get(userIndex).setVisible(true);
                 userKickButtons.get(userIndex).setVisible(true);
@@ -566,33 +571,35 @@ public class CanvasController {
     }
 
     private void handleMousePressed(MouseEvent event) {
-        this.size = (double) brushSizeChoiceBox.getValue();
-        gc.setLineWidth(size);
-        gc.setStroke(color);
-        gc.setFill(color);
-        gc.beginPath();
-        gc.moveTo(event.getX(), event.getY());
-        gc.stroke();
-        colorStr = color.toString();
-        
-        // add to eventString and strokes
-        String stroke = colorStr + "*" + Double.toString(size) + "/" + (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
-        
+        if(drawPermission){
+            this.size = (double) brushSizeChoiceBox.getValue();
+            gc.setLineWidth(size);
+            gc.setStroke(color);
+            gc.setFill(color);
+            gc.beginPath();
+            gc.moveTo(event.getX(), event.getY());
+            gc.stroke();
+            colorStr = color.toString();
+            // add to eventString and strokes
+            String stroke = colorStr + "*" + Double.toString(size) + "/" + (event.getX()) + "," + (event.getY()) + "z";
+            eventString += stroke;
+        }
     }
 
     private void handleMouseDragged(MouseEvent event) {
-        gc.lineTo(event.getX(), event.getY());
-        gc.stroke();
-        
-        // add to eventString and strokes
-        String stroke = (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
-        
+        if(drawPermission){
+            gc.lineTo(event.getX(), event.getY());
+            gc.stroke();
+            
+            // add to eventString and strokes
+            String stroke = (event.getX()) + "," + (event.getY()) + "z";
+            eventString += stroke;
+        }
     }
 
     private void handleMouseReleased(MouseEvent event) {
-        gc.closePath();
+        if(drawPermission){
+            gc.closePath();
     
         // push the current snapshot of the canvas to the stack
         //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
@@ -606,6 +613,7 @@ public class CanvasController {
         }
         catch(IOException e){
             System.out.println(e);
+        }
         }
     }
 
