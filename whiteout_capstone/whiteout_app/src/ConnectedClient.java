@@ -24,17 +24,26 @@ public class ConnectedClient extends Thread {
     private CanvasController cc;
     private RoomController room;
 
-    private String buffer;
+    private String buffer; 
+    
+    private Boolean allowDraw;
+    private Boolean allowErase;
+    private String name;
+
+    private String drawString;
+    private String eraseString;
+    private Boolean deathFlag;
 
     public ConnectedClient (CanvasController cc){
         this.cc = cc;
+        this.deathFlag = false;
     }
 
-    public void buildClient (int port, ServerSocket servSock, Socket sock, 
-    BufferedReader in, BufferedWriter out, int idValue, RoomController room) throws IOException{
+    public void buildClient (int port, Socket sock, 
+    BufferedReader in, BufferedWriter out, int idValue, 
+    RoomController room) throws IOException{
         System.out.println("Client Building..");
         this.port = port;
-        this.servSock = servSock;
         this.sock = sock;
         this.in = in;
         this.out = out;
@@ -43,6 +52,49 @@ public class ConnectedClient extends Thread {
 
         System.out.println("Client Connected.");
 
+    }
+    public void setNickName(String name){
+        this.name = name;
+    }
+    public String getNickName(){
+        return this.name;
+    }
+    public void setDraw(Boolean perm){
+        this.allowDraw = perm;
+        if (allowDraw){
+            setDrawString("t");
+        }
+        else{
+            setDrawString("f");
+        }
+    }
+    public Boolean getDraw(){
+        return this.allowDraw;
+    }
+    public void setDrawString(String perm){
+        this.drawString = perm;
+    }
+    public String getDrawString(){
+        return this.drawString;
+    }
+    
+    public void setErase(Boolean perm){
+        this.allowErase = perm;
+        if (allowErase){
+            setEraseString("t");
+        }
+        else{
+            setEraseString("f");
+        }
+    }
+    public Boolean getErase(){
+        return this.allowErase;
+    }
+    public void setEraseString(String perm){
+        this.eraseString = perm;
+    }
+    public String getEraseString(){
+        return this.eraseString;
     }
 
     public void adjustId(){
@@ -72,10 +124,22 @@ public class ConnectedClient extends Thread {
     }
 
     public void closeSock() throws IOException{
+        if (!deathFlag){
+            deathFlag = true;
+            System.out.println("closing socket");
+            sock.close();
+            this.cc = null;
+            if (this.idValue <= room.getRoom().size()){
+                room.removeClient(idValue);
+            }
+        }
+    }
+
+    public void closeSock(Boolean deathFlag) throws IOException{
         System.out.println("closing socket");
         sock.close();
         this.cc = null;
-        room.removeClient((idValue));
+        room.removeClient(idValue);
     }
 
     @Override
@@ -83,46 +147,64 @@ public class ConnectedClient extends Thread {
         //
         while(true){
             try{
-
                 System.out.println("Waiting on client input..");
                 try{
                     buffer = String.valueOf(in.readLine());
                     if (buffer.charAt(0) == 'w'){//write string
-                        cc.setEventString(buffer.substring(1));
-                        cc.writeToCanvas();
+                        if (allowDraw){
+                            cc.setEventString(buffer.substring(1));
+                            cc.writeToCanvas();
+                        }
                     }
                     else if (buffer.charAt(0) == 'u'){//undo
-                        cc.undoClick();
+                        if (allowDraw){
+                            cc.undoClick();
+                        }
                     }
                     else if (buffer.charAt(0) == 'r'){//redo
-                        cc.redoClick();
+                        if (allowDraw){
+                            cc.redoClick();
+                        }
                     }
                     else if (buffer.charAt(0) == 'c'){//clear canvas
-                        cc.clearCanvas();
+                        if (allowDraw){
+                            cc.clearCanvas();
+                        }
                     }
+                    else if (buffer.charAt(0) == 'x'){
+                        System.out.println("Checking for clear all permissions...");
+                        if (allowErase){
+                            System.out.println("Clearing all");
+                            room.clearAll();
+                        }
+                    }
+                    else if (buffer.charAt(0) == 'k'){
+                        System.out.println("kicking a user:");
+                        System.out.println(buffer);
+                        int index = Integer.valueOf(buffer.substring(1));
+                        if (index < room.getRoom().size()){
+                            room.getRoom().elementAt(index).closeSock();
+                        }
+                    }
+                    else if (buffer.charAt(0) == 'p'){
+                        System.out.println("Changing permissions..");
+                        room.updatePermissions(buffer.substring(1));
+                    }
+
                     else if(buffer == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");
-                        sock.close();
-                        this.cc = null;
-                        room.removeClient((idValue));
-                        //System.exit(0);
+                        closeSock();
                         break;
                     }
                     else{
                         System.out.println("closing socket");
-                        sock.close();
-                        this.cc = null;
-                        room.removeClient((idValue));
-                        //System.exit(0);
+                        closeSock();
                         break;
                     }
                 }
                 catch(IOException e){//in case some eggregious error happens
-                    System.out.println("closing socket");
-                    sock.close();
-                    this.cc = null;
-                    room.removeClient((idValue));
-                    //System.exit(0);
+                    this.room.setDeathFlag(true);
+                    closeSock();
                     break;
                 }
                 System.out.println("input recieved");
@@ -130,6 +212,7 @@ public class ConnectedClient extends Thread {
             }
             catch(Exception e){
                 System.out.println(e);
+                e.printStackTrace();
             }
         }
 

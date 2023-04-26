@@ -64,6 +64,7 @@ public class CanvasController {
     public void writeToCanvas(){
         try{
             actionBackup(eventString);
+            redoStack.clear();
             room.update(eventString, client.getIdValue());
         }
         catch(IOException e){
@@ -115,14 +116,14 @@ public class CanvasController {
         actionCount++;
         if ( event == "~"){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-                canvasSnapshotdeque.removeFirst();
+                canvasSnapshotdeque.removeLast();
                 actionCount--;
             }
             canvasSnapshotdeque.push("~");
         }
         else if(!canvasSnapshotdeque.isEmpty()){
             if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-                canvasSnapshotdeque.removeFirst();
+                canvasSnapshotdeque.removeLast();
                 actionCount--;
             }
             //create a new node with the newly added stroke
@@ -154,7 +155,7 @@ public class CanvasController {
                 String[] arrOfStrings = canvasSnapshotdeque.peek().split("~", -3);
                 for(int i = 0; i < arrOfStrings.length; i++){
                     buffer = arrOfStrings[i] + "~";
-                    System.out.println("\nAction no: "+ i+1 + " of " + arrOfStrings.length);
+                    System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
                     eventString += buffer;
                 }
             }
