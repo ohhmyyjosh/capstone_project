@@ -18,6 +18,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Priority;
@@ -108,6 +109,7 @@ public class OfflineCanvasController {
     private boolean mouseTransparent = false;
 
     private boolean eraserSelected = false;
+    private boolean eraserMode = false;
     
     public void initialize() {
         c = new ResizableCanvas();
@@ -252,8 +254,12 @@ public class OfflineCanvasController {
     private void handleMousePressed(MouseEvent event) {
         this.size = (double) brushSizeChoiceBox.getValue();
         gc.setLineWidth(size);
-        gc.setStroke(color);
-        gc.setFill(color);
+        if (eraserMode) {
+            gc.clearRect(event.getX() - size / 2, event.getY() - size / 2, size, size);
+        } else {
+            gc.setStroke(color);
+            gc.setFill(color);
+        }
         gc.beginPath();
         gc.moveTo(event.getX(), event.getY());
         gc.stroke();
@@ -265,6 +271,12 @@ public class OfflineCanvasController {
         
     }
     private void handleMouseDragged(MouseEvent event) {
+        if (eraserMode) {
+            gc.clearRect(event.getX() - size / 2, event.getY() - size / 2, size, size);
+        }else {
+            gc.setStroke(color);
+            gc.setFill(color);
+        }
         gc.lineTo(event.getX(), event.getY());
         gc.stroke();
         
@@ -310,7 +322,14 @@ void actionBackup(String event){
 
     @FXML
     void eraserButtonToggle(ActionEvent event) {
-
+        eraserMode = !eraserMode;
+        if (eraserMode) {
+            gc.setStroke(Color.TRANSPARENT);
+            gc.setFill(Color.TRANSPARENT);
+        } else {
+            gc.setStroke(color);
+            gc.setFill(color);
+        }
     }
     
     @FXML
