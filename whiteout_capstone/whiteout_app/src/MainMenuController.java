@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Node;
 
 public class MainMenuController {
@@ -34,6 +35,7 @@ public class MainMenuController {
             window.setScene(s);
             window.setMaximized(false);
             window.setResizable(false);
+            // window.initStyle(StageStyle.TRANSPARENT);
             window.centerOnScreen();
             window.show();
 
@@ -63,6 +65,7 @@ public class MainMenuController {
             window.setScene(s);
             window.setMaximized(false);
             window.setResizable(false);
+            // window.initStyle(StageStyle.TRANSPARENT);
             window.centerOnScreen();
             window.show();
 
@@ -86,11 +89,45 @@ public class MainMenuController {
             window.setScene(s);
             window.setMaximized(false);
             window.setResizable(false);
+            // window.initStyle(StageStyle.TRANSPARENT);
             window.centerOnScreen();
             window.show();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML private void createOfflineCanvas(ActionEvent event) {
+        createCanvas(event);
+    }
+
+    private void createCanvas(ActionEvent event){
+        Parent root;
+        try {
+            //root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/OfflineCanvas.fxml"));
+            OfflineCanvasController occ = new OfflineCanvasController();
+            
+            loader.setController(occ);
+            root = loader.load();
+            Scene s = new Scene(root);
+            s.setFill(Color.TRANSPARENT);
+
+            final Node source = (Node) event.getSource();
+            final Stage currentStage = (Stage) source.getScene().getWindow();
+            currentStage.close();
+
+            // Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            Stage window = new Stage();
+            window.setScene(s);
+            window.setMaximized(true);
+            window.initStyle(StageStyle.TRANSPARENT);
+            window.show();
+            
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
     }
 }

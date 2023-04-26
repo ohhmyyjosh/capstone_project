@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="box" prefHeight="401.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="box" prefHeight="401.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ToolBar fx:id="tb" prefHeight="40.0">
          <items>
@@ -25,15 +25,6 @@
                   <Image url="@../images/drag.png" />
                </image>
             </ImageView>
-            <ToggleButton fx:id="mouseToggleButton" mnemonicParsing="false" onAction="#mouseButtonToggle" text="Mouse">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Cursor.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
             <SplitMenuButton fx:id="drawButton" mnemonicParsing="false" text="Draw">
                <items>
                   <MenuItem mnemonicParsing="false" text="Color">
@@ -55,15 +46,6 @@
                   </ImageView>
                </graphic>
             </SplitMenuButton>
-            <ToggleButton mnemonicParsing="false" onAction="#textButtonToggle" text="Text">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Text.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
             <ToggleButton fx:id="eraserToggleButton" mnemonicParsing="false" onAction="#eraserButtonToggle" text="Eraser">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -143,7 +125,7 @@
       </ToolBar>
       <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="359.0" prefWidth="156.0">
          <children>
-            <ScrollPane fx:id="scrollPane" layoutX="413.0" prefHeight="359.0" prefWidth="342.0">
+            <ScrollPane fx:id="scrollPane" layoutX="298.0" prefHeight="359.0" prefWidth="342.0">
                <content>
                   <VBox fx:id="scrollVBox" prefHeight="358.0" prefWidth="323.0">
                      <children>
@@ -178,7 +160,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -194,7 +176,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox1" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox1" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox1" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton1" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -210,7 +192,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox2" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox2" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox2" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton2" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -226,7 +208,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox3" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox3" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox3" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton3" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -242,7 +224,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox4" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox4" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox4" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton4" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -258,7 +240,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox5" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox5" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox5" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton5" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -274,7 +256,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox6" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox6" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox6" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton6" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -290,7 +272,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox7" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox7" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox7" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton7" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -306,7 +288,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox8" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox8" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox8" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton8" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>
@@ -322,7 +304,7 @@
                                  </content>
                               </ScrollPane>
                               <CheckBox fx:id="userDrawCheckbox9" layoutX="145.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleDrawPermissionFXML" text="Draw" />
-                              <CheckBox fx:id="userEraseCheckbox9" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleErasePermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Erase All" />
+                              <CheckBox fx:id="userEraseCheckbox9" layoutX="200.0" layoutY="13.0" mnemonicParsing="false" onAction="#toggleclearPermissionFXML" prefHeight="17.0" prefWidth="72.0" text="Clear All" />
                               <Button fx:id="kickUserButton9" layoutX="272.0" layoutY="9.0" mnemonicParsing="false" onAction="#kickUserFXML" prefWidth="42.0" text="Kick" />
                            </children>
                         </AnchorPane>

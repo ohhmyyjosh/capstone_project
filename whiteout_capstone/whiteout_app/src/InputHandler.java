@@ -39,14 +39,18 @@ public class InputHandler extends Thread{
                     if(buffer == "null"){
                         System.out.println("closing socket");
                         sock.close();
-                        cc.exitCanvasClick(new ActionEvent());
+                        Platform.runLater(() -> {
+                            cc.closeCurrentStageAndOpenMainMenu();
+                        });
                         return;
                     }
                 }
                 catch(IOException e){
                     System.out.println("closing socket");
                     sock.close();
-                    cc.exitCanvasClick(new ActionEvent());
+                    Platform.runLater(() -> {
+                        cc.closeCurrentStageAndOpenMainMenu();
+                    });
                     return;
                 }
                 System.out.println("input recieved " + buffer.charAt(0));
