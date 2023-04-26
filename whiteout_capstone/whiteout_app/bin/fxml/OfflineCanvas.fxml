@@ -12,24 +12,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="box" prefHeight="401.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="box" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ToolBar fx:id="tb" prefHeight="40.0" prefWidth="707.0">
+      <ToolBar fx:id="tb">
          <items>
             <ImageView fx:id="dragToolbarButton" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/drag.png" />
                </image>
             </ImageView>
-            <ToggleButton fx:id="mouseToggleButton" mnemonicParsing="false" onAction="#mouseButtonToggle" text="Mouse">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Cursor.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
             <SplitMenuButton fx:id="drawButton" mnemonicParsing="false" text="Draw">
                <items>
                   <MenuItem mnemonicParsing="false" text="Color">
@@ -51,15 +42,6 @@
                   </ImageView>
                </graphic>
             </SplitMenuButton>
-            <ToggleButton mnemonicParsing="false" onAction="#textButtonToggle" text="Text">
-               <graphic>
-                  <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/Text.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </ToggleButton>
             <ToggleButton fx:id="eraserToggleButton" mnemonicParsing="false" onAction="#eraserButtonToggle" text="Eraser">
                <graphic>
                   <ImageView fitHeight="22.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
@@ -116,6 +98,6 @@
             </Button>
          </items>
       </ToolBar>
-      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" prefHeight="359.0" prefWidth="156.0" />
+      <AnchorPane fx:id="ap" maxHeight="-1.0" maxWidth="-1.0" />
    </children>
 </VBox>

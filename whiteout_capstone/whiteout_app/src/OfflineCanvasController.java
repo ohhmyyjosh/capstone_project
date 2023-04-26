@@ -1,24 +1,16 @@
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
-import java.util.Iterator;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Priority;
@@ -28,11 +20,8 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 //import javafx.scene.SnapshotParameters;
 import javafx.scene.image.WritableImage;
@@ -45,8 +34,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Cursor;
-import java.util.List;
 import java.util.Stack;
+
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
 
 
 public class OfflineCanvasController {
@@ -97,24 +88,30 @@ public class OfflineCanvasController {
     private String colorStr;
     private Color transferColor;
     private Color color;
-    private SocketController sockCon;
-    
     GraphicsContext gc;
+
+    private ImageCursor pencilCursor;
+    private ImageCursor eraserCursor;
+    private double eraserSize = 10;
+
 
     //This is used for the undo function.
     //private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
     private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
     private Stack<String> redoStack = new Stack<>();
 
-    private boolean mouseTransparent = false;
-
-    private boolean eraserSelected = false;
     private boolean eraserMode = false;
     
     public void initialize() {
         c = new ResizableCanvas();
         ap.getChildren().add(c);
 
+        Image pencilImage = new Image("images/pencilCursor.png");
+        Image eraserImage = new Image("images/eraserCursor.png");
+        pencilCursor = new ImageCursor(pencilImage, pencilImage.getWidth() / 2, pencilImage.getHeight() / 2);
+        eraserCursor = new ImageCursor(eraserImage, 0, eraserImage.getHeight());
+        
+        c.setCursor(pencilCursor);
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -184,78 +181,18 @@ public class OfflineCanvasController {
     public void setEventString(String event){
         this.eventString = event;
     }
-    //This method writes the client's stroke to the server's canvas
-    public void writeToCanvas(){
-        String subStr = ""; //holds sanitized value of x or y as string
-        double x = 0, y = 0;
-        boolean begin = true;//indicates a 'onMouseClick' event
-        int index = 0;
-        //read color
-        while(index < eventString.length()){
-            if (eventString.charAt(index) == '*'){
-                index++;
-                transferColor = transferColor.valueOf(subStr);
-                //System.out.println("Color transfered");
-                gc.setStroke(transferColor);
-                gc.setFill(transferColor);
-                subStr = "";
-                break;
-            }
-            subStr += eventString.charAt(index);
-            index++;
-        }
-        //read brush size
-        while(index < eventString.length()){
-            if (eventString.charAt(index) == '/'){
-                index++;
-                transferSize = Double.valueOf(subStr);
-                //System.out.println("Brush transfered");
-                gc.setLineWidth(transferSize);
-                subStr = "";
-                break;
-            }
-            subStr += eventString.charAt(index);
-            index++;
-        }
-
-        //draw
-        for(int i = index; i < eventString.length(); i ++){
-            if (eventString.charAt(i) == ','){//reads the value of the x coordinate
-                x = Double.parseDouble(subStr);
-                subStr = "";
-            }
-            else if( eventString.charAt(i) == 'z'){//reads the value of the y coordinate
-                y = Double.parseDouble(subStr);
-                subStr = "";
-                if (begin){//code for 'onMouseClick'
-                    gc.beginPath();
-                    gc.moveTo(x, y);
-                    gc.stroke();
-                    begin = false;
-                }
-                else{//code for 'onMouseDrag'
-                    gc.lineTo(x, y);
-                    gc.stroke();
-                }
-            }
-            else if (eventString.charAt(i) == '~'){
-                break;
-            }
-            else{//add sanitized digit to substring
-                subStr += Character.toString(eventString.charAt(i));
-            }
-        }
-        this.clearEventString();//nuke the eventString for the next stroke    
-    }
 
     public boolean getFlag(){
         return this.flag;
     }
     private void handleMousePressed(MouseEvent event) {
         this.size = (double) brushSizeChoiceBox.getValue();
-        gc.setLineWidth(size);
+        double activeSize = eraserMode ? eraserSize : size;
+        gc.setLineWidth(activeSize);
         if (eraserMode) {
-            gc.clearRect(event.getX() - size / 2, event.getY() - size / 2, size, size);
+            gc.setStroke(Color.TRANSPARENT);
+            gc.setFill(Color.TRANSPARENT);
+            gc.clearRect(event.getX() - activeSize / 2, event.getY() - activeSize / 2, activeSize, activeSize);
         } else {
             gc.setStroke(color);
             gc.setFill(color);
@@ -271,8 +208,13 @@ public class OfflineCanvasController {
         
     }
     private void handleMouseDragged(MouseEvent event) {
+        this.size = (double) brushSizeChoiceBox.getValue();
+        double activeSize = eraserMode ? eraserSize : size;
+        gc.setLineWidth(activeSize);
         if (eraserMode) {
-            gc.clearRect(event.getX() - size / 2, event.getY() - size / 2, size, size);
+            gc.setStroke(Color.TRANSPARENT);
+            gc.setFill(Color.TRANSPARENT);
+            gc.clearRect(event.getX() - activeSize / 2, event.getY() - activeSize / 2, activeSize, activeSize);
         }else {
             gc.setStroke(color);
             gc.setFill(color);
@@ -324,11 +266,9 @@ void actionBackup(String event){
     void eraserButtonToggle(ActionEvent event) {
         eraserMode = !eraserMode;
         if (eraserMode) {
-            gc.setStroke(Color.TRANSPARENT);
-            gc.setFill(Color.TRANSPARENT);
+            c.setCursor(eraserCursor);
         } else {
-            gc.setStroke(color);
-            gc.setFill(color);
+            c.setCursor(pencilCursor);
         }
     }
     
@@ -394,7 +334,6 @@ void actionBackup(String event){
 
                 //test statement to determine the number of operations being performed
                 //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
-                writeToCanvas();
             }
             actionBackup(redoStack.peek());
             redoStack.pop();
@@ -453,7 +392,6 @@ void actionBackup(String event){
                     
                     //Test statement to determine the number of operations being performed
                     //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
-                    writeToCanvas();
                 }
             }
         }
