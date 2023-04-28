@@ -31,6 +31,7 @@ NOTE: Each folder contains a "whiteout_app" folder which should be opened direct
 ### These instructions apply to each server and client folder/project
 
 Instructions for Setup Video: https://youtu.be/yaPIrc4rljI
+
 User Guide/Walkthrough Video: https://youtu.be/9Pm8AOCNAl0
 
 Assuming you have installed Visual Studio Code as well as the Java Extension Pack for Visual Studio Code follow these instructions to prepare each project for launch.
