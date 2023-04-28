@@ -11,14 +11,16 @@ White-Out is a desktop application which generates a connected transparent white
 - Software Engineering Lead - Joshua Patterson
 
 ## Submission Structure
-There are four separate folders/projects included in this repository.
+There are four separate folders included in this repository.
 - White-Out-Client
 - White-Out-Server
 - White-Out-SSL-Client
 - White-Out-SSL-Server
 
-The White-Out-Client and White-Out-Server projects should be used together when a server connection is desired.
-The White-Out-SSL-Client and White-Out-SSL-Server should be used together when a secure server connection is desired.
+### Important System Setup
+All provided instructions and guides for use of this product require the installation of Visual Studio Code as well as the Extension Pack for Java for Visual Studio Code.
+Visual Studio Code (VSCode): https://code.visualstudio.com/
+Extension Pack for Java for VSCode: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
 
-These projects should be run via Visual Studio Code for best results.
 Inside each folder are instructions for setting up and running the project with the Visual Studio Code editor.
+Each folder contains a "whiteout_app" folder which will be opened in Visual Studio Code
