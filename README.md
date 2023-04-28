@@ -11,31 +11,15 @@ White-Out is a desktop application which generates a connected transparent white
 
 - Software Engineering Lead - Joshua Patterson
 
+## Submission Structure
+There are four separate folders/projects included in this repository.
+- White-Out-Client
+- White-Out-Server
+- White-Out-SSL-Client
+- White-Out-SSL-Server
 
-## Installation Instructions
+The White-Out-Client and White-Out-Server projects should be used together when a server connection is desired.
+The White-Out-SSL-Client and White-Out-SSL-Server should be used together when a secure server connection is desired.
 
-Java 19.0.2 for Windows: https://www.oracle.com/java/technologies/downloads/#jdk19-windows
-
-JavaFX SDK 19.0.2.1 for Windows: https://gluonhq.com/products/javafx/
-
-- Please download and extract to match this exact directory: "C:/Java/javafx-sdk-19.0.2.1/"
-
-SceneBuilder 19.0.0 for Windows: https://gluonhq.com/products/scene-builder/
-
-
-## Run the Project
-
-1. Clone the repository to your local machine.
-
-2. Open the folder "capstone_project/whiteout_capstone/whiteout_app" in Visual Studio Code
-
-3. Find the "main" method, and press the "Run" button to launch the application.
-
-
-## Folder Structure
-The workspace contains many folders:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-- `images`: the folder to maintain image files
-
+These projects should be run via Visual Studio Code for best results.
+Inside each folder are instructions for setting up and running the project with the Visual Studio Code editor.
