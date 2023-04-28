@@ -15,7 +15,7 @@ Assuming you have installed Visual Studio Code as well as the Java Extension Pac
     - Add a comma to the end of the line labeled "projectName", then copy and paste the following Java Virtual machine arguments onto a new line within that same object:
     - "vmArgs": "--module-path \\"${workspaceFolder}/lib/javafx-sdk-19.0.2.1/lib\\" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics,javafx.media,javafx.swing,javafx.web"
 
-![image](https://user-images.githubusercontent.com/70347264/235069441-932e8a32-c450-44e8-a4be-1b4ee7e889ce.png)
+![image](https://user-images.githubusercontent.com/70347264/235070863-96dd1331-e3c4-4930-98fd-7f6cd7b04ca0.png)
 
 
 
