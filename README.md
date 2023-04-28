@@ -29,6 +29,11 @@ There are four separate folders included in this repository.
 
 NOTE: Each folder contains a "whiteout_app" folder which should be opened directly in Visual Studio Code for the fastest setup. These folders contain a pre-made ".vscode" folder for easier setup. 
 
+There are two documents included in this repository
+
+-README.md
+-Segmentation_Fault_Final Submission.pdf
+
 ## Instructions for Setting Up Project and Running Project in Video and Written Form
 ### These instructions apply to each server and client folder/project
 
