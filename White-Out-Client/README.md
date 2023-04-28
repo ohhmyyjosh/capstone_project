@@ -24,6 +24,13 @@ JavaFX requires specific dependencies which need to be recognized by your local 
 ![image](https://user-images.githubusercontent.com/70347264/235073637-90dd20df-e5d6-4203-81e0-e7158c4c5ed1.png)
 ![image](https://user-images.githubusercontent.com/70347264/235073909-f2d4b551-dbee-4393-827d-c149a570018d.png)
 
+4. After following these instructions you should open App.java and check if there are any warnings about imported libraries not being found.
+    - You should see the main method at the bottom of the file and it should not display any errors, you will likely see a run button above the method indicating that the project is recognized as a runnable java project.
+![image](https://user-images.githubusercontent.com/70347264/235074904-7ad1ffc5-e7ce-4e5f-b7d3-071a2667a81f.png)
 
 
 ## Instructions for Running the Project
+Assuming you have successfuly setup the environment and classpath, running the project should be quite simple. 
+1.  This can be done by simply clicking the "Run" button above the main method.
+    - NOTE: Potential errors at this point likely include "JavaFX Runtime Variables are missing."
+    - This error indicates that the JavaFX libraries are not being recognized in your environment and I would recommend following the steps above again for the project.
