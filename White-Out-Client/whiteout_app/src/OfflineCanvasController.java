@@ -182,6 +182,72 @@ public class OfflineCanvasController {
         this.eventString = event;
     }
 
+    public void writeToCanvas(){
+        String subStr = ""; //holds sanitized value of x or y as string
+        double x = 0, y = 0;
+        boolean begin = true;//indicates a 'onMouseClick' event
+        int index = 0;
+        
+        //read color
+        while(index < eventString.length()){
+            if (eventString.charAt(index) == '*'){
+                index++;
+                transferColor = transferColor.valueOf(subStr);
+                System.out.println("Color transfered");
+                gc.setStroke(transferColor);
+                gc.setFill(transferColor);
+                subStr = "";
+                break;
+            }
+            subStr += eventString.charAt(index);
+            index++;
+        }
+        
+        //read brush size
+        while(index < eventString.length()){
+            if (eventString.charAt(index) == '/'){
+                index++;
+                transferSize = Double.valueOf(subStr);
+                System.out.println("Brush transfered");
+                gc.setLineWidth(transferSize);
+                subStr = "";
+                break;
+            }
+            subStr += eventString.charAt(index);
+            index++;
+        }
+
+        //draw
+        for(int i = index; i < eventString.length(); i ++){
+            if (eventString.charAt(i) == ','){//reads the value of the x coordinate
+                x = Double.parseDouble(subStr);
+                subStr = "";
+            }
+            else if( eventString.charAt(i) == 'z'){//reads the value of the y coordinate
+                y = Double.parseDouble(subStr);
+                subStr = "";
+                if (begin){//code for 'onMouseClick'
+                    gc.beginPath();
+                    gc.moveTo(x, y);
+                    gc.stroke();
+                    begin = false;
+                }
+                else{//code for 'onMouseDrag'
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
+            }
+            else if (eventString.charAt(i) == '~'){
+                break;
+            }
+            else{//add sanitized digit to substring
+                subStr += Character.toString(eventString.charAt(i));
+            }
+        }
+        
+        this.clearEventString();//nuke the eventString for the next strok
+    }
+
     public boolean getFlag(){
         return this.flag;
     }
@@ -331,6 +397,7 @@ void actionBackup(String event){
             for(int i = 0; i < arrOfStrings.length; i++){
                 eventString = arrOfStrings[i];
                 eventString += "~";
+                writeToCanvas();
 
                 //test statement to determine the number of operations being performed
                 //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
@@ -389,6 +456,8 @@ void actionBackup(String event){
                 for(int i = 0; i < arrOfStrings.length; i++){
                     eventString = arrOfStrings[i];
                     eventString += "~";
+
+                    writeToCanvas();
                     
                     //Test statement to determine the number of operations being performed
                     //System.out.println("\nAction no: "+ (i+1) + " of " + arrOfStrings.length);
