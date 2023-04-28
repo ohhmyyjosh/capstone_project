@@ -21,7 +21,7 @@ There are four separate folders included in this repository.
 
 NOTE: Each folder contains a "whiteout_app" folder which should be opened directly in Visual Studio Code for the fastest setup. These folders contain a pre-made ".vscode" folder for easier setup. 
 
-## Instructions for Project Setup 
+## Instructions for Setting Up Project and Running Project
 ### These instructions apply to each server and client folder/project
 Assuming you have installed Visual Studio Code as well as the Java Extension Pack for Visual Studio Code follow these instructions to prepare each project for launch.
 JavaFX requires specific dependencies which need to be recognized by your local Java environment to run the client projects. 
@@ -51,10 +51,8 @@ JavaFX requires specific dependencies which need to be recognized by your local 
 
 ![image](https://user-images.githubusercontent.com/70347264/235074904-7ad1ffc5-e7ce-4e5f-b7d3-071a2667a81f.png)
 
-
-## Instructions for Running the Project
-Assuming you have successfuly setup the environment and classpath, running the project should be quite simple. 
-1.  This can be done by simply clicking the "Run" button above the main method.
+5. Running the Project
+    - This can be done by simply clicking the "Run" button above the main method.
     - NOTE: Potential errors at this point likely include "JavaFX Runtime Variables are missing."
     - This error indicates that the JavaFX libraries are not being recognized in your environment and I would recommend following the steps above again for the project.
 
