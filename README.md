@@ -31,8 +31,8 @@ NOTE: Each folder contains a "whiteout_app" folder which should be opened direct
 
 There are two documents included in this repository
 
--README.md
--Segmentation_Fault_Final Submission.pdf
+- README.md
+- Segmentation_Fault_Final Submission.pdf
 
 ## Instructions for Setting Up Project and Running Project in Video and Written Form
 ### These instructions apply to each server and client folder/project
