@@ -17,6 +17,8 @@ Visual Studio Code (VSCode): https://code.visualstudio.com/
 
 Extension Pack for Java for VSCode: https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
 
+Java 19 JDK: https://www.oracle.com/java/technologies/javase/jdk19-archive-downloads.html
+
 ## Submission Structure
 There are four separate folders included in this repository.
 
