@@ -29,6 +29,9 @@ NOTE: Each folder contains a "whiteout_app" folder which should be opened direct
 
 ## Instructions for Setting Up Project and Running Project
 ### These instructions apply to each server and client folder/project
+
+Video Instructions for Setup: https://youtu.be/yaPIrc4rljI
+
 Assuming you have installed Visual Studio Code as well as the Java Extension Pack for Visual Studio Code follow these instructions to prepare each project for launch.
 JavaFX requires specific dependencies which need to be recognized by your local Java environment to run the client projects. 
 
