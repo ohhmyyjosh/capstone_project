@@ -22,7 +22,7 @@ There are four separate folders included in this repository.
 NOTE: Each folder contains a "whiteout_app" folder which should be opened directly in Visual Studio Code for the fastest setup. These folders contain a pre-made ".vscode" folder for easier setup. 
 
 ## Instructions for Project Setup 
-### These instructions apply to each folder
+### These instructions apply to each server and client folder/project
 Assuming you have installed Visual Studio Code as well as the Java Extension Pack for Visual Studio Code follow these instructions to prepare each project for launch.
 JavaFX requires specific dependencies which need to be recognized by your local Java environment to run the client projects. 
 
