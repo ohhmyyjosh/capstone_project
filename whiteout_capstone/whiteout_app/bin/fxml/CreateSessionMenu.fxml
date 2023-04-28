@@ -60,7 +60,7 @@
             </Label>
             <CheckBox fx:id="eraseAllPermissionsButton" layoutX="438.0" layoutY="174.0" mnemonicParsing="false">
                <graphic>
-                  <Label prefHeight="38.0" prefWidth="122.0" text=" Erase All">
+                  <Label prefHeight="38.0" prefWidth="122.0" text=" Clear All">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
