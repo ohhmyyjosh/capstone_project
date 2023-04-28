@@ -13,12 +13,32 @@
    <children>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="404.0" prefWidth="640.0" style="-fx-border-color: gray; -fx-border-width: 10;">
          <children>
-            <Label layoutX="86.0" layoutY="207.0" prefHeight="38.0" prefWidth="153.0" text="Room Code:">
+            <Label layoutX="86.0" layoutY="113.0" prefHeight="38.0" prefWidth="153.0" text="User Name:">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <TextField fx:id="sessionCodeInputField" layoutX="276.0" layoutY="204.0" prefHeight="43.0" prefWidth="272.0" promptText="Enter here...">
+            <TextField fx:id="usernameInputField" layoutX="276.0" layoutY="110.0" prefHeight="43.0" prefWidth="272.0" promptText="Enter here...">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="86.0" layoutY="185.0" prefHeight="38.0" prefWidth="153.0" text="Room Code:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="sessionCodeInputField" layoutX="276.0" layoutY="182.0" prefHeight="43.0" prefWidth="272.0" promptText="Enter here...">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label fx:id="serverIPLabel" layoutX="86.0" layoutY="257.0" prefHeight="38.0" prefWidth="121.0" text="Server IP:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="serverIPField" layoutX="276.0" layoutY="254.0" prefHeight="43.0" prefWidth="272.0" promptText="Enter here...">
                <font>
                   <Font size="18.0" />
                </font>
@@ -42,16 +62,6 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Button>
-            <Label layoutX="86.0" layoutY="113.0" prefHeight="38.0" prefWidth="153.0" text="User Name:">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-            </Label>
-            <TextField fx:id="sessionCodeInputField1" layoutX="276.0" layoutY="110.0" prefHeight="43.0" prefWidth="272.0" promptText="Enter here...">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextField>
          </children>
       </AnchorPane>
    </children>

@@ -38,7 +38,10 @@ public class JoinSessionMenuController {
     @FXML
     private TextField sessionCodeInputField;
     @FXML
-    private TextField sessionCodeInputField1;
+    private TextField usernameInputField;
+
+    @FXML
+    private TextField serverIPField;
 
     public void initialize(){
         Pattern pattern = Pattern.compile("[a-zA-Z]*");
@@ -52,7 +55,7 @@ public class JoinSessionMenuController {
         this.name = "";
         TextFormatter<String> formatter = new TextFormatter<>(filter);
 
-        sessionCodeInputField1.setTextFormatter(formatter);
+        usernameInputField.setTextFormatter(formatter);
     }
 
     @FXML
@@ -83,8 +86,8 @@ public class JoinSessionMenuController {
         command = "";
 
         command += "j" + sessionCodeInputField.getText() + "~";
-        name = sessionCodeInputField1.getText();
-        if (sessionCodeInputField1.getText() == null || sessionCodeInputField1.getText().trim().isEmpty()){
+        name = usernameInputField.getText();
+        if (usernameInputField.getText() == null || usernameInputField.getText().trim().isEmpty()){
             command += "Guest";
         }
         else{
@@ -95,9 +98,10 @@ public class JoinSessionMenuController {
 
     private void createCanvas(ActionEvent event){
         Parent root;
+        String serverIP = serverIPField.getText();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Canvas.fxml"));
-            CanvasController cc = new CanvasController(command, false);
+            CanvasController cc = new CanvasController(command, false, serverIP);
             loader.setController(cc);
             root = loader.load();
             Scene s = new Scene(root);

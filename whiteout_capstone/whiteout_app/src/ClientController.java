@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.Scanner;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -33,20 +34,22 @@ public class ClientController extends Thread{
         this.port = port;
         this.cc = cc;
 
-        //create socket
-        System.out.println("Creating client socket...");
-        try{
+        try {
+            // Create socket
+            System.out.println("Creating client socket...");
             sock = new Socket(destIP, port);
             System.out.println("Post socket creation");
+    
+            // Create data streams
+            in = new BufferedReader(new InputStreamReader(sock.getInputStream())); // receiving
+            out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream())); // sending
+        } catch (IOException e) {
+            System.out.println("Error occurred while initializing ClientController: " + e.getMessage());
+            System.out.println("Server not found.");
+            Platform.runLater(() -> {
+                cc.closeCurrentStageAndOpenMainMenu();
+            });
         }
-        catch(Exception exception){
-            System.out.println("Socket creation failed.");
-            return;
-        }
-
-        //create data stream
-        in = new BufferedReader(new InputStreamReader(sock.getInputStream()));//recieving
-        out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));//sending
 
         //outputStream = sock.getOutputStream();
         //objectOutputStream = new ObjectOutputStream(outputStream);
@@ -77,19 +80,30 @@ public class ClientController extends Thread{
         System.out.println(cc.getEventString());
         cc.clearEventString();//nuke eventString for next stroke
     }
-    public void sendCommand(String command) throws IOException{
-        System.out.println("Sending command " + command + "..");
-        out.write(command);
-        out.flush();
-        cc.clearEventString();//nuke eventString for next stroke
+    public void sendCommand(String command) {
+        if (this.out != null) {
+            try {
+                this.out.write(command);
+                this.out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else return;
+
+       
     }
 
     //kill the client
     public void closeSock() throws IOException{
-        System.out.println("closing socket");
-        sock.close();
-        in.close();
-        out.close();
+        try {
+            System.out.println("closing socket");
+            sock.close();
+            in.close();
+            out.close();
+        } catch (Exception e){
+            System.out.println("Error closing socket.");
+        }
+        
     }
 }
 

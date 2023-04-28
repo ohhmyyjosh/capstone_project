@@ -14,17 +14,19 @@ import javafx.scene.paint.Color;
 
 
 public class SocketController extends Thread{
-
-    private String destIP = "54.227.107.50";
+    private String serverIP;
     private int port = 5001;
     private int buffer = 0;
 
     private ClientController client;
     private InputHandler input;
     
-    public SocketController(CanvasController cc) throws IOException{
-        ClientController(destIP,port,cc);
+
+    public SocketController(CanvasController cc, String IP) throws IOException{
+        this.serverIP = IP;
+        ClientController(this.serverIP,port, cc);
         cc.setSockCon(this);
+        this.serverIP = IP;
     }
 
     public ClientController getClient(){
@@ -32,10 +34,16 @@ public class SocketController extends Thread{
     }
 
     //establishes a client socket and attempts to send canvas data on a separate thread
-    private void ClientController(String destIP, int port, CanvasController cc) throws IOException{
-        client = new ClientController(destIP, port, cc);
-        input = new InputHandler(client);
-        input.start();
+    private void ClientController(String IP, int port, CanvasController cc) throws IOException{
+        this.serverIP = IP;
+        client = new ClientController(this.serverIP, port, cc);
+        try {
+            input = new InputHandler(client);
+            input.start();
+        } catch (Exception e){
+            System.out.println("");
+        }
+        
     }
 
 }
