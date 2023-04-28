@@ -26,4 +26,5 @@ There are four separate folders included in this repository.
 - White-Out-SSL-Server
 
 Inside each folder are instructions for setting up and running the individual projects with Visual Studio Code.
+
 Each folder contains a "whiteout_app" folder which should be opened directly in VSCode.
