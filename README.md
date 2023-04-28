@@ -80,7 +80,7 @@ JavaFX requires specific dependencies which need to be recognized by your local 
 	2.1 Open Powershell as administrator on the server machine and navigate to the directory of the created keystore replacing ${jdk-version} as needed: "C:\\Program Files\\Java\\${jdk-version}\\bin"
 	2.2 Execute the following command: ./keytool -export -alias whiteoutCert -keystore selfsigned.jks -rfc -file public.cer
 	2.3 Enter the password "whiteout" when prompted
-  	2.4 Distribute the file public.cert to the client machines
+  2.4 Distribute the file public.cert to the client machines
 
 3. Client
 	3.1 On the client machine, relocate the public cert file to the following directory replacing ${jre-version} as needed: "C:\\Program Files\\Java\\${jre-version}\\bin"
