@@ -19,14 +19,14 @@ Extension Pack for Java for VSCode: https://marketplace.visualstudio.com/items?i
 
 ## Submission Structure
 There are four separate folders included in this repository.
-- White-Out-Client
-  - │   ├── whiteout_app
-- White-Out-Server
-  - │   ├── whiteout_app
-- White-Out-SSL-Client
--   │   ├── whiteout_app
-- White-Out-SSL-Server
--   │   ├── whiteout_app
+│ White-Out-Client
+│   ├── whiteout_app
+│ White-Out-Server
+│   ├── whiteout_app
+│ White-Out-SSL-Client
+│   ├── whiteout_app
+│ White-Out-SSL-Server
+│   ├── whiteout_app
 
 Inside each folder are instructions for setting up and running the individual projects with Visual Studio Code.
 Each folder contains a "whiteout_app" folder which should be opened directly in VSCode.
