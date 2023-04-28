@@ -43,13 +43,15 @@ public class CreateSessionMenuController {
     @FXML private TextField sessionNameInputField; 
 
     @FXML private ToggleGroup sessionPrivacyToggleGroup;
+
+    @FXML private TextField serverIPField;
     
     private String command;
     private String name;
     private int clientLimit;
     private boolean drawAllowed;
     private boolean eraseAllAllowed;
-    private boolean publicRoom;
+    
 
     public void initialize(){
         maxGuestsInputField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1));
@@ -146,10 +148,12 @@ public class CreateSessionMenuController {
 
     private void createCanvas(ActionEvent event){
         Parent root;
+        String serverIP = serverIPField.getText();
         try {
             //root = FXMLLoader.load(getClass().getResource("./fxml/Canvas.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/Canvas.fxml"));
-            CanvasController cc = new CanvasController(command, true);
+            CanvasController cc = new CanvasController(command, true, serverIP);
+            System.out.println("IP: " + serverIP);
             
             loader.setController(cc);
             root = loader.load();

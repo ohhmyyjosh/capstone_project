@@ -26,39 +26,34 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Button>
-            <Label layoutX="65.0" layoutY="94.0" prefHeight="38.0" prefWidth="146.0" text="User Name:">
+            <Label layoutX="44.0" layoutY="60.0" prefHeight="38.0" prefWidth="146.0" text="User Name:">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <TextField fx:id="sessionNameInputField" layoutX="268.0" layoutY="91.0" prefHeight="43.0" prefWidth="322.0" promptText="Enter here...">
+            <TextField fx:id="sessionNameInputField" layoutX="227.0" layoutY="60.0" prefHeight="43.0" prefWidth="310.0" promptText="Enter here...">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <Separator layoutX="34.0" layoutY="152.0" prefHeight="7.0" prefWidth="582.0" />
+            <Separator layoutX="29.0" layoutY="119.0" prefHeight="7.0" prefWidth="582.0" />
             <Separator layoutX="29.0" layoutY="311.0" prefHeight="7.0" prefWidth="582.0" />
-            <Label layoutX="65.0" layoutY="174.0" prefHeight="38.0" prefWidth="160.0" text="Permissions:">
+            <Label layoutX="47.0" layoutY="131.0" prefHeight="38.0" prefWidth="160.0" text="Permissions:">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
             </Label>
-            <CheckBox fx:id="drawPermissionsButton" layoutX="277.0" layoutY="174.0" mnemonicParsing="false">
+            <CheckBox fx:id="drawPermissionsButton" layoutX="230.0" layoutY="131.0" mnemonicParsing="false">
                <graphic>
-                  <Label prefHeight="38.0" prefWidth="144.0" text=" Draw">
+                  <Label prefHeight="38.0" prefWidth="104.0" text=" Draw">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>
                   </Label>
                </graphic>
             </CheckBox>
-            <Separator layoutX="29.0" layoutY="230.0" prefHeight="7.0" prefWidth="582.0" />
-            <Label layoutX="65.0" layoutY="253.0" prefHeight="38.0" prefWidth="160.0" text="Max Guests:">
-               <font>
-                  <Font name="System Bold" size="26.0" />
-               </font>
-            </Label>
-            <CheckBox fx:id="eraseAllPermissionsButton" layoutX="438.0" layoutY="174.0" mnemonicParsing="false">
+            <Separator layoutX="39.0" layoutY="181.0" prefHeight="7.0" prefWidth="582.0" />
+            <CheckBox fx:id="eraseAllPermissionsButton" layoutX="397.0" layoutY="131.0" mnemonicParsing="false">
                <graphic>
                   <Label prefHeight="38.0" prefWidth="122.0" text=" Clear All">
                      <font>
@@ -67,6 +62,22 @@
                   </Label>
                </graphic>
             </CheckBox>
+            <Label layoutX="47.0" layoutY="198.0" prefHeight="38.0" prefWidth="160.0" text="Max Guests:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <Spinner fx:id="maxGuestsInputField" editable="true" layoutX="227.0" layoutY="204.0" prefHeight="26.0" prefWidth="310.0" />
+            <Label fx:id="serverIPLabel" layoutX="47.0" layoutY="257.0" prefHeight="38.0" prefWidth="121.0" text="Server IP:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="serverIPField" layoutX="230.0" layoutY="254.0" prefHeight="43.0" prefWidth="310.0" promptText="Enter here...">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
             <Button fx:id="backButton" layoutX="29.0" layoutY="337.0" mnemonicParsing="false" onAction="#backButtonClick" style="-fx-background-color: lightgray;">
                <graphic>
                   <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
@@ -76,7 +87,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Spinner fx:id="maxGuestsInputField" editable="true" layoutX="270.0" layoutY="259.0" prefHeight="25.0" prefWidth="322.0" />
+            <Separator layoutX="39.0" layoutY="240.0" prefHeight="7.0" prefWidth="582.0" />
          </children>
       </AnchorPane>
    </children>
