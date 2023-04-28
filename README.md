@@ -67,3 +67,27 @@ JavaFX requires specific dependencies which need to be recognized by your local 
     - This can be done by simply clicking the "Run" button above the main method.
     - NOTE: Potential errors at this point likely include "JavaFX Runtime Variables are missing."
     - This error indicates that the JavaFX libraries are not being recognized in your environment and I would recommend following the steps above again for the project.
+
+
+## SSL Setup
+
+1. Server
+	1.1 Open Powershell as administrator and navigate to the following directory replacing ${jdk-version} as needed: "C:\\Program Files\\Java\\${jdk-version}\\bin"
+	1.2 Execute the following command: ./keytool -genkey -alias whiteoutCert -keyalg RSA -storepass whiteout -keystore selfsigned.jks -validity 360
+	1.3 Within the App.java file of SSL-Server change the directory on line 30 to match your keystore directory (Change the $[jdk-version] if needed)
+
+2. Extracting the certificate
+	2.1 Open Powershell as administrator on the server machine and navigate to the directory of the created keystore replacing ${jdk-version} as needed: "C:\\Program Files\\Java\\${jdk-version}\\bin"
+	2.2 Execute the following command: ./keytool -export -alias whiteoutCert -keystore selfsigned.jks -rfc -file public.cer
+	2.3 Enter the password "whiteout" when prompted
+  	2.4 Distribute the file public.cert to the client machines
+
+3. Client
+	3.1 On the client machine, relocate the public cert file to the following directory replacing ${jre-version} as needed: "C:\\Program Files\\Java\\${jre-version}\\bin"
+  	3.2 Run powershell as admin and enter the above directory.
+  	3.3 Execute the following command replacing $[jre-version] as needed: ./keytool -import -trustcacerts -alias whiteoutCert -file public.cert -keystore "C:\\Program Files\\Java\\${jre-version}\\lib\\security\\cacerts"
+  	3.4 Enter the keystore password when prompted. The default password is "changeit"
+  	3.5 Enter "Yes" to the prompt asking if you trust this certificate
+  	3.6 Within the App.java file of SSL-Client change the directory on line 38 to match the directory of your trust store. (change the jre version as needed)
+  	3.7 If your trust store password is not the default "changeit", change the password on line 40 of the App.java file in SSL-Client
+
