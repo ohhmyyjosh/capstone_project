@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CreateSessionMenuController">
+   <children>
+      <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="404.0" prefWidth="640.0" style="-fx-border-color: gray; -fx-border-width: 10;">
+         <children>
+            <Label layoutX="202.0" layoutY="14.0" prefHeight="45.0" prefWidth="237.0" text="Create a Session">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Label>
+            <Button fx:id="createSessionButton" layoutX="215.0" layoutY="327.0" mnemonicParsing="false" onAction="#createSessionButtonClick" style="-fx-background-color: black;" text="Create Session" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Button>
+            <Label layoutX="65.0" layoutY="94.0" prefHeight="38.0" prefWidth="146.0" text="User Name:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <TextField fx:id="sessionNameInputField" layoutX="268.0" layoutY="91.0" prefHeight="43.0" prefWidth="322.0" promptText="Enter here...">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Separator layoutX="34.0" layoutY="152.0" prefHeight="7.0" prefWidth="582.0" />
+            <Separator layoutX="29.0" layoutY="311.0" prefHeight="7.0" prefWidth="582.0" />
+            <Label layoutX="65.0" layoutY="174.0" prefHeight="38.0" prefWidth="160.0" text="Permissions:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="drawPermissionsButton" layoutX="277.0" layoutY="174.0" mnemonicParsing="false">
+               <graphic>
+                  <Label prefHeight="38.0" prefWidth="144.0" text=" Draw">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </CheckBox>
+            <Separator layoutX="29.0" layoutY="230.0" prefHeight="7.0" prefWidth="582.0" />
+            <Label layoutX="65.0" layoutY="253.0" prefHeight="38.0" prefWidth="160.0" text="Max Guests:">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Label>
+            <CheckBox fx:id="eraseAllPermissionsButton" layoutX="438.0" layoutY="174.0" mnemonicParsing="false">
+               <graphic>
+                  <Label prefHeight="38.0" prefWidth="122.0" text=" Erase All">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                  </Label>
+               </graphic>
+            </CheckBox>
+            <Button fx:id="backButton" layoutX="29.0" layoutY="337.0" mnemonicParsing="false" onAction="#backButtonClick" style="-fx-background-color: lightgray;">
+               <graphic>
+                  <ImageView fitHeight="37.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/Back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Spinner fx:id="maxGuestsInputField" editable="true" layoutX="270.0" layoutY="259.0" prefHeight="25.0" prefWidth="322.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
