@@ -26,6 +26,7 @@ JavaFX requires specific dependencies which need to be recognized by your local 
 
 4. After following these instructions you should open App.java and check if there are any warnings about imported libraries not being found.
     - You should see the main method at the bottom of the file and it should not display any errors, you will likely see a run button above the method indicating that the project is recognized as a runnable java project.
+
 ![image](https://user-images.githubusercontent.com/70347264/235074904-7ad1ffc5-e7ce-4e5f-b7d3-071a2667a81f.png)
 
 
