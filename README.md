@@ -54,7 +54,7 @@ JavaFX requires specific dependencies which need to be recognized by your local 
 
 3. Setting up the Classpath
     - You will want to add the necessary libraries to the classpath for the project.
-    - All of the needed libraries are included in the "javafx-sdk-19.0.2.1" -> "lib" folder. 
+    - All of the needed libraries are included in the "lib" -> "javafx-sdk-19.0.2.1" -> "lib" folder. 
 ![image](https://user-images.githubusercontent.com/70347264/235073637-90dd20df-e5d6-4203-81e0-e7158c4c5ed1.png)
 ![image](https://user-images.githubusercontent.com/70347264/235077908-e27d9307-a75a-497c-beff-9b64b07c0489.png)
 
