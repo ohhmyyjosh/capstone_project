@@ -107,6 +107,7 @@ public class CanvasController {
     private double yOffset;
 
     private SocketController sockCon;
+    private String serverIP;
     private String command;
     private String roomCode;
 
@@ -126,17 +127,12 @@ public class CanvasController {
     private ImageCursor eraserCursor;
     private double eraserSize = 10;
 
-    
-
-//This is used for the undo function.
-//private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
-    //private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
-    //private Stack<String> redoStack = new Stack<>();
-
-    public CanvasController(String command, Boolean host){
+    public CanvasController(String command, Boolean host, String IP){
         this.command = command;
         this.host = host;
+        this.serverIP = IP;
     }
+
     public void initialize() {
         
         c = new ResizableCanvas();
@@ -234,23 +230,12 @@ public class CanvasController {
         actionCount = 0;//the number of actions currently stored for undo
         redoLimit = 5;//the maximum number of actions that will be remembered
         try{
-            this.sockCon = new SocketController(this);//everything breaks if this isn't created here
+            this.sockCon = new SocketController(this, this.serverIP);//everything breaks if this isn't created here
         }
         catch(IOException e){
             System.out.print(e);
         }
-        try{
-            this.sockCon.getClient().sendCommand(command+ "\n");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-        // while(true){
-        //     if(this.sockCon.getInputHandler().getReady()){
-        //         roomCodeAlert();
-        //         break;
-        //     }
-        // }
+        this.sockCon.getClient().sendCommand(command+ "\n");
     }
 
     public void removeAnchorpanes(int nu) {
@@ -268,27 +253,6 @@ public class CanvasController {
             count++;
         }
     }
-
-    // public void removeSeparators(int nu) { 
-    //     ObservableList<Node> children = scrollVBox.getChildren();
-    //     Iterator<Node> iterator = children.iterator();
-    //     int count = 0;
-    //     int skipped = 0;
-    //     int numSeparators = (nu > 0) ? (nu - 1) : 0; // calculate the number of separators needed
-    
-    //     while(iterator.hasNext()){
-    //         Node node = iterator.next();
-    //         if (node instanceof Separator) {
-    //             if (count > numSeparators + 1) { // add 1 to skip the first two separators
-    //                 iterator.remove();
-    //             } else {
-    //                 skipped++;
-    //             }
-    //         }
-    //         count++;
-    //     }
-    //     System.out.println("skipped: " + skipped);
-    // }
 
     public void updateUserAnchorPane(String username, String drawPerms, String erasePerms, int nu, int userIndex) {
         userIndex = userIndex - 1;
@@ -387,12 +351,7 @@ public class CanvasController {
         drawPermission = !userDrawPermsBox.isSelected();
         userDrawPermsBox.setSelected(drawPermission);
 
-        try {
-            this.sockCon.getClient().sendCommand("pd" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("pd" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
@@ -411,12 +370,7 @@ public class CanvasController {
         clearPermission = !userErasePermsBox.isSelected();
         userErasePermsBox.setSelected(clearPermission);
 
-        try {
-            this.sockCon.getClient().sendCommand("pe" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("pe" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
@@ -430,24 +384,14 @@ public class CanvasController {
     }
 
     private void kickUser(int userIndex) {
-        try {
-            toggleclearPermission(userIndex);
-            toggleDrawPermission(userIndex);
-            this.sockCon.getClient().sendCommand("k" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        toggleclearPermission(userIndex);
+        toggleDrawPermission(userIndex);
+        this.sockCon.getClient().sendCommand("k" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
     private void clearBoard(ActionEvent event){
-        try {
-            this.sockCon.getClient().sendCommand("x\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("x\n");
     }
 
     public void setHostUserLabel(String username){
@@ -456,26 +400,6 @@ public class CanvasController {
         userEraseCheckbox.setVisible(false);
         kickUserButton.setVisible(false);
     }
-
-    // public void removeUserFromList(String username) {
-    //     // Find the index of the userAnchorPane to remove
-    //     int indexToRemove = -1;
-    //     for (int i = 0; i < userAnchorPanes.size(); i++) {
-    //         AnchorPane anchorPane = userAnchorPanes.get(i);
-    //         Label label = (Label) anchorPane.lookup("#usernameLabel");
-    //         if (label.getText().equals(username)) {
-    //             indexToRemove = i;
-    //             break;
-    //         }
-    //     }
-
-    //     // If a userAnchorPane was found, remove it from the list and from the scrollVBox
-    //     if (indexToRemove != -1) {
-    //         AnchorPane anchorPaneToRemove = userAnchorPanes.get(indexToRemove);
-    //         userAnchorPanes.remove(indexToRemove);
-    //         scrollVBox.getChildren().remove(anchorPaneToRemove);
-    //     }
-    // }
 
     public void setString(String command){
         this.command = command;
@@ -661,12 +585,7 @@ public class CanvasController {
 
     @FXML
     void clearCanvasClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("c\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("c\n");
     }
     
 
@@ -687,12 +606,7 @@ public class CanvasController {
 
     @FXML
     void redoClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("r\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("r\n");
 }
 
     @FXML
@@ -737,38 +651,10 @@ public class CanvasController {
         this.colorStr = color.toString();
     }
 
-    // void actionBackup(String event){
-    //     actionCount++;
-    //     if ( event == "~"){
-    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-    //             canvasSnapshotdeque.removeFirst();
-    //             actionCount--;
-    //         }
-    //         canvasSnapshotdeque.push("~");
-    //     }
-    //     else if(!canvasSnapshotdeque.isEmpty()){
-    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-    //             canvasSnapshotdeque.removeFirst();
-    //             actionCount--;
-    //         }
-    //         //create a new node with the newly added stroke
-    //         canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
-    //     }
-    //     else{
-    //         canvasSnapshotdeque.push(event);
-    //     }
-    // }
-
-
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
     @FXML
     void undoClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("u\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("u\n");
     }
 
     @FXML
@@ -780,8 +666,12 @@ public class CanvasController {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
-
-            sockCon.getClient().closeSock();
+            try {
+                sockCon.getClient().closeSock();
+            } catch (IOException e){
+                System.out.println("Unable to close socket.");
+            }
+            
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
@@ -832,19 +722,5 @@ public class CanvasController {
             e.printStackTrace();
         }
     }
-    
-
-    //purposefully naive canvas replication    
-    // public Canvas getCanvas(){
-    //     Canvas canvas = new Canvas();
-    //     canvas = this.c;
-    //     return canvas;
-    // }
-    // public void setCanvas(Canvas c2){
-    //     SnapshotParameters params = new SnapshotParameters();
-    //     params.setFill(Color.TRANSPARENT);
-    //     WritableImage image = c2.snapshot(params, null);
-    //     this.c.getGraphic Context2D().drawImage(image, 0, 0);
-    // }
 
 }
