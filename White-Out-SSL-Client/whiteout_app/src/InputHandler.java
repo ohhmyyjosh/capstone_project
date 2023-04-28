@@ -20,12 +20,16 @@ public class InputHandler extends Thread{
     int userIndex = 0;
 
     public InputHandler(ClientController client){
-        System.out.println("Input Handler made!");
-        this.buffer = "";
-        this.cc = client.getCanvas();
-        this.sock = client.getSock();
-        this.in = client.getReader();
-        this.ready = false;
+        try {
+            this.buffer = "";
+            this.cc = client.getCanvas();
+            this.sock = client.getSock();
+            this.in = client.getReader();
+            this.ready = false;
+        } catch (Exception e) {
+            return;
+        }
+
     }
 
     @Override
@@ -33,20 +37,28 @@ public class InputHandler extends Thread{
         //
         while(true){
             try{
-                System.out.println("Waiting on server input..");
                 try{
-                    buffer = (String.valueOf(in.readLine()));
-                    if(buffer == "null"){
-                        System.out.println("closing socket");
-                        sock.close();
-                        cc.exitCanvasClick(new ActionEvent());
-                        return;
+                    if (in != null){
+                        buffer = (String.valueOf(in.readLine()));
+                        System.out.println("Waiting on server input..");
+                        if(buffer == "null"){
+                            System.out.println("closing socket");
+                            Platform.runLater(() -> {
+                                cc.closeCurrentStageAndOpenMainMenu();
+                            });
+                            sock.close();
+                            return;
+                        }
                     }
+                    else return;
+                    
                 }
                 catch(IOException e){
                     System.out.println("closing socket");
+                    Platform.runLater(() -> {
+                        cc.closeCurrentStageAndOpenMainMenu();
+                    });
                     sock.close();
-                    cc.exitCanvasClick(new ActionEvent());
                     return;
                 }
                 System.out.println("input recieved " + buffer.charAt(0));
@@ -117,7 +129,9 @@ public class InputHandler extends Thread{
             catch(Exception e){
                 System.out.println(e);
                 e.printStackTrace();
-                cc.exitCanvasClick(new ActionEvent());
+                Platform.runLater(() -> {
+                    cc.closeCurrentStageAndOpenMainMenu();
+                });
                 return;
             }
         }

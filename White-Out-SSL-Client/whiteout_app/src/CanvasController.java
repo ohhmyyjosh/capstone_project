@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.input.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -41,6 +42,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+
 import java.util.List;
 
 
@@ -63,77 +66,26 @@ public class CanvasController {
     @FXML ToggleButton mouseToggleButton;
     @FXML ToggleButton eraserToggleButton;
 
-    @FXML AnchorPane userAnchorPane;
-    @FXML ScrollPane usernameScrollPane;
-    @FXML Label usernameLabel;
-    @FXML CheckBox userDrawCheckbox;
-    @FXML CheckBox userEraseCheckbox;
-    @FXML Button kickUserButton;
+    @FXML
+    private AnchorPane userAnchorPane, userAnchorPane1, userAnchorPane2, userAnchorPane3, userAnchorPane4, userAnchorPane5, userAnchorPane6, userAnchorPane7, userAnchorPane8, userAnchorPane9;
 
-    @FXML AnchorPane userAnchorPane1;
-    @FXML ScrollPane usernameScrollPane1;
-    @FXML Label usernameLabel1;
-    @FXML CheckBox userDrawCheckbox1;
-    @FXML CheckBox userEraseCheckbox1;
-    @FXML Button kickUserButton1;
+    @FXML
+    private ScrollPane usernameScrollPane, usernameScrollPane1, usernameScrollPane2, usernameScrollPane3, usernameScrollPane4, usernameScrollPane5, usernameScrollPane6, usernameScrollPane7, usernameScrollPane8, usernameScrollPane9;
 
-    @FXML AnchorPane userAnchorPane2;
-    @FXML ScrollPane usernameScrollPane2;
-    @FXML Label usernameLabel2;
-    @FXML CheckBox userDrawCheckbox2;
-    @FXML CheckBox userEraseCheckbox2;
-    @FXML Button kickUserButton2;
+    @FXML
+    private Label usernameLabel, usernameLabel1, usernameLabel2, usernameLabel3, usernameLabel4, usernameLabel5, usernameLabel6, usernameLabel7, usernameLabel8, usernameLabel9;
 
-    @FXML AnchorPane userAnchorPane3;
-    @FXML ScrollPane usernameScrollPane3;
-    @FXML Label usernameLabel3;
-    @FXML CheckBox userDrawCheckbox3;
-    @FXML CheckBox userEraseCheckbox3;
-    @FXML Button kickUserButton3;
+    @FXML
+    private CheckBox userDrawCheckbox, userDrawCheckbox1, userDrawCheckbox2, userDrawCheckbox3, userDrawCheckbox4, userDrawCheckbox5, userDrawCheckbox6, userDrawCheckbox7, userDrawCheckbox8, userDrawCheckbox9;
 
-    @FXML AnchorPane userAnchorPane4;
-    @FXML ScrollPane usernameScrollPane4;
-    @FXML Label usernameLabel4;
-    @FXML CheckBox userDrawCheckbox4;
-    @FXML CheckBox userEraseCheckbox4;
-    @FXML Button kickUserButton4;
+    @FXML
+    private CheckBox userEraseCheckbox, userEraseCheckbox1, userEraseCheckbox2, userEraseCheckbox3, userEraseCheckbox4, userEraseCheckbox5, userEraseCheckbox6, userEraseCheckbox7, userEraseCheckbox8, userEraseCheckbox9;
 
-    @FXML AnchorPane userAnchorPane5;
-    @FXML ScrollPane usernameScrollPane5;
-    @FXML Label usernameLabel5;
-    @FXML CheckBox userDrawCheckbox5;
-    @FXML CheckBox userEraseCheckbox5;
-    @FXML Button kickUserButton5;
+    @FXML
+    private Button kickUserButton, kickUserButton1, kickUserButton2, kickUserButton3, kickUserButton4, kickUserButton5, kickUserButton6, kickUserButton7, kickUserButton8, kickUserButton9;
 
-    @FXML AnchorPane userAnchorPane6;
-    @FXML ScrollPane usernameScrollPane6;
-    @FXML Label usernameLabel6;
-    @FXML CheckBox userDrawCheckbox6;
-    @FXML CheckBox userEraseCheckbox6;
-    @FXML Button kickUserButton6;
-
-    @FXML AnchorPane userAnchorPane7;
-    @FXML ScrollPane usernameScrollPane7;
-    @FXML Label usernameLabel7;
-    @FXML CheckBox userDrawCheckbox7;
-    @FXML CheckBox userEraseCheckbox7;
-    @FXML Button kickUserButton7;
-
-    @FXML AnchorPane userAnchorPane8;
-    @FXML ScrollPane usernameScrollPane8;
-    @FXML Label usernameLabel8;
-    @FXML CheckBox userDrawCheckbox8;
-    @FXML CheckBox userEraseCheckbox8;
-    @FXML Button kickUserButton8;
-
-    @FXML AnchorPane userAnchorPane9;
-    @FXML ScrollPane usernameScrollPane9;
-    @FXML Label usernameLabel9;
-    @FXML CheckBox userDrawCheckbox9;
-    @FXML CheckBox userEraseCheckbox9;
-    @FXML Button kickUserButton9;
-
-    @FXML Separator separator,separator1,separator2,separator3,separator4,separator5,separator6,separator7,separator8,separator9,separator10;
+    @FXML
+    private Separator separator, separator1, separator2, separator3, separator4, separator5, separator6, separator7, separator8, separator9, separator10;
 
     List<Label> usernameLabelsList;
     List<CheckBox> userDrawCheckboxesList;
@@ -155,6 +107,7 @@ public class CanvasController {
     private double yOffset;
 
     private SocketController sockCon;
+    private String serverIP;
     private String command;
     private String roomCode;
 
@@ -163,29 +116,38 @@ public class CanvasController {
     GraphicsContext gc;
 
     private ArrayList<AnchorPane> userAnchorPanes = new ArrayList<>();
-    private boolean mouseTransparent = false;
 
-    private boolean eraserSelected = false;
     private Boolean host = false;
 
     private boolean drawPermission = false;
-    private boolean erasePermission = false;
-    
+    private boolean clearPermission = false;
+    private boolean eraserMode = false;
 
-//This is used for the undo function.
-//private Stack<WritableImage> canvasSnapshotStack = new Stack<>();
-    //private Deque<String> canvasSnapshotdeque = new ArrayDeque<>();
-    //private Stack<String> redoStack = new Stack<>();
+    private ImageCursor pencilCursor;
+    private ImageCursor eraserCursor;
+    private double eraserSize = 10;
 
-    public CanvasController(String command, Boolean host){
+    public CanvasController(String command, Boolean host, String IP){
         this.command = command;
         this.host = host;
+        this.serverIP = IP;
     }
+
     public void initialize() {
         
         c = new ResizableCanvas();
         ap.getChildren().add(c);
 
+        color = color.valueOf("#ffffff");
+
+        Image pencilImage = new Image("images/pencilCursor.png");
+        Image eraserImage = new Image("images/eraserCursor.png");
+        pencilCursor = new ImageCursor(pencilImage, pencilImage.getWidth() / 2, pencilImage.getHeight() / 2);
+        eraserCursor = new ImageCursor(eraserImage, 0, eraserImage.getHeight());
+        
+        if(drawPermission){
+            c.setCursor(pencilCursor);
+        }
 
         c.setOnMousePressed(this::handleMousePressed);
         c.setOnMouseDragged(this::handleMouseDragged);
@@ -262,29 +224,18 @@ public class CanvasController {
 
         gc = c.getGraphicsContext2D();
 
-        color = color.valueOf("#ffffff");
+        
 
         eventString = "";//stores coordinate data to be sent
         actionCount = 0;//the number of actions currently stored for undo
         redoLimit = 5;//the maximum number of actions that will be remembered
         try{
-            this.sockCon = new SocketController(this);//everything breaks if this isn't created here
+            this.sockCon = new SocketController(this, this.serverIP);//everything breaks if this isn't created here
         }
         catch(IOException e){
             System.out.print(e);
         }
-        try{
-            this.sockCon.getClient().sendCommand(command+ "\n");
-        }
-        catch(IOException e){
-            System.out.println(e);
-        }
-        // while(true){
-        //     if(this.sockCon.getInputHandler().getReady()){
-        //         roomCodeAlert();
-        //         break;
-        //     }
-        // }
+        this.sockCon.getClient().sendCommand(command+ "\n");
     }
 
     public void removeAnchorpanes(int nu) {
@@ -303,95 +254,83 @@ public class CanvasController {
         }
     }
 
-    // public void removeSeparators(int nu) { 
-    //     ObservableList<Node> children = scrollVBox.getChildren();
-    //     Iterator<Node> iterator = children.iterator();
-    //     int count = 0;
-    //     int skipped = 0;
-    //     int numSeparators = (nu > 0) ? (nu - 1) : 0; // calculate the number of separators needed
-    
-    //     while(iterator.hasNext()){
-    //         Node node = iterator.next();
-    //         if (node instanceof Separator) {
-    //             if (count > numSeparators + 1) { // add 1 to skip the first two separators
-    //                 iterator.remove();
-    //             } else {
-    //                 skipped++;
-    //             }
-    //         }
-    //         count++;
-    //     }
-    //     System.out.println("skipped: " + skipped);
-    // }
-
     public void updateUserAnchorPane(String username, String drawPerms, String erasePerms, int nu, int userIndex) {
         userIndex = userIndex - 1;
         System.out.println("update method: " + userIndex);
         if (usernameLabelsList.get(userIndex) != null) {
-            usernameLabelsList.get(userIndex).setText(username + userIndex);
+            usernameLabelsList.get(userIndex).setText(username);
         }
 
         // set index 0 controls invisible for everyone
         userDrawCheckboxesList.get(0).setVisible(false);
         userEraseCheckboxesList.get(0).setVisible(false);
         userKickButtons.get(0).setVisible(false);
-
-        if (userDrawCheckboxesList.get(userIndex) != null) {
-            if(drawPerms.charAt(0) == 't'){
-                userDrawCheckboxesList.get(userIndex).setSelected(true);
-                if (this.host){
-                    userDrawCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
+        if(drawPerms.charAt(0) == 't'){
+            userDrawCheckboxesList.get(userIndex).setSelected(true);
+            if (this.host){
+                userDrawCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+                drawPermission = true;
             }
-            else if(drawPerms.charAt(0) == 'f'){
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
-                if (this.host){
-                    userDrawCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-            }
-            else {
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
+            else{
                 userDrawCheckboxesList.get(userIndex).setVisible(false);
-                userEraseCheckboxesList.get(userIndex).setVisible(false);
                 userKickButtons.get(userIndex).setVisible(false);
-
+                drawPermission = true;
             }
         }
-
-        if (userEraseCheckboxesList.get(userIndex) != null){
-            if(erasePerms.charAt(0) == 't'){
-                userEraseCheckboxesList.get(userIndex).setSelected(true);
-                if (this.host) {
-                    userEraseCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-
+        else if(drawPerms.charAt(0) == 'f'){
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            if (this.host){
+                userDrawCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+                drawPermission = true;
             }
-            else if(erasePerms.charAt(0) == 'f'){
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                if (this.host) {
-                    userEraseCheckboxesList.get(userIndex).setVisible(true);
-                    if (userKickButtons.get(userIndex) != null) {
-                        userKickButtons.get(userIndex).setVisible(true);
-                    }
-                }
-            }
-            else {
-                userEraseCheckboxesList.get(userIndex).setSelected(false);
-                userDrawCheckboxesList.get(userIndex).setSelected(false);
+            else{
                 userDrawCheckboxesList.get(userIndex).setVisible(false);
+                userKickButtons.get(userIndex).setVisible(false);
+                drawPermission = false;
+            }
+        }
+        else {
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setVisible(false);
+            userEraseCheckboxesList.get(userIndex).setVisible(false);
+            userKickButtons.get(userIndex).setVisible(false);
+        }
+
+        if(erasePerms.charAt(0) == 't'){
+            userEraseCheckboxesList.get(userIndex).setSelected(true);
+            if (this.host){
+                userEraseCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+                clearPermission = true;
+            }
+            else{
                 userEraseCheckboxesList.get(userIndex).setVisible(false);
                 userKickButtons.get(userIndex).setVisible(false);
+                clearPermission = true;
             }
+        }
+        else if(erasePerms.charAt(0) == 'f'){
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            if (this.host){
+                userEraseCheckboxesList.get(userIndex).setVisible(true);
+                userKickButtons.get(userIndex).setVisible(true);
+                clearPermission = true;
+            }
+            else{
+                userEraseCheckboxesList.get(userIndex).setVisible(false);
+                userKickButtons.get(userIndex).setVisible(false);
+                clearPermission = false;
+            }
+        }
+        else {
+            userEraseCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setSelected(false);
+            userDrawCheckboxesList.get(userIndex).setVisible(false);
+            userEraseCheckboxesList.get(userIndex).setVisible(false);
+            userKickButtons.get(userIndex).setVisible(false);
         }
     }
 
@@ -412,36 +351,26 @@ public class CanvasController {
         drawPermission = !userDrawPermsBox.isSelected();
         userDrawPermsBox.setSelected(drawPermission);
 
-        try {
-            this.sockCon.getClient().sendCommand("pd" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("pd" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
-    private void toggleErasePermissionFXML(ActionEvent event) {
+    private void toggleclearPermissionFXML(ActionEvent event) {
         CheckBox clickedCheckBox = (CheckBox) event.getSource();
 
         int userIndex = userEraseCheckboxesList.indexOf(clickedCheckBox);
 
-        toggleErasePermission(userIndex);
+        toggleclearPermission(userIndex);
     }
 
-    private void toggleErasePermission(int userIndex){
+    private void toggleclearPermission(int userIndex){
 
         CheckBox userErasePermsBox = userEraseCheckboxesList.get(userIndex);
 
-        erasePermission = !userErasePermsBox.isSelected();
-        userErasePermsBox.setSelected(erasePermission);
+        clearPermission = !userErasePermsBox.isSelected();
+        userErasePermsBox.setSelected(clearPermission);
 
-        try {
-            this.sockCon.getClient().sendCommand("pe" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("pe" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
@@ -455,24 +384,14 @@ public class CanvasController {
     }
 
     private void kickUser(int userIndex) {
-        try {
-            toggleErasePermission(userIndex);
-            toggleDrawPermission(userIndex);
-            this.sockCon.getClient().sendCommand("k" + Integer.toString(userIndex) + "\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        toggleclearPermission(userIndex);
+        toggleDrawPermission(userIndex);
+        this.sockCon.getClient().sendCommand("k" + Integer.toString(userIndex) + "\n");
     }
 
     @FXML
     private void clearBoard(ActionEvent event){
-        try {
-            this.sockCon.getClient().sendCommand("x\n");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.sockCon.getClient().sendCommand("x\n");
     }
 
     public void setHostUserLabel(String username){
@@ -481,26 +400,6 @@ public class CanvasController {
         userEraseCheckbox.setVisible(false);
         kickUserButton.setVisible(false);
     }
-
-    // public void removeUserFromList(String username) {
-    //     // Find the index of the userAnchorPane to remove
-    //     int indexToRemove = -1;
-    //     for (int i = 0; i < userAnchorPanes.size(); i++) {
-    //         AnchorPane anchorPane = userAnchorPanes.get(i);
-    //         Label label = (Label) anchorPane.lookup("#usernameLabel");
-    //         if (label.getText().equals(username)) {
-    //             indexToRemove = i;
-    //             break;
-    //         }
-    //     }
-
-    //     // If a userAnchorPane was found, remove it from the list and from the scrollVBox
-    //     if (indexToRemove != -1) {
-    //         AnchorPane anchorPaneToRemove = userAnchorPanes.get(indexToRemove);
-    //         userAnchorPanes.remove(indexToRemove);
-    //         scrollVBox.getChildren().remove(anchorPaneToRemove);
-    //     }
-    // }
 
     public void setString(String command){
         this.command = command;
@@ -614,63 +513,79 @@ public class CanvasController {
     }
 
     private void handleMousePressed(MouseEvent event) {
-        this.size = (double) brushSizeChoiceBox.getValue();
-        gc.setLineWidth(size);
-        gc.setStroke(color);
-        gc.setFill(color);
-        gc.beginPath();
-        gc.moveTo(event.getX(), event.getY());
-        gc.stroke();
-        colorStr = color.toString();
+        if (drawPermission) {
+            this.size = (double) brushSizeChoiceBox.getValue();
+            double activeSize = eraserMode ? eraserSize : size;
+            gc.setLineWidth(activeSize);
+            if (eraserMode) {
+                gc.setStroke(Color.TRANSPARENT);
+                gc.setFill(Color.TRANSPARENT);
+                gc.clearRect(event.getX() - activeSize / 2, event.getY() - activeSize / 2, activeSize, activeSize);
+            } else {
+                gc.setStroke(color);
+                gc.setFill(color);
+                gc.beginPath();
+                gc.moveTo(event.getX(), event.getY());
+                gc.stroke();
         
-        // add to eventString and strokes
-        String stroke = colorStr + "*" + Double.toString(size) + "/" + (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
-        
+                colorStr = color.toString();
+                // add to eventString and strokes
+                String stroke = colorStr + "*" + Double.toString(size) + "/" + (event.getX()) + "," + (event.getY()) + "z";
+                eventString += stroke;
+            } 
+        }
     }
-
-    private void handleMouseDragged(MouseEvent event) {
-        gc.lineTo(event.getX(), event.getY());
-        gc.stroke();
-        
-        // add to eventString and strokes
-        String stroke = (event.getX()) + "," + (event.getY()) + "z";
-        eventString += stroke;
-        
-    }
-
-    private void handleMouseReleased(MouseEvent event) {
-        gc.closePath();
     
-        // push the current snapshot of the canvas to the stack
-        //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
-        
-        //send eventString
-        try{
-            eventString += "~";
-            //actionBackup(eventString);
-            //redoStack.clear();
-            sockCon.getClient().sendString();
-        }
-        catch(IOException e){
-            System.out.println(e);
+    private void handleMouseDragged(MouseEvent event) {
+        if (drawPermission) {
+            this.size = (double) brushSizeChoiceBox.getValue();
+            double activeSize = eraserMode ? eraserSize : size;
+            gc.setLineWidth(activeSize);
+            if (eraserMode) {
+                gc.setStroke(Color.TRANSPARENT);
+                gc.setFill(Color.TRANSPARENT);
+                gc.clearRect(event.getX() - activeSize / 2, event.getY() - activeSize / 2, activeSize, activeSize);
+            } else {
+                gc.lineTo(event.getX(), event.getY());
+                gc.stroke();
+                colorStr = color.toString();
+                String stroke = (event.getX()) + "," + (event.getY()) + "z";
+                eventString += stroke;
+            }    
         }
     }
+    
+    private void handleMouseReleased(MouseEvent event) {
+        if (drawPermission && !eraserMode) {
+            gc.closePath();
+            // push the current snapshot of the canvas to the stack
+            //canvasSnapshotStack.push(c.snapshot(new SnapshotParameters(), null));
+            
+            //send eventString
+            try{
+                eventString += "~";
+                //actionBackup(eventString);
+                //redoStack.clear();
+                sockCon.getClient().sendString();
+            }
+            catch(IOException e){
+                System.out.println(e);
+            }
+        }
+        
+    }
+    
 
     public void clearCanvas(){
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
         clearEventString();
         //actionBackup("~");
     }
+    
 
     @FXML
     void clearCanvasClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("c\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("c\n");
     }
     
 
@@ -681,7 +596,7 @@ public class CanvasController {
 
     @FXML
     void eraserButtonToggle(ActionEvent event) {
-
+        eraserMode = !eraserMode;
     }
 
     @FXML
@@ -691,12 +606,7 @@ public class CanvasController {
 
     @FXML
     void redoClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("r\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("r\n");
 }
 
     @FXML
@@ -741,38 +651,10 @@ public class CanvasController {
         this.colorStr = color.toString();
     }
 
-    // void actionBackup(String event){
-    //     actionCount++;
-    //     if ( event == "~"){
-    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-    //             canvasSnapshotdeque.removeFirst();
-    //             actionCount--;
-    //         }
-    //         canvasSnapshotdeque.push("~");
-    //     }
-    //     else if(!canvasSnapshotdeque.isEmpty()){
-    //         if (actionCount > redoLimit ){//if too many actions are stored, remove the earliest
-    //             canvasSnapshotdeque.removeFirst();
-    //             actionCount--;
-    //         }
-    //         //create a new node with the newly added stroke
-    //         canvasSnapshotdeque.push(canvasSnapshotdeque.peek() + event);
-    //     }
-    //     else{
-    //         canvasSnapshotdeque.push(event);
-    //     }
-    // }
-
-
     //This Function does not work and instead of redo the last draw item, deletes the whole drawing on the canvas.
     @FXML
     void undoClick(ActionEvent event) {
-        try{
-            this.sockCon.getClient().sendCommand("u\n");
-        }
-        catch(IOException e){
-            System.out.println (e);
-        }
+        this.sockCon.getClient().sendCommand("u\n");
     }
 
     @FXML
@@ -784,8 +666,12 @@ public class CanvasController {
     void exitCanvasClick(ActionEvent event){
         Parent root;
         try {
-
-            sockCon.getClient().closeSock();
+            try {
+                sockCon.getClient().closeSock();
+            } catch (IOException e){
+                System.out.println("Unable to close socket.");
+            }
+            
             root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
             Scene s = new Scene(root);
             s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
@@ -810,17 +696,31 @@ public class CanvasController {
         } 
     }
 
-    //purposefully naive canvas replication    
-    // public Canvas getCanvas(){
-    //     Canvas canvas = new Canvas();
-    //     canvas = this.c;
-    //     return canvas;
-    // }
-    // public void setCanvas(Canvas c2){
-    //     SnapshotParameters params = new SnapshotParameters();
-    //     params.setFill(Color.TRANSPARENT);
-    //     WritableImage image = c2.snapshot(params, null);
-    //     this.c.getGraphic Context2D().drawImage(image, 0, 0);
-    // }
+    void closeCurrentStageAndOpenMainMenu() {
+        // Find the current open stage
+        Stage currentStage = (Stage) box.getScene().getWindow();
+    
+        // Close the current stage
+        currentStage.close();
+    
+        // Load the main menu FXML file
+        Parent root; 
+    
+        try {
+
+            root = FXMLLoader.load(getClass().getResource("./fxml/MainMenu.fxml"));
+            Scene s = new Scene(root);
+            s.getStylesheets().add(getClass().getResource("css/style.css").toExternalForm());
+            Stage window = new Stage();
+            window.setScene(s);
+            window.setMaximized(false);
+            window.setResizable(false);
+            window.centerOnScreen();
+            window.show();
+    
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
