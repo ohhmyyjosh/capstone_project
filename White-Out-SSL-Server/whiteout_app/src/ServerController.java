@@ -7,11 +7,15 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.net.ssl.*;
+import java.util.Enumeration;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 
 public class ServerController extends Thread{
 
@@ -36,6 +40,28 @@ public class ServerController extends Thread{
         //servSock = new ServerSocket(port);
         sslsf = (SSLServerSocketFactory)SSLServerSocketFactory.getDefault();
         servSock = (SSLServerSocket)sslsf.createServerSocket(port);
+        try {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (networkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = networkInterfaces.nextElement();
+                if (!networkInterface.isLoopback() && !networkInterface.isVirtual() && networkInterface.isUp()) {
+                    Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+                    while (inetAddresses.hasMoreElements()) {
+                        InetAddress inetAddress = inetAddresses.nextElement();
+                        if (!inetAddress.isLoopbackAddress() && inetAddress.isSiteLocalAddress()) {
+                            System.out.println("Interface name: " + networkInterface.getDisplayName());
+                            System.out.println("Private IP address: " + inetAddress.getHostAddress());
+                            System.out.println("--------------------------------------");
+                        }
+                    }
+                }
+            }
+            InetAddress localAddress = servSock.getInetAddress();
+            System.out.println("Server Socket IP address: " + localAddress.getHostAddress());
+            System.out.println("Server Socket is listening on port: " + port);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
 
         this.start();
     }

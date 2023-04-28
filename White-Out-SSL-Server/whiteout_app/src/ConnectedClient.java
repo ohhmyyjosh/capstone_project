@@ -190,6 +190,10 @@ public class ConnectedClient extends Thread {
                             room.getRoom().elementAt(index).closeSock();
                         }
                     }
+                    else if (buffer.charAt(0) == 'p'){
+                        System.out.println("Changing permissions..");
+                        room.updatePermissions(buffer.substring(1));
+                    }
 
                     else if(buffer == "null"){//happens if the socket is terminated
                         System.out.println("closing socket");

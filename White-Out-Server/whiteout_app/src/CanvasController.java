@@ -133,6 +133,8 @@ public class CanvasController {
             canvasSnapshotdeque.push(event);
             System.out.println("Empty deque detected. Adding first snapshot" + event);
         }
+
+        clearEventString();
     
     }
 

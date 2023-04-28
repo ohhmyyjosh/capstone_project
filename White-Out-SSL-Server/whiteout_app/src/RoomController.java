@@ -181,7 +181,7 @@ public class RoomController{
 
     private void parseGuestString(String guestInit){
         String buffer = "";
-        int index = 6;
+        int index = key.length()+1;
         //parse name
         for (int i = index; i < guestInit.length(); i++){
                 buffer += guestInit.charAt(i);
@@ -355,7 +355,7 @@ public class RoomController{
             }
             
         }
-        for (int i = index; i < room.size(); i ++){
+        for (int i = index; i < roomSize; i ++){
             buffer += "`Empty~xx";
         }
         System.out.println(String.valueOf(buffer));
