@@ -1,6 +1,12 @@
 ## White-Out
 White-Out is a desktop application which generates a connected transparent whiteboard over your desktop. This whiteboard can be shared by many users, and offers useful annotation tools such as drawing.
 
+We recommend running the White-Out-Client and testing the drawing tools using the Offline Canvas for the simplest and easiest experience when testing the product.
+
+If you would like to test a multi-client connection we again recommend the White-Out-Client as well as the White-Out-Server projects for the simplest experience.
+
+The SSL-Client and SSL-Server require installing self-signed certificates and we recommend merely observing the code changes within these projects, as there is no visual change between the normal client. 
+
 ### Development Team
 Jaren Mills, Davis King, Hunter Bastian, Joshua Patterson
 
@@ -54,4 +60,3 @@ JavaFX requires specific dependencies which need to be recognized by your local 
     - This can be done by simply clicking the "Run" button above the main method.
     - NOTE: Potential errors at this point likely include "JavaFX Runtime Variables are missing."
     - This error indicates that the JavaFX libraries are not being recognized in your environment and I would recommend following the steps above again for the project.
-
